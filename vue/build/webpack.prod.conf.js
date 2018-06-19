@@ -1,6 +1,5 @@
 'use strict'
 
-const fs = require('fs')
 const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -106,9 +105,27 @@ const webpackConfig = merge(baseWebpackConfig, {
     new SWPrecacheWebpackPlugin({
       cacheId: 'crm',
       filename: 'service-worker.js',
-      staticFileGlobs: ['dist/**/*.{js,html,css}'],
+      staticFileGlobs: ['dist/**/*.{js,html,css,png,jpg,woff,woff2,ttf}'],
       minify: true,
-      stripPrefix: 'dist/'
+      stripPrefix: 'dist/',
+      runtimeCaching: [
+        {
+          // Google fonts
+          urlPattern: new RegExp('https://fonts.'),
+          handler: 'cacheFirst',
+          options: {
+            cacheName: 'fonts'
+          }
+        },
+        {
+          // API
+          urlPattern: new RegExp('https://crm.steffbeckers.eu/api'),
+          handler: 'networkFirst',
+          options: {
+            cacheName: 'api'
+          }
+        }
+      ]
     })
   ]
 })

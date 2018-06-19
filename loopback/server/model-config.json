@@ -1,38 +1,51 @@
 {
   "_meta": {
     "sources": [
-      "loopback/common/models",
+      "loopback/server/models/core",
+      "loopback/server/models/shared",
       "loopback/server/models",
-      "../common/models",
+      "./models/core",
+      "./models/shared",
       "./models"
     ],
     "mixins": [
-      "loopback/common/mixins",
       "loopback/server/mixins",
-      "../common/mixins",
       "./mixins"
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "mongodb",
+    "public": false
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "mongodb",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "mongodb",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "mongodb",
     "public": false,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "mongodb",
     "public": false
+  },
+  "Person": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "Account": {
+    "dataSource": "mongodb",
+    "public": true
+  },
+  "Contact": {
+    "dataSource": "mongodb",
+    "public": true
   }
 }

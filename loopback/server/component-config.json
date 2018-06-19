@@ -1,6 +1,11 @@
 {
   "loopback-component-explorer": {
     "mountPath": "/explorer",
-    "generateOperationScopedModels": true
+    "generateOperationScopedModels": true,
+    "apiInfo": {
+      "title": "CRM's API",
+      "description": "Steff Beckers <steff@steffbeckers.eu>",
+      "contact": "steff@steffbeckers.eu"
+    }
   }
 }
