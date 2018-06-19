@@ -1,6 +1,6 @@
 # CRM
 
-> Steff's CRM
+> Steff's CRM - Vue.js client
 
 ## Build Setup
 
