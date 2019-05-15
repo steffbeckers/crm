@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using CRM.API.DAL;
 using CRM.API.Models;
+using CRM.API.Services;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +34,34 @@ namespace CRM.API
             // CORS
             services.AddCors();
 
-            // Connection to database
+            // Authentication
+            services.AddDbContext<IdentityContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 6;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
+
+            // Connection to the CRM database
             services.AddDbContext<CRMContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
 
@@ -42,6 +71,10 @@ namespace CRM.API
 
             // AutoMapper
             services.AddAutoMapper();
+
+            // Services
+            // - Sending emails
+            services.AddTransient<IEmailSender, EmailSender>();
 
             // MVC
             services.AddMvc(options => {
@@ -74,15 +107,16 @@ namespace CRM.API
             }
             else
             {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
+                    });
+                });
+
                 app.UseHsts();
-                //app.UseExceptionHandler(appBuilder =>
-                //{
-                //    appBuilder.Run(async context =>
-                //    {
-                //        context.Response.StatusCode = 500;
-                //        await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
-                //    });
-                //});
             }
 
             // CORS
@@ -92,6 +126,10 @@ namespace CRM.API
                     .AllowAnyMethod();
             });
 
+            // Authentication
+            app.UseAuthentication();
+
+            // MVC
             app.UseMvc(options =>
             {
                 // OData
