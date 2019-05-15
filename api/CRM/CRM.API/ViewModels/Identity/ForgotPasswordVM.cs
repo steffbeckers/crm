@@ -6,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace CRM.API.ViewModels.Identity
 {
-    public class LoginVM
+    public class ForgotPasswordVM
     {
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
-        public bool RememberMe { get; set; }
     }
 }

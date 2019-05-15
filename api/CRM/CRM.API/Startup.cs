@@ -4,6 +4,7 @@ using CRM.API.Models;
 using CRM.API.Services;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +13,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Text;
 
 namespace CRM.API
 {
@@ -44,12 +47,15 @@ namespace CRM.API
 
             services.Configure<IdentityOptions>(options =>
             {
+                // Sign in
+                options.SignIn.RequireConfirmedEmail = false;
+
                 // Password settings
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
+                options.Password.RequiredLength = 10;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
+                options.Password.RequireLowercase = true;
                 options.Password.RequiredUniqueChars = 6;
 
                 // Lockout settings
@@ -59,6 +65,26 @@ namespace CRM.API
 
                 // User settings
                 options.User.RequireUniqueEmail = true;
+            });
+
+            // JWT's
+            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("Authentication").GetValue<string>("Secret"));
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
 
             // Connection to the CRM database
