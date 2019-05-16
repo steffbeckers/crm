@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using CRM.API.DAL;
 using CRM.API.Models;
 using CRM.API.Services;
 using CRM.API.ViewModels.Identity;
@@ -23,57 +25,78 @@ namespace CRM.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly IdentityContext identityContext;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IEmailSender emailSender;
         private readonly ILogger logger;
         private readonly IConfiguration configuration;
+        private readonly IMapper mapper;
 
         public AuthController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
             ILogger<AuthController> logger,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IMapper mapper)
         {
+            this.identityContext = new IdentityContext();
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
             this.logger = logger;
             this.configuration = configuration;
+            this.mapper = mapper;
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginVM model)
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
+                var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
 
                 if (result.Succeeded)
                 {
                     logger.LogInformation("User logged in.");
 
-                    // TODO: ???
-                    // var user = userManager.GetAuthenticationTokenAsync
+                    // Retrieve user
+                    User user = await userManager.FindByNameAsync(model.Username);
+
+                    // Retrieve roles of user
+                    var userRoleIds = this.identityContext.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId).ToList();
+                    List<IdentityRole> userRoles = new List<IdentityRole>();
+                    foreach (string roleId in userRoleIds)
+                    {
+                        IdentityRole role = await this.identityContext.Roles.FindAsync(roleId);
+                        userRoles.Add(role);
+                    }
+                    user.Roles = userRoles.Select(ur => ur.NormalizedName).ToArray();
+
+                    // Set claims of user
+                    Claim[] claims = new Claim[] {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id)
+                    };
 
                     // Authentication successful => Generate jwt token
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var key = Encoding.ASCII.GetBytes(configuration.GetSection("Authentication").GetValue<string>("Secret"));
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
-                        Subject = new ClaimsIdentity(new Claim[]
-                        {
-                            new Claim(ClaimTypes.NameIdentifier, "TEST"),
-                        }),
+                        Subject = new ClaimsIdentity(claims),
                         Expires = DateTime.UtcNow.AddDays(7),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                     };
 
-                    // Return token
-                    return Ok(tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor)));
+                    // Return user with token
+                    return Ok(new AuthenticatedVM()
+                    {
+                        User = mapper.Map<User, UserVM>(user),
+                        Token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor))
+                    });
                 }
                 //if (result.RequiresTwoFactor)
                 //{
@@ -104,13 +127,13 @@ namespace CRM.API.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [Route("register")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register([FromBody] RegisterVM model)
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
+                var user = new User { UserName = model.Username, Email = model.Email };
 
                 var result = await userManager.CreateAsync(user, model.Password);
 
@@ -122,7 +145,7 @@ namespace CRM.API.Controllers
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await signInManager.SignInAsync(user, isPersistent: false);
+                    //await signInManager.SignInAsync(user, isPersistent: false);
 
                     return Ok();
                 }
@@ -135,7 +158,7 @@ namespace CRM.API.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Route("logout")]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
@@ -145,6 +168,7 @@ namespace CRM.API.Controllers
         }
 
         [HttpGet]
+        [Route("confirm-email")]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
@@ -172,6 +196,7 @@ namespace CRM.API.Controllers
         }
 
         [HttpPost]
+        [Route("forgot-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordVM model)
         {
@@ -202,6 +227,7 @@ namespace CRM.API.Controllers
         }
 
         [HttpPost]
+        [Route("reset-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordVM model)
         {

@@ -6,6 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.cs" />
+    <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.Designer.cs" />
+    <Compile Remove="Migrations\Identity\20190516205944_Test.cs" />
+    <Compile Remove="Migrations\Identity\20190516205944_Test.Designer.cs" />
+    <Compile Remove="Migrations\Identity\20190516210132_Test.cs" />
+    <Compile Remove="Migrations\Identity\20190516210132_Test.Designer.cs" />
+    <Compile Remove="Migrations\Identity\20190516210210_Test2.cs" />
+    <Compile Remove="Migrations\Identity\20190516210210_Test2.Designer.cs" />
+    <Compile Remove="Migrations\Identity\20190516210235_Test2.cs" />
+    <Compile Remove="Migrations\Identity\20190516210235_Test2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

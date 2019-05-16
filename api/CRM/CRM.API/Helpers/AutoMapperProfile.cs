@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CRM.API.Models;
 using CRM.API.ViewModels;
+using CRM.API.ViewModels.Identity;
 
 namespace CRM.API.Helpers
 {
@@ -12,6 +13,10 @@ namespace CRM.API.Helpers
     {
         public AutoMapperProfile()
         {
+            // User
+            CreateMap<User, UserVM>();
+            CreateMap<UserVM, User>();
+
             // Account
             CreateMap<Account, AccountVM>();
             CreateMap<AccountVM, Account>();

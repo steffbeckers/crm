@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CRM.API
 {
@@ -42,6 +43,7 @@ namespace CRM.API
                 options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
 
             services.AddIdentity<User, IdentityRole>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders();
 
@@ -87,6 +89,13 @@ namespace CRM.API
                 };
             });
 
+            // Authorization
+            services.AddAuthorization(options =>
+            {
+                // Policies
+                options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Administrator"));
+            });
+
             // Connection to the CRM database
             services.AddDbContext<CRMContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
@@ -125,7 +134,7 @@ namespace CRM.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -163,6 +172,9 @@ namespace CRM.API
                 options.Count().Filter().OrderBy().Expand().Select().MaxTop(200);
                 options.EnableDependencyInjection();
             });
+
+            // Authorization
+            CreateAdminUser(serviceProvider);
         }
 
         private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
@@ -173,6 +185,38 @@ namespace CRM.API
             builder.EntitySet<Contact>("contacts");
 
             return builder.GetEdmModel();
+        }
+
+        private void CreateAdminUser(IServiceProvider serviceProvider)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+            // Check if the admin user exists and create it if not
+            // Add to the Administrator role
+
+            Task<User> adminUser = userManager.FindByNameAsync(Configuration.GetSection("Admin").GetValue<string>("Username"));
+            adminUser.Wait();
+
+            if (adminUser.Result == null)
+            {
+                User newAdminUser = new User() {
+                    Email = Configuration.GetSection("Admin").GetValue<string>("Email"),
+                    UserName = Configuration.GetSection("Admin").GetValue<string>("Username"),
+                    FirstName = Configuration.GetSection("Admin").GetValue<string>("FirstName"),
+                    LastName = Configuration.GetSection("Admin").GetValue<string>("LastName"),
+                    EmailConfirmed = true
+                };
+
+                Task<IdentityResult> newUser = userManager.CreateAsync(newAdminUser, Configuration.GetSection("Admin").GetValue<string>("Password"));
+                newUser.Wait();
+
+                if (newUser.Result.Succeeded)
+                {
+                    Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(newAdminUser, "Admin");
+                    newUserRole.Wait();
+                }
+            }
+
         }
     }
 }
