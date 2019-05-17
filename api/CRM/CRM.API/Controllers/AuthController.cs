@@ -131,7 +131,7 @@ namespace CRM.API.Controllers
 
         [HttpPost]
         [Route("register")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Register([FromBody] RegisterVM model)
         {
             if (ModelState.IsValid)
