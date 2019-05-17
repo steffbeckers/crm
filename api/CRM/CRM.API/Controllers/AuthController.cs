@@ -66,6 +66,11 @@ namespace CRM.API.Controllers
                     // Retrieve user
                     User user = await userManager.FindByNameAsync(model.Username);
 
+                    // Set claims of user
+                    List<Claim> claims = new List<Claim>() {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id)
+                    };
+
                     // Retrieve roles of user
                     var userRoleIds = this.identityContext.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId).ToList();
                     List<IdentityRole> userRoles = new List<IdentityRole>();
@@ -73,13 +78,11 @@ namespace CRM.API.Controllers
                     {
                         IdentityRole role = await this.identityContext.Roles.FindAsync(roleId);
                         userRoles.Add(role);
+
+                        // Add role as claim
+                        claims.Add(new Claim(ClaimTypes.Role, role.Name));
                     }
                     user.Roles = userRoles.Select(ur => ur.NormalizedName).ToArray();
-
-                    // Set claims of user
-                    Claim[] claims = new Claim[] {
-                        new Claim(ClaimTypes.NameIdentifier, user.Id)
-                    };
 
                     // Authentication successful => Generate jwt token
                     var tokenHandler = new JwtSecurityTokenHandler();

@@ -43,7 +43,7 @@ namespace CRM.API
                 options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
 
             services.AddIdentity<User, IdentityRole>()
-                .AddRoles<IdentityRole>()
+                .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders();
 
@@ -93,7 +93,7 @@ namespace CRM.API
             services.AddAuthorization(options =>
             {
                 // Policies
-                options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Administrator"));
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
             });
 
             // Connection to the CRM database
@@ -174,7 +174,7 @@ namespace CRM.API
             });
 
             // Authorization
-            CreateAdminUser(serviceProvider);
+            CreateRolesAndAdminUser(serviceProvider);
         }
 
         private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
@@ -187,16 +187,46 @@ namespace CRM.API
             return builder.GetEdmModel();
         }
 
-        private void CreateAdminUser(IServiceProvider serviceProvider)
+        private void CreateRolesAndAdminUser(IServiceProvider serviceProvider)
         {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 
-            // Check if the admin user exists and create it if not
-            // Add to the Administrator role
+            // Roles
+
+            Task<IdentityRole> adminRole = roleManager.FindByNameAsync("Admin");
+            adminRole.Wait();
+            if (adminRole.Result == null)
+            {
+                IdentityRole newAdminRole = new IdentityRole()
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                };
+
+                var createAdminRole = roleManager.CreateAsync(newAdminRole);
+                createAdminRole.Wait();
+            }
+
+            Task<IdentityRole> userRole = roleManager.FindByNameAsync("User");
+            userRole.Wait();
+            if (userRole.Result == null)
+            {
+                IdentityRole newUserRole = new IdentityRole()
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                };
+
+                var createUserRole = roleManager.CreateAsync(newUserRole);
+                createUserRole.Wait();
+            }
+
+            // Check if the Admin user exists and create it if not
+            // Add to the Admin role
 
             Task<User> adminUser = userManager.FindByNameAsync(Configuration.GetSection("Admin").GetValue<string>("Username"));
             adminUser.Wait();
-
             if (adminUser.Result == null)
             {
                 User newAdminUser = new User() {
@@ -204,12 +234,12 @@ namespace CRM.API
                     UserName = Configuration.GetSection("Admin").GetValue<string>("Username"),
                     FirstName = Configuration.GetSection("Admin").GetValue<string>("FirstName"),
                     LastName = Configuration.GetSection("Admin").GetValue<string>("LastName"),
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    LockoutEnabled = false
                 };
 
                 Task<IdentityResult> newUser = userManager.CreateAsync(newAdminUser, Configuration.GetSection("Admin").GetValue<string>("Password"));
                 newUser.Wait();
-
                 if (newUser.Result.Succeeded)
                 {
                     Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(newAdminUser, "Admin");

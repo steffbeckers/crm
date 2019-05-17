@@ -39,31 +39,6 @@ namespace CRM.API.DAL
             // Customize the ASP.NET Core Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Core Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-
-            // Seeding database
-
-            // Roles
-            mb.Entity<IdentityRole>().HasData(
-                // TODO: Super user?
-                //new IdentityRole()
-                //{
-                //    Id = Guid.Parse("F9AED5CE-087C-4678-8656-D52F8214958D").ToString(),
-                //    Name = "SuperAdmin",
-                //    NormalizedName = "SUPERADMIN"
-                //},
-                new IdentityRole()
-                {
-                    Id = Guid.Parse("179B9251-DB56-47C9-8E6E-5F0E63F1FD18").ToString(),
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new IdentityRole()
-                {
-                    Id = Guid.Parse("E230E14D-E8C6-46E8-8DD1-B4962DFE8FA1").ToString(),
-                    Name = "User",
-                    NormalizedName = "USER"
-                }                
-            );
         }
     }
 }
