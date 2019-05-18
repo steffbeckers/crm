@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  api:
+    image: registry.steffbeckers.eu/crm/api
+    networks:
+      - reverse-proxy_default
+      - default
+    deploy:
+      mode: replicated
+      replicas: 2
+    build:
+      context: .
+      dockerfile: CRM.API/Dockerfile
+    depends_on:
+      - mssql
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    networks:
+      - default
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+      - SA_PASSWORD=epujl3bcn4t9dp12fdtaz6bwnl3emohyxyue936p5ls1zoeangtpw4bb9v9hmpu3
+    volumes:
+      - /root/crm/mssql:/var/opt/mssql
+  ssh:
+    image: corbinu/ssh-server
+    networks:
+      - default
+    volumes:
+      - /root/.ssh/authorized_keys:/root/.ssh/authorized_keys:ro
+
+networks:
+  reverse-proxy_default:
+    external: true
+  default:
+    internal: true
