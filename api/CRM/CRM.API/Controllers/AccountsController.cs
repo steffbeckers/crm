@@ -75,8 +75,8 @@ namespace CRM.API.Controllers
             {
                 foreach (Contact contact in account.Contacts)
                 {
-                    account.CreatedById = Guid.Parse(currentUser.Id);
-                    account.ModifiedById = Guid.Parse(currentUser.Id);
+                    contact.CreatedById = Guid.Parse(currentUser.Id);
+                    contact.ModifiedById = Guid.Parse(currentUser.Id);
                 }
             }
 
