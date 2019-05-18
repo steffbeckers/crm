@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CRM.API.BLL;
 using CRM.API.DAL;
+using CRM.API.Framework;
 using CRM.API.Models;
 using CRM.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -81,7 +82,14 @@ namespace CRM.API.Controllers
 
             AccountBLL bll = new AccountBLL(this.unitOfWork);
 
-            accountVM = this.mapper.Map<Account, AccountVM>(await bll.CreateAccount(account));
+            try
+            {
+                accountVM = this.mapper.Map<Account, AccountVM>(await bll.CreateAccount(account));
+            }
+            catch (CrmException ex)
+            {
+                return BadRequest(this.mapper.Map<CrmException, CrmExceptionVM>(ex));
+            }
 
             return CreatedAtAction("GetById", new { id = accountVM.Id }, accountVM);
         }

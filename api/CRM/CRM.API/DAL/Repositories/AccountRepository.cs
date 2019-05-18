@@ -22,6 +22,12 @@ namespace CRM.API.DAL.Repositories
 
         // Additional functionality and overrides
 
+        public async Task<bool> ExistsByName(string name)
+        {
+            Account account = await this.context.Accounts.Where(a => a.Name == name).FirstOrDefaultAsync();
+            return account != null;
+        }
+
         //public override async Task DeleteSoftAsync(Account entityToDelete)
         //{
         //    entityToDelete.DeletedOn = DateTime.Now;

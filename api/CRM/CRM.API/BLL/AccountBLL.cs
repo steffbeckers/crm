@@ -1,4 +1,5 @@
 ﻿using CRM.API.DAL;
+using CRM.API.Framework;
 using CRM.API.Models;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,13 @@ namespace CRM.API.BLL
 
         public async Task<Account> CreateAccount(Account account)
         {
+            // Check if account name already exists
+            if (await this.unitOfWork.AccountRepository.ExistsByName(account.Name))
+            {
+                throw new CrmException("Name already exists.", 400);
+            }
+
+            // Create
             Account newAccount = await this.unitOfWork.AccountRepository.InsertAsync(account);
 
             // Set primary contact to first in list

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using CRM.API.Framework;
 using CRM.API.Models;
 using CRM.API.ViewModels;
 using CRM.API.ViewModels.Identity;
@@ -36,6 +37,9 @@ namespace CRM.API.Helpers
             // Relation type
             CreateMap<RelationType, RelationTypeVM>();
             CreateMap<RelationTypeVM, RelationType>();
+
+            // Exceptions
+            CreateMap<CrmException, CrmExceptionVM>();
         }
     }
 }
