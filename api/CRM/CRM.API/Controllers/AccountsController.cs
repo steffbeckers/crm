@@ -69,7 +69,7 @@ namespace CRM.API.Controllers
             account.CreatedById = Guid.Parse(currentUser.Id);
             account.ModifiedById = Guid.Parse(currentUser.Id);
             // Also on new contacts
-            // TODO: Check if there is a better way to do this
+            // TODO: Check if there is a better way to do this. Move to BLL? What with current User?
             if (account.Contacts.Count > 0)
             {
                 foreach (Contact contact in account.Contacts)

@@ -39,11 +39,11 @@ namespace CRM.API.Framework
         void Delete(TEntity entity);
         Task DeleteAsync(TEntity entity);
 
-        void DeleteSoft(Guid id);
-        Task DeleteSoftAsync(Guid id);
+        //void DeleteSoft(Guid id);
+        //Task DeleteSoftAsync(Guid id);
 
-        void DeleteSoft(TEntity entity);
-        Task DeleteSoftAsync(TEntity entity);
+        //void DeleteSoft(TEntity entity);
+        //Task DeleteSoftAsync(TEntity entity);
     }
 
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
@@ -179,26 +179,26 @@ namespace CRM.API.Framework
             await context.SaveChangesAsync();
         }
 
-        public virtual void DeleteSoft(Guid id)
-        {
-            TEntity entityToDelete = dbSet.Find(id);
-            DeleteSoft(entityToDelete);
-        }
+        //public virtual void DeleteSoft(Guid id)
+        //{
+        //    TEntity entityToDelete = dbSet.Find(id);
+        //    DeleteSoft(entityToDelete);
+        //}
 
-        public virtual async Task DeleteSoftAsync(Guid id)
-        {
-            TEntity entityToDelete = await dbSet.FindAsync(id);
-            DeleteSoft(entityToDelete);
-        }
+        //public virtual async Task DeleteSoftAsync(Guid id)
+        //{
+        //    TEntity entityToDelete = await dbSet.FindAsync(id);
+        //    DeleteSoftAsync(entityToDelete);
+        //}
 
-        public virtual void DeleteSoft(TEntity entityToDelete)
-        {
-            throw new NotImplementedException("You must override this method");
-        }
+        //public virtual void DeleteSoft(TEntity entityToDelete)
+        //{
+        //    throw new NotImplementedException("You must override this method");
+        //}
 
-        public virtual async Task DeleteSoftAsync(TEntity entityToDelete)
-        {
-            throw new NotImplementedException("You must override this method");
-        }
+        //public virtual async Task DeleteSoftAsync(TEntity entityToDelete)
+        //{
+        //    throw new NotImplementedException("You must override this method");
+        //}
     }
 }

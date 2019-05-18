@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using CRM.API.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Threading;
 
 namespace CRM.API.DAL
 {
@@ -33,26 +34,35 @@ namespace CRM.API.DAL
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            // Accounts
+
+            // Soft delete query filter
+            mb.Entity<Account>().HasQueryFilter(m => EF.Property<DateTime>(m, "DeletedOn") == null);
+
+            // Primary contact
             mb.Entity<Account>()
                 .HasOne(a => a.PrimaryContact)
                 .WithOne()
                 .HasForeignKey<Account>(a => a.PrimaryContactId);
 
-            mb.Entity<Account>()
-                .HasMany(a => a.Contacts)
-                .WithOne(c => c.Account)
-                .HasForeignKey(c => c.AccountId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+            // Billing account
             mb.Entity<Account>()
                 .HasOne(a => a.BillingAccount)
                 .WithOne()
                 .HasForeignKey<Account>(a => a.BillingAccountId);
 
+            // Parent account
             mb.Entity<Account>()
                 .HasOne(a => a.ParentAccount)
                 .WithOne()
                 .HasForeignKey<Account>(a => a.ParentAccountId);
+
+            // Account Contacts Account lookup
+            mb.Entity<Account>()
+                .HasMany(a => a.Contacts)
+                .WithOne(c => c.Account)
+                .HasForeignKey(c => c.AccountId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Seeding database
 
@@ -70,6 +80,40 @@ namespace CRM.API.DAL
                     DisplayName = "Partner",
                 }
             );
+        }
+
+        // Overrides for soft delete
+        public override int SaveChanges()
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        private void UpdateSoftDeleteStatuses()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                // Define per entity what needs to happen on soft delete
+                if (entry.Entity.GetType().Name == "Account")
+                {
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            entry.CurrentValues["DeletedOn"] = null;
+                            break;
+                        case EntityState.Deleted:
+                            entry.State = EntityState.Modified;
+                            entry.CurrentValues["DeletedOn"] = DateTime.Now;
+                            break;
+                    }
+                }
+            }
         }
     }
 }

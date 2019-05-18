@@ -33,6 +33,7 @@ namespace CRM.API.Models
 
         public string Description { get; set; }
 
+        // Related entities
         public Guid? AddressId { get; set; }
         public Address Address { get; set; }
 

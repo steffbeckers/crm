@@ -18,7 +18,13 @@ namespace CRM.API.BLL
 
         public async Task<Account> CreateAccount(Account account)
         {
-            return await this.unitOfWork.AccountRepository.InsertAsync(account);
+            Account newAccount = await this.unitOfWork.AccountRepository.InsertAsync(account);
+
+            // Set primary contact to first in list
+            newAccount.PrimaryContactId = newAccount.Contacts.First().Id;
+            newAccount = this.unitOfWork.AccountRepository.Update(newAccount);
+
+            return newAccount;
         }
 
         public async Task<List<Account>> GetAccounts()
@@ -38,7 +44,7 @@ namespace CRM.API.BLL
 
         public async Task DeleteAccountById(Guid id)
         {
-            await this.unitOfWork.AccountRepository.DeleteSoftAsync(id);
+            await this.unitOfWork.AccountRepository.DeleteAsync(id);
         }
     }
 }

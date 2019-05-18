@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CRM.API.DAL;
+using CRM.API.DAL.Repositories;
 using CRM.API.Models;
 using CRM.API.Services;
 using Microsoft.AspNet.OData.Builder;
@@ -110,7 +111,6 @@ namespace CRM.API
             services.AddAutoMapper();
 
             // Services
-            // - Sending emails
             services.AddTransient<IEmailSender, EmailSender>();
 
             // Use HttpContext from custom components
