@@ -45,7 +45,7 @@ namespace CRM.API.Models
         public Account BillingAccount { get; set; }
 
         public Guid? RelationTypeId { get; set; }
-        public RelationType RelationType { get; set; }
+        public AccountRelationType RelationType { get; set; }
 
         public Guid? PrimaryContactId { get; set; }
         public Contact PrimaryContact { get; set; }

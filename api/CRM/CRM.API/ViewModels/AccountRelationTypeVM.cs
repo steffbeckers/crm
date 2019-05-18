@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CRM.API.ViewModels
 {
-    public class RelationTypeVM
+    public class AccountRelationTypeVM
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -35,7 +35,7 @@ namespace CRM.API.ViewModels
         public AddressVM Address { get; set; }
         public AccountVM ParentAccount { get; set; }
         public AccountVM BillingAccount { get; set; }
-        public RelationTypeVM RelationType { get; set; }
+        public AccountRelationTypeVM RelationType { get; set; }
         public ContactVM PrimaryContact { get; set; }
         public ICollection<ContactVM> Contacts { get; set; }
     }

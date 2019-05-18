@@ -16,6 +16,8 @@
     <Compile Remove="Migrations\20190518152115_RemovedCascadeDeleteOfContactsForAccount.Designer.cs" />
     <Compile Remove="Migrations\20190518152505_SetNullOnDeleteOfContactsForAccount.cs" />
     <Compile Remove="Migrations\20190518152505_SetNullOnDeleteOfContactsForAccount.Designer.cs" />
+    <Compile Remove="Migrations\20190518154910_TestRolesTableRename.cs" />
+    <Compile Remove="Migrations\20190518154910_TestRolesTableRename.Designer.cs" />
     <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.cs" />
     <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.Designer.cs" />
     <Compile Remove="Migrations\Identity\20190516205944_Test.cs" />

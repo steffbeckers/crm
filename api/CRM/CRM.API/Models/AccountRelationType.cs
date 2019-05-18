@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace CRM.API.Models
 {
-    [Table("RelationTypes")]
-    public class RelationType
+    [Table("AccountRelationTypes")]
+    public class AccountRelationType
     {
         [Key]
         public Guid Id { get; set; }

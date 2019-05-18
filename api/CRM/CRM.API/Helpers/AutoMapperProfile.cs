@@ -35,8 +35,8 @@ namespace CRM.API.Helpers
             CreateMap<CountryVM, Country>();
 
             // Relation type
-            CreateMap<RelationType, RelationTypeVM>();
-            CreateMap<RelationTypeVM, RelationType>();
+            CreateMap<AccountRelationType, AccountRelationTypeVM>();
+            CreateMap<AccountRelationTypeVM, AccountRelationType>();
 
             // Exceptions
             CreateMap<CrmException, CrmExceptionVM>();
