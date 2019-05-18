@@ -7,6 +7,7 @@ using CRM.API.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace CRM.API.DAL
 {
@@ -64,8 +65,14 @@ namespace CRM.API.DAL
                 .HasForeignKey(c => c.AccountId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            // Countries
+            //mb.Entity<Country>()
+            //    .Property<string>("CallingCodes")
+            //    .HasField("callingCodes");
+
             // Seeding database
 
+            // Account Relation Types
             mb.Entity<AccountRelationType>().HasData(
                 new AccountRelationType()
                 {
@@ -80,6 +87,17 @@ namespace CRM.API.DAL
                     DisplayName = "Partner",
                 }
             );
+
+            // Countries
+            List<Country> countries = JsonConvert.DeserializeObject<List<Country>>(File.ReadAllText(@"C:\dev\steffbeckers\CRM\api\CRM\CRM.API\Data\Countries.json"));
+            for (int i = 0; i < countries.Count; i++)
+            {
+                if (countries[i].Id == Guid.Empty)
+                {
+                    countries[i].Id = Guid.NewGuid();
+                }
+            }
+            mb.Entity<Country>().HasData(countries);
         }
 
         // Overrides for soft delete

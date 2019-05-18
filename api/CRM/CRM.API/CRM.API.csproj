@@ -18,6 +18,16 @@
     <Compile Remove="Migrations\20190518152505_SetNullOnDeleteOfContactsForAccount.Designer.cs" />
     <Compile Remove="Migrations\20190518154910_TestRolesTableRename.cs" />
     <Compile Remove="Migrations\20190518154910_TestRolesTableRename.Designer.cs" />
+    <Compile Remove="Migrations\20190518163221_CountriesSeeding.cs" />
+    <Compile Remove="Migrations\20190518163221_CountriesSeeding.Designer.cs" />
+    <Compile Remove="Migrations\20190518163803_CountriesSeeding.cs" />
+    <Compile Remove="Migrations\20190518163803_CountriesSeeding.Designer.cs" />
+    <Compile Remove="Migrations\20190518163833_CountriesTableUpdate.cs" />
+    <Compile Remove="Migrations\20190518163833_CountriesTableUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20190518163850_CountriesSeeding.cs" />
+    <Compile Remove="Migrations\20190518163850_CountriesSeeding.Designer.cs" />
+    <Compile Remove="Migrations\20190518170553_CountriesTableUpdate.cs" />
+    <Compile Remove="Migrations\20190518170553_CountriesTableUpdate.Designer.cs" />
     <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.cs" />
     <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.Designer.cs" />
     <Compile Remove="Migrations\Identity\20190516205944_Test.cs" />
@@ -46,6 +56,7 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="BLL\" />
+    <Folder Include="Data\" />
   </ItemGroup>
 
   <ItemGroup>
