@@ -37,16 +37,20 @@ namespace CRM.API.Controllers
         }
 
         [HttpGet]
-        public async Task<List<AccountVM>> Get()
+        public async Task<ActionResult<List<AccountVM>>> Get()
         {
-            return mapper.Map<List<Account>, List<AccountVM>>(await unitOfWork.AccountRepository.GetAsync() as List<Account>);
+            AccountBLL bll = new AccountBLL(this.unitOfWork);
+
+            return Ok(mapper.Map<List<Account>, List<AccountVM>>(await bll.GetAccounts()));
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<AccountVM> GetById(Guid id)
+        public async Task<ActionResult<AccountVM>> GetById(Guid id)
         {
-            return mapper.Map<Account, AccountVM>(await unitOfWork.AccountRepository.GetByIdAsync(id));
+            AccountBLL bll = new AccountBLL(this.unitOfWork);
+
+            return Ok(mapper.Map<Account, AccountVM>(await bll.GetAccountById(id)));
         }
 
         [HttpPost]
@@ -64,6 +68,8 @@ namespace CRM.API.Controllers
             User currentUser = await userManager.GetUserAsync(User);
             account.CreatedById = Guid.Parse(currentUser.Id);
             account.ModifiedById = Guid.Parse(currentUser.Id);
+            // Also on new contacts
+            // TODO: Check if there is a better way to do this
             if (account.Contacts.Count > 0)
             {
                 foreach (Contact contact in account.Contacts)
@@ -93,22 +99,29 @@ namespace CRM.API.Controllers
 
             // Set user details
             User currentUser = await userManager.GetUserAsync(User);
-            account.CreatedById = Guid.Parse(currentUser.Id);
             account.ModifiedById = Guid.Parse(currentUser.Id);
-            if (account.Contacts.Count > 0)
+            account.ModifiedOn = DateTime.Now;
+
+            AccountBLL bll = new AccountBLL(this.unitOfWork);
+
+            return Ok(this.mapper.Map<Account, AccountVM>(await bll.UpdateAccount(account)));
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            // Validation
+            if (id == null)
             {
-                foreach (Contact contact in account.Contacts)
-                {
-                    account.CreatedById = Guid.Parse(currentUser.Id);
-                    account.ModifiedById = Guid.Parse(currentUser.Id);
-                }
+                return BadRequest();
             }
 
             AccountBLL bll = new AccountBLL(this.unitOfWork);
 
-            accountVM = this.mapper.Map<Account, AccountVM>(await bll.CreateAccount(account));
+            await bll.DeleteAccountById(id);
 
-            return CreatedAtAction("GetById", new { id = accountVM.Id }, accountVM);
+            return Ok();
         }
     }
 }

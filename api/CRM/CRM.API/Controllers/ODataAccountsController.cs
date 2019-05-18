@@ -6,11 +6,13 @@ using AutoMapper;
 using CRM.API.DAL;
 using CRM.API.Models;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace CRM.API.Controllers
 {
+    [Authorize]
     [Route("odata/accounts")]
     [ApiController]
     public class ODataAccountsController : ODataController

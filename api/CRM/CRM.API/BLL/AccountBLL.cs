@@ -26,9 +26,19 @@ namespace CRM.API.BLL
             return await this.unitOfWork.AccountRepository.GetAsync() as List<Account>;
         }
 
+        public async Task<Account> GetAccountById(Guid id)
+        {
+            return await this.unitOfWork.AccountRepository.GetByIdAsync(id);
+        }
+
         public async Task<Account> UpdateAccount(Account account)
         {
             return await this.unitOfWork.AccountRepository.UpdateAsync(account);
+        }
+
+        public async Task DeleteAccountById(Guid id)
+        {
+            await this.unitOfWork.AccountRepository.DeleteSoftAsync(id);
         }
     }
 }

@@ -113,6 +113,9 @@ namespace CRM.API
             // - Sending emails
             services.AddTransient<IEmailSender, EmailSender>();
 
+            // Use HttpContext from custom components
+            services.AddHttpContextAccessor();
+
             // MVC
             services.AddMvc(options => {
                 // OData
