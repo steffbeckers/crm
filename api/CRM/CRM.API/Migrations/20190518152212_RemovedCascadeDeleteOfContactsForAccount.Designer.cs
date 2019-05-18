@@ -4,14 +4,16 @@ using CRM.API.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CRM.API.Migrations
 {
     [DbContext(typeof(CRMContext))]
-    partial class CRMContextModelSnapshot : ModelSnapshot
+    [Migration("20190518152212_RemovedCascadeDeleteOfContactsForAccount")]
+    partial class RemovedCascadeDeleteOfContactsForAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,7 +130,7 @@ namespace CRM.API.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("CRM.API.Models.Contact", b =>
@@ -136,7 +138,7 @@ namespace CRM.API.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("AccountId");
+                    b.Property<Guid>("AccountId");
 
                     b.Property<Guid>("CreatedById");
 
@@ -173,7 +175,7 @@ namespace CRM.API.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Contact");
                 });
 
             modelBuilder.Entity("CRM.API.Models.Country", b =>
@@ -187,7 +189,7 @@ namespace CRM.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Country");
                 });
 
             modelBuilder.Entity("CRM.API.Models.RelationType", b =>
@@ -205,7 +207,7 @@ namespace CRM.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RelationTypes");
+                    b.ToTable("RelationType");
 
                     b.HasData(
                         new
@@ -256,8 +258,7 @@ namespace CRM.API.Migrations
                 {
                     b.HasOne("CRM.API.Models.Account", "Account")
                         .WithMany("Contacts")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("AccountId");
                 });
 #pragma warning restore 612, 618
         }

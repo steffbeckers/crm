@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CRM.API.Models
 {
+    [Table("Addresses")]
     public class Address
     {
         [Key]

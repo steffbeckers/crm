@@ -57,12 +57,12 @@ namespace CRM.API.DAL
                 .WithOne()
                 .HasForeignKey<Account>(a => a.ParentAccountId);
 
-            // Account Contacts Account lookup
+            // Account Contacts relation
             mb.Entity<Account>()
                 .HasMany(a => a.Contacts)
                 .WithOne(c => c.Account)
                 .HasForeignKey(c => c.AccountId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             // Seeding database
 

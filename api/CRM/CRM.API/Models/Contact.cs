@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRM.API.Models
 {
+    [Table("Contacts")]
     public class Contact
     {
         [Key]
@@ -34,7 +35,7 @@ namespace CRM.API.Models
         public Gender? Gender { get; set; }
 
         // Related entities
-        public Guid AccountId { get; set; }
+        public Guid? AccountId { get; set; }
         public Account Account { get; set; }
 
         // Generic

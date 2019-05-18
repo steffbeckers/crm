@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRM.API.Models
 {
+    [Table("Accounts")]
     public class Account
     {
         [Key]
