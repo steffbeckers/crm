@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRM.API.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,7 +17,7 @@ namespace CRM.API.ViewModels
         public string Email { get; set; }
         public string Telephone { get; set; }
         public string MobilePhone { get; set; }
-        public char Gender { get; set; }
+        public Gender? Gender { get; set; }
         public AccountVM Account { get; set; }
     }
 }

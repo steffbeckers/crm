@@ -13,6 +13,6 @@ namespace CRM.API.Models
         public string LastName { get; set; }
 
         [NotMapped]
-        public string[] Roles { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

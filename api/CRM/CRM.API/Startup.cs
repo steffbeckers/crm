@@ -85,7 +85,9 @@ namespace CRM.API
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidateLifetime = true
                 };
             });
 
@@ -121,7 +123,7 @@ namespace CRM.API
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 // JSON settings
                 .AddJsonOptions(options => {
-                    //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     //options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
 
@@ -208,18 +210,32 @@ namespace CRM.API
                 createAdminRole.Wait();
             }
 
-            Task<IdentityRole> userRole = roleManager.FindByNameAsync("User");
-            userRole.Wait();
-            if (userRole.Result == null)
+            Task<IdentityRole> salesRole = roleManager.FindByNameAsync("Sales");
+            salesRole.Wait();
+            if (salesRole.Result == null)
             {
-                IdentityRole newUserRole = new IdentityRole()
+                IdentityRole newSalesRole = new IdentityRole()
                 {
-                    Name = "User",
-                    NormalizedName = "USER"
+                    Name = "Sales",
+                    NormalizedName = "SALES"
                 };
 
-                var createUserRole = roleManager.CreateAsync(newUserRole);
-                createUserRole.Wait();
+                var createSalesRole = roleManager.CreateAsync(newSalesRole);
+                createSalesRole.Wait();
+            }
+
+            Task<IdentityRole> hrRole = roleManager.FindByNameAsync("HR");
+            hrRole.Wait();
+            if (hrRole.Result == null)
+            {
+                IdentityRole newHrRole = new IdentityRole()
+                {
+                    Name = "HR",
+                    NormalizedName = "HR"
+                };
+
+                var createHrRole = roleManager.CreateAsync(newHrRole);
+                createHrRole.Wait();
             }
 
             // Check if the Admin user exists and create it if not

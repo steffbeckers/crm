@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190518100010_GenderOnContactNullable.cs" />
+    <Compile Remove="Migrations\20190518100010_GenderOnContactNullable.Designer.cs" />
     <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.cs" />
     <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.Designer.cs" />
     <Compile Remove="Migrations\Identity\20190516205944_Test.cs" />

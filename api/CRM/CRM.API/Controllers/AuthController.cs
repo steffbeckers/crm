@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using CRM.API.DAL;
+﻿using AutoMapper;
 using CRM.API.Models;
 using CRM.API.Services;
 using CRM.API.ViewModels.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CRM.API.Controllers
 {
@@ -25,7 +23,6 @@ namespace CRM.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IdentityContext identityContext;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IEmailSender emailSender;
@@ -41,7 +38,6 @@ namespace CRM.API.Controllers
             IConfiguration configuration,
             IMapper mapper)
         {
-            this.identityContext = new IdentityContext();
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
@@ -64,25 +60,32 @@ namespace CRM.API.Controllers
                     logger.LogInformation("User logged in.");
 
                     // Retrieve user
-                    User user = await userManager.FindByNameAsync(model.Username);
+                    User currentUser = await userManager.FindByNameAsync(model.Username);
+
+                    // Retrieve roles of user
+                    currentUser.Roles = (List<string>)await userManager.GetRolesAsync(currentUser);
 
                     // Set claims of user
                     List<Claim> claims = new List<Claim>() {
-                        new Claim(ClaimTypes.NameIdentifier, user.Id)
+                        new Claim(JwtRegisteredClaimNames.NameId, currentUser.Id),
+                        new Claim(JwtRegisteredClaimNames.UniqueName, currentUser.UserName),
+                        new Claim(JwtRegisteredClaimNames.Email, currentUser.Email),
+                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString(CultureInfo.CurrentCulture))
                     };
-
-                    // Retrieve roles of user
-                    var userRoleIds = this.identityContext.UserRoles.Where(ur => ur.UserId == user.Id).Select(ur => ur.RoleId).ToList();
-                    List<IdentityRole> userRoles = new List<IdentityRole>();
-                    foreach (string roleId in userRoleIds)
+                    if (!string.IsNullOrEmpty(currentUser.FirstName))
                     {
-                        IdentityRole role = await this.identityContext.Roles.FindAsync(roleId);
-                        userRoles.Add(role);
-
-                        // Add role as claim
-                        claims.Add(new Claim(ClaimTypes.Role, role.Name));
+                        claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, currentUser.FirstName));
                     }
-                    user.Roles = userRoles.Select(ur => ur.NormalizedName).ToArray();
+                    if (!string.IsNullOrEmpty(currentUser.LastName))
+                    {
+                        claims.Add(new Claim(JwtRegisteredClaimNames.FamilyName, currentUser.LastName));
+                    }
+
+                    // Add roles as claims
+                    foreach (var role in currentUser.Roles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                    }
 
                     // Authentication successful => Generate jwt token
                     var tokenHandler = new JwtSecurityTokenHandler();
@@ -90,14 +93,14 @@ namespace CRM.API.Controllers
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
                         Subject = new ClaimsIdentity(claims),
-                        Expires = DateTime.UtcNow.AddDays(7),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                        Expires = DateTime.UtcNow.AddMinutes(double.Parse(configuration.GetSection("Authentication").GetValue<string>("TokenExpiresInMinutes"))),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)    
                     };
 
                     // Return user with token
                     return Ok(new AuthenticatedVM()
                     {
-                        User = mapper.Map<User, UserVM>(user),
+                        User = mapper.Map<User, UserVM>(currentUser),
                         Token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor))
                     });
                 }
@@ -120,6 +123,18 @@ namespace CRM.API.Controllers
 
             // If we got this far, something failed
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("me")]
+        public async Task<IActionResult> Me()
+        {
+            User currentUser = await userManager.GetUserAsync(User);
+
+            // Retrieve roles of user
+            currentUser.Roles = (List<string>)await userManager.GetRolesAsync(currentUser);
+
+            return Ok(mapper.Map<User, UserVM>(currentUser));
         }
 
         [HttpGet]
@@ -148,6 +163,8 @@ namespace CRM.API.Controllers
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
+                    // When self registering and login at the same time
+                    // Need to add JWT logic if adding
                     //await signInManager.SignInAsync(user, isPersistent: false);
 
                     return Ok();

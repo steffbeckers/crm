@@ -31,7 +31,7 @@ namespace CRM.API.Models
         [MaxLength(50)]
         public string MobilePhone { get; set; }
 
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         // Related entities
         public Guid AccountId { get; set; }

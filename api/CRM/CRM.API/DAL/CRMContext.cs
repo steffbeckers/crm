@@ -59,13 +59,13 @@ namespace CRM.API.DAL
             mb.Entity<RelationType>().HasData(
                 new RelationType()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("0E8BA1B4-0382-4A39-BB0D-2F654A1F1ABC"),
                     Name = "customer",
                     DisplayName = "Customer",
                 },
                 new RelationType()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("5E88157A-3EC0-4C04-9B86-041A07446F12"),
                     Name = "partner",
                     DisplayName = "Partner",
                 }
