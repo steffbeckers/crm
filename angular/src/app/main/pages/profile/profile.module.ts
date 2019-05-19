@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatDividerModule, MatIconModule, MatTabsModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatDividerModule,
+  MatIconModule,
+  MatTabsModule,
+} from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
@@ -10,38 +15,33 @@ import { ProfileTimelineComponent } from 'app/main/pages/profile/tabs/timeline/t
 import { ProfileAboutComponent } from 'app/main/pages/profile/tabs/about/about.component';
 import { ProfilePhotosVideosComponent } from 'app/main/pages/profile/tabs/photos-videos/photos-videos.component';
 
-
 const routes = [
-    {
-        path     : 'profile',
-        component: ProfileComponent,
-        resolve  : {
-            profile: ProfileService
-        }
-    }
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    resolve: {
+      profile: ProfileService,
+    },
+  },
 ];
 
 @NgModule({
-    declarations: [
-        ProfileComponent,
-        ProfileTimelineComponent,
-        ProfileAboutComponent,
-        ProfilePhotosVideosComponent
-    ],
-    imports     : [
-        RouterModule.forChild(routes),
+  declarations: [
+    ProfileComponent,
+    ProfileTimelineComponent,
+    ProfileAboutComponent,
+    ProfilePhotosVideosComponent,
+  ],
+  imports: [
+    RouterModule.forChild(routes),
 
-        MatButtonModule,
-        MatDividerModule,
-        MatIconModule,
-        MatTabsModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatTabsModule,
 
-        FuseSharedModule
-    ],
-    providers   : [
-        ProfileService
-    ]
+    FuseSharedModule,
+  ],
+  providers: [ProfileService],
 })
-export class ProfileModule
-{
-}
+export class ProfileModule {}

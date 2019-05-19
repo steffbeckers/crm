@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {MatBottomSheet, MatBottomSheetRef} from '@angular/material';
+import { Component } from '@angular/core';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material';
 
 /**
  * @title Bottom Sheet Overview
@@ -22,7 +22,9 @@ export class BottomSheetOverviewExample {
   templateUrl: 'bottom-sheet-overview-example-sheet.html',
 })
 export class BottomSheetOverviewExampleSheet {
-  constructor(private bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>) {}
+  constructor(
+    private bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>
+  ) {}
 
   openLink(event: MouseEvent): void {
     this.bottomSheetRef.dismiss();

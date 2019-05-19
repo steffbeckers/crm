@@ -1,6 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MatButtonModule, MatIconModule, MatRippleModule, MatSlideToggleModule, MatTableModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatRippleModule,
+  MatSlideToggleModule,
+  MatTableModule,
+} from '@angular/material';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseSidebarModule } from '@fuse/components';
@@ -12,39 +18,35 @@ import { FileManagerFileListComponent } from 'app/main/apps/file-manager/file-li
 import { FileManagerMainSidebarComponent } from 'app/main/apps/file-manager/sidebars/main/main.component';
 
 const routes: Routes = [
-    {
-        path     : '**',
-        component: FileManagerComponent,
-        children : [],
-        resolve  : {
-            files: FileManagerService
-        }
-    }
+  {
+    path: '**',
+    component: FileManagerComponent,
+    children: [],
+    resolve: {
+      files: FileManagerService,
+    },
+  },
 ];
 
 @NgModule({
-    declarations: [
-        FileManagerComponent,
-        FileManagerFileListComponent,
-        FileManagerMainSidebarComponent,
-        FileManagerDetailsSidebarComponent
-    ],
-    imports     : [
-        RouterModule.forChild(routes),
+  declarations: [
+    FileManagerComponent,
+    FileManagerFileListComponent,
+    FileManagerMainSidebarComponent,
+    FileManagerDetailsSidebarComponent,
+  ],
+  imports: [
+    RouterModule.forChild(routes),
 
-        MatButtonModule,
-        MatIconModule,
-        MatRippleModule,
-        MatSlideToggleModule,
-        MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatRippleModule,
+    MatSlideToggleModule,
+    MatTableModule,
 
-        FuseSharedModule,
-        FuseSidebarModule
-    ],
-    providers   : [
-        FileManagerService
-    ]
+    FuseSharedModule,
+    FuseSidebarModule,
+  ],
+  providers: [FileManagerService],
 })
-export class FileManagerModule
-{
-}
+export class FileManagerModule {}

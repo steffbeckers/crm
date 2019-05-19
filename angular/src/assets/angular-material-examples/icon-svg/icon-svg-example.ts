@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
-import {MatIconRegistry} from '@angular/material';
+import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material';
 
 /**
  * @title SVG icons
@@ -13,7 +13,10 @@ import {MatIconRegistry} from '@angular/material';
 export class IconSvgExample {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
-        'thumbs-up',
-        sanitizer.bypassSecurityTrustResourceUrl('assets/img/examples/thumbup-icon.svg'));
+      'thumbs-up',
+      sanitizer.bypassSecurityTrustResourceUrl(
+        'assets/img/examples/thumbup-icon.svg'
+      )
+    );
   }
 }

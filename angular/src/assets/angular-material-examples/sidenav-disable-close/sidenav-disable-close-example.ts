@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {MatSidenav} from '@angular/material/sidenav';
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 
 /** @title Sidenav with custom escape and backdrop click behavior */
 @Component({
@@ -17,5 +17,7 @@ export class SidenavDisableCloseExample {
     this.sidenav.close();
   }
 
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some((h) =>
+    h.test(window.location.host)
+  );
 }

@@ -15,61 +15,59 @@ import { DocsWorkingWithFuseThemeLayoutsComponent } from 'app/main/documentation
 import { DocsWorkingWithFusePageLayoutsComponent } from 'app/main/documentation/working-with-fuse/page-layouts/page-layouts.component';
 
 const routes = [
-    {
-        path     : 'server',
-        component: DocsWorkingWithFuseServerComponent
-    },
-    {
-        path     : 'production',
-        component: DocsWorkingWithFuseProductionComponent
-    },
-    {
-        path     : 'directory-structure',
-        component: DocsWorkingWithFuseDirectoryStructureComponent
-    },
-    {
-        path     : 'updating-fuse',
-        component: DocsWorkingWithFuseUpdatingFuseComponent
-    },
-    {
-        path     : 'multi-language',
-        component: DocsWorkingWithFuseMultiLanguageComponent
-    },
-    {
-        path     : 'material-theming',
-        component: DocsWorkingWithFuseMaterialThemingComponent
-    },
-    {
-        path     : 'theme-layouts',
-        component: DocsWorkingWithFuseThemeLayoutsComponent
-    },
-    {
-        path     : 'page-layouts',
-        component: DocsWorkingWithFusePageLayoutsComponent
-    }
+  {
+    path: 'server',
+    component: DocsWorkingWithFuseServerComponent,
+  },
+  {
+    path: 'production',
+    component: DocsWorkingWithFuseProductionComponent,
+  },
+  {
+    path: 'directory-structure',
+    component: DocsWorkingWithFuseDirectoryStructureComponent,
+  },
+  {
+    path: 'updating-fuse',
+    component: DocsWorkingWithFuseUpdatingFuseComponent,
+  },
+  {
+    path: 'multi-language',
+    component: DocsWorkingWithFuseMultiLanguageComponent,
+  },
+  {
+    path: 'material-theming',
+    component: DocsWorkingWithFuseMaterialThemingComponent,
+  },
+  {
+    path: 'theme-layouts',
+    component: DocsWorkingWithFuseThemeLayoutsComponent,
+  },
+  {
+    path: 'page-layouts',
+    component: DocsWorkingWithFusePageLayoutsComponent,
+  },
 ];
 
 @NgModule({
-    declarations: [
-        DocsWorkingWithFuseServerComponent,
-        DocsWorkingWithFuseProductionComponent,
-        DocsWorkingWithFuseDirectoryStructureComponent,
-        DocsWorkingWithFuseUpdatingFuseComponent,
-        DocsWorkingWithFuseMaterialThemingComponent,
-        DocsWorkingWithFuseMultiLanguageComponent,
-        DocsWorkingWithFuseThemeLayoutsComponent,
-        DocsWorkingWithFusePageLayoutsComponent
-    ],
-    imports     : [
-        RouterModule.forChild(routes),
+  declarations: [
+    DocsWorkingWithFuseServerComponent,
+    DocsWorkingWithFuseProductionComponent,
+    DocsWorkingWithFuseDirectoryStructureComponent,
+    DocsWorkingWithFuseUpdatingFuseComponent,
+    DocsWorkingWithFuseMaterialThemingComponent,
+    DocsWorkingWithFuseMultiLanguageComponent,
+    DocsWorkingWithFuseThemeLayoutsComponent,
+    DocsWorkingWithFusePageLayoutsComponent,
+  ],
+  imports: [
+    RouterModule.forChild(routes),
 
-        MatButtonModule,
-        MatIconModule,
+    MatButtonModule,
+    MatIconModule,
 
-        FuseSharedModule,
-        FuseHighlightModule
-    ]
+    FuseSharedModule,
+    FuseHighlightModule,
+  ],
 })
-export class WorkingWithFuseModule
-{
-}
+export class WorkingWithFuseModule {}

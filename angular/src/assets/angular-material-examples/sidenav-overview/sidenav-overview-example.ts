@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 /** @title Basic sidenav */
 @Component({
@@ -7,5 +7,7 @@ import {Component} from '@angular/core';
   styleUrls: ['sidenav-overview-example.css'],
 })
 export class SidenavOverviewExample {
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some((h) =>
+    h.test(window.location.host)
+  );
 }

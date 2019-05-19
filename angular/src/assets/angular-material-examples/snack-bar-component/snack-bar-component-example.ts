@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 
 /**
  * @title Snack-bar with a custom component
@@ -18,14 +18,15 @@ export class SnackBarComponentExample {
   }
 }
 
-
 @Component({
   selector: 'snack-bar-component-example-snack',
   templateUrl: 'snack-bar-component-example-snack.html',
-  styles: [`
-    .example-pizza-party {
-      color: hotpink;
-    }
-  `],
+  styles: [
+    `
+      .example-pizza-party {
+        color: hotpink;
+      }
+    `,
+  ],
 })
 export class PizzaPartyComponent {}

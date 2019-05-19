@@ -1,4 +1,4 @@
-import {FocusMonitor, FocusOrigin} from '@angular/cdk/a11y';
+import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
 import {
   ChangeDetectorRef,
   Component,
@@ -6,14 +6,14 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 /** @title Monitoring focus with FocusMonitor */
 @Component({
   selector: 'focus-monitor-overview-example',
   templateUrl: 'focus-monitor-overview-example.html',
-  styleUrls: ['focus-monitor-overview-example.css']
+  styleUrls: ['focus-monitor-overview-example.css'],
 })
 export class FocusMonitorOverviewExample implements OnDestroy, OnInit {
   @ViewChild('element') element: ElementRef<HTMLElement>;
@@ -22,21 +22,25 @@ export class FocusMonitorOverviewExample implements OnDestroy, OnInit {
   elementOrigin = this.formatOrigin(null);
   subtreeOrigin = this.formatOrigin(null);
 
-  constructor(private focusMonitor: FocusMonitor,
-              private cdr: ChangeDetectorRef,
-              private ngZone: NgZone) {}
+  constructor(
+    private focusMonitor: FocusMonitor,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {}
 
   ngOnInit() {
-    this.focusMonitor.monitor(this.element)
-        .subscribe(origin => this.ngZone.run(() => {
-          this.elementOrigin = this.formatOrigin(origin);
-          this.cdr.markForCheck();
-        }));
-    this.focusMonitor.monitor(this.subtree, true)
-        .subscribe(origin => this.ngZone.run(() => {
-          this.subtreeOrigin = this.formatOrigin(origin);
-          this.cdr.markForCheck();
-        }));
+    this.focusMonitor.monitor(this.element).subscribe((origin) =>
+      this.ngZone.run(() => {
+        this.elementOrigin = this.formatOrigin(origin);
+        this.cdr.markForCheck();
+      })
+    );
+    this.focusMonitor.monitor(this.subtree, true).subscribe((origin) =>
+      this.ngZone.run(() => {
+        this.subtreeOrigin = this.formatOrigin(origin);
+        this.cdr.markForCheck();
+      })
+    );
   }
 
   ngOnDestroy() {

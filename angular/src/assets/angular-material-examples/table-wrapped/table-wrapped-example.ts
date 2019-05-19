@@ -5,7 +5,7 @@ import {
   Input,
   OnInit,
   QueryList,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import {
   MatColumnDef,
@@ -13,9 +13,9 @@ import {
   MatRowDef,
   MatSort,
   MatTable,
-  MatTableDataSource
+  MatTableDataSource,
 } from '@angular/material';
-import {DataSource} from '@angular/cdk/collections';
+import { DataSource } from '@angular/cdk/collections';
 
 export interface PeriodicElement {
   name: string;
@@ -25,16 +25,16 @@ export interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
 ];
 
 /**
@@ -63,14 +63,16 @@ export class TableWrappedExample implements OnInit {
 @Component({
   selector: 'wrapper-table',
   templateUrl: 'wrapper-table.html',
-  styles: [`
-    table {
-      width: 100%;
-    }
-  `]
+  styles: [
+    `
+      table {
+        width: 100%;
+      }
+    `,
+  ],
 })
 export class WrapperTable<T> implements AfterContentInit {
-  @ContentChildren(MatHeaderRowDef) headerRowDefs:  QueryList<MatHeaderRowDef>;
+  @ContentChildren(MatHeaderRowDef) headerRowDefs: QueryList<MatHeaderRowDef>;
   @ContentChildren(MatRowDef) rowDefs: QueryList<MatRowDef<T>>;
   @ContentChildren(MatColumnDef) columnDefs: QueryList<MatColumnDef>;
 
@@ -81,8 +83,10 @@ export class WrapperTable<T> implements AfterContentInit {
   @Input() dataSource: DataSource<T>;
 
   ngAfterContentInit() {
-    this.columnDefs.forEach(columnDef => this.table.addColumnDef(columnDef));
-    this.rowDefs.forEach(rowDef => this.table.addRowDef(rowDef));
-    this.headerRowDefs.forEach(headerRowDef => this.table.addHeaderRowDef(headerRowDef));
+    this.columnDefs.forEach((columnDef) => this.table.addColumnDef(columnDef));
+    this.rowDefs.forEach((rowDef) => this.table.addRowDef(rowDef));
+    this.headerRowDefs.forEach((headerRowDef) =>
+      this.table.addHeaderRowDef(headerRowDef)
+    );
   }
 }

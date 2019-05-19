@@ -15,7 +15,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json",
-    "prettier": "prettier --write \"**/*.ts\"; prettier --write \"**/*.html\"; prettier --write \"**/*.scss\""
+    "prettier-ts": "prettier --write \"**/*.ts\"",
+    "prettier-html": "prettier --write \"**/*.html\"",
+    "prettier-scss": "prettier --write \"**/*.scss\""
   },
   "private": true,
   "dependencies": {

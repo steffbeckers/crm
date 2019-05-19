@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 /** @title Sidenav with configurable mode */
 @Component({
@@ -9,5 +9,7 @@ import {FormControl} from '@angular/forms';
 })
 export class SidenavModeExample {
   mode = new FormControl('over');
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some((h) =>
+    h.test(window.location.host)
+  );
 }

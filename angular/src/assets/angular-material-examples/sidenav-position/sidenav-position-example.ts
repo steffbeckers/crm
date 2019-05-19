@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 /** @title Implicit main content with two sidenavs */
 @Component({
@@ -7,5 +7,7 @@ import {Component} from '@angular/core';
   styleUrls: ['sidenav-position-example.css'],
 })
 export class SidenavPositionExample {
-  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h => h.test(window.location.host));
+  shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some((h) =>
+    h.test(window.location.host)
+  );
 }

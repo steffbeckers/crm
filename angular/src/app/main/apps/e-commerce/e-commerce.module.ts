@@ -1,9 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {
-    MatButtonModule, MatChipsModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatPaginatorModule, MatRippleModule, MatSelectModule, MatSnackBarModule,
-    MatSortModule,
-    MatTableModule, MatTabsModule
+  MatButtonModule,
+  MatChipsModule,
+  MatExpansionModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatPaginatorModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatTableModule,
+  MatTabsModule,
 } from '@angular/material';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AgmCoreModule } from '@agm/core';
@@ -21,82 +31,80 @@ import { EcommerceOrderComponent } from 'app/main/apps/e-commerce/order/order.co
 import { EcommerceOrderService } from 'app/main/apps/e-commerce/order/order.service';
 
 const routes: Routes = [
-    {
-        path     : 'products',
-        component: EcommerceProductsComponent,
-        resolve  : {
-            data: EcommerceProductsService
-        }
+  {
+    path: 'products',
+    component: EcommerceProductsComponent,
+    resolve: {
+      data: EcommerceProductsService,
     },
-    {
-        path     : 'products/:id',
-        component: EcommerceProductComponent,
-        resolve  : {
-            data: EcommerceProductService
-        }
+  },
+  {
+    path: 'products/:id',
+    component: EcommerceProductComponent,
+    resolve: {
+      data: EcommerceProductService,
     },
-    {
-        path     : 'products/:id/:handle',
-        component: EcommerceProductComponent,
-        resolve  : {
-            data: EcommerceProductService
-        }
+  },
+  {
+    path: 'products/:id/:handle',
+    component: EcommerceProductComponent,
+    resolve: {
+      data: EcommerceProductService,
     },
-    {
-        path     : 'orders',
-        component: EcommerceOrdersComponent,
-        resolve  : {
-            data: EcommerceOrdersService
-        }
+  },
+  {
+    path: 'orders',
+    component: EcommerceOrdersComponent,
+    resolve: {
+      data: EcommerceOrdersService,
     },
-    {
-        path     : 'orders/:id',
-        component: EcommerceOrderComponent,
-        resolve  : {
-            data: EcommerceOrderService
-        }
-    }
+  },
+  {
+    path: 'orders/:id',
+    component: EcommerceOrderComponent,
+    resolve: {
+      data: EcommerceOrderService,
+    },
+  },
 ];
 
 @NgModule({
-    declarations: [
-        EcommerceProductsComponent,
-        EcommerceProductComponent,
-        EcommerceOrdersComponent,
-        EcommerceOrderComponent
-    ],
-    imports     : [
-        RouterModule.forChild(routes),
+  declarations: [
+    EcommerceProductsComponent,
+    EcommerceProductComponent,
+    EcommerceOrdersComponent,
+    EcommerceOrderComponent,
+  ],
+  imports: [
+    RouterModule.forChild(routes),
 
-        MatButtonModule,
-        MatChipsModule,
-        MatExpansionModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatPaginatorModule,
-        MatRippleModule,
-        MatSelectModule,
-        MatSortModule,
-        MatSnackBarModule,
-        MatTableModule,
-        MatTabsModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatRippleModule,
+    MatSelectModule,
+    MatSortModule,
+    MatSnackBarModule,
+    MatTableModule,
+    MatTabsModule,
 
-        NgxChartsModule,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyD81ecsCj4yYpcXSLFcYU97PvRsE_X8Bx8'
-        }),
+    NgxChartsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyD81ecsCj4yYpcXSLFcYU97PvRsE_X8Bx8',
+    }),
 
-        FuseSharedModule,
-        FuseWidgetModule
-    ],
-    providers   : [
-        EcommerceProductsService,
-        EcommerceProductService,
-        EcommerceOrdersService,
-        EcommerceOrderService
-    ]
+    FuseSharedModule,
+    FuseWidgetModule,
+  ],
+  providers: [
+    EcommerceProductsService,
+    EcommerceProductService,
+    EcommerceOrdersService,
+    EcommerceOrderService,
+  ],
 })
-export class EcommerceModule
-{
-}
+export class EcommerceModule {}

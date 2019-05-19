@@ -1,7 +1,10 @@
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, Injectable} from '@angular/core';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-import {BehaviorSubject, Observable, of as observableOf} from 'rxjs';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Component, Injectable } from '@angular/core';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener,
+} from '@angular/material/tree';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
 
 /**
  * File node data with nested structure.
@@ -16,7 +19,11 @@ export class FileNode {
 /** Flat node with expandable and level information */
 export class FileFlatNode {
   constructor(
-    public expandable: boolean, public filename: string, public level: number, public type: any) {}
+    public expandable: boolean,
+    public filename: string,
+    public level: number,
+    public type: any
+  ) {}
 }
 
 /**
@@ -26,36 +33,36 @@ const TREE_DATA = JSON.stringify({
   Applications: {
     Calendar: 'app',
     Chrome: 'app',
-    Webstorm: 'app'
+    Webstorm: 'app',
   },
   Documents: {
     angular: {
       src: {
         compiler: 'ts',
-        core: 'ts'
-      }
+        core: 'ts',
+      },
     },
     material2: {
       src: {
         button: 'ts',
         checkbox: 'ts',
-        input: 'ts'
-      }
-    }
+        input: 'ts',
+      },
+    },
   },
   Downloads: {
     October: 'pdf',
     November: 'pdf',
-    Tutorial: 'html'
+    Tutorial: 'html',
   },
   Pictures: {
     'Photo Booth Library': {
       Contents: 'dir',
-      Pictures: 'dir'
+      Pictures: 'dir',
     },
     Sun: 'png',
-    Woods: 'jpg'
-  }
+    Woods: 'jpg',
+  },
 });
 
 /**
@@ -69,7 +76,9 @@ const TREE_DATA = JSON.stringify({
 export class FileDatabase {
   dataChange = new BehaviorSubject<FileNode[]>([]);
 
-  get data(): FileNode[] { return this.dataChange.value; }
+  get data(): FileNode[] {
+    return this.dataChange.value;
+  }
 
   constructor() {
     this.initialize();
@@ -91,7 +100,7 @@ export class FileDatabase {
    * Build the file structure tree. The `value` is the Json object, or a sub-tree of a Json object.
    * The return value is the list of `FileNode`.
    */
-  buildFileTree(obj: {[key: string]: any}, level: number): FileNode[] {
+  buildFileTree(obj: { [key: string]: any }, level: number): FileNode[] {
     return Object.keys(obj).reduce<FileNode[]>((accumulator, key) => {
       const value = obj[key];
       const node = new FileNode();
@@ -117,7 +126,7 @@ export class FileDatabase {
   selector: 'tree-flat-overview-example',
   templateUrl: 'tree-flat-overview-example.html',
   styleUrls: ['tree-flat-overview-example.css'],
-  providers: [FileDatabase]
+  providers: [FileDatabase],
 })
 export class TreeFlatOverviewExample {
   treeControl: FlatTreeControl<FileFlatNode>;
@@ -125,23 +134,34 @@ export class TreeFlatOverviewExample {
   dataSource: MatTreeFlatDataSource<FileNode, FileFlatNode>;
 
   constructor(database: FileDatabase) {
-    this.treeFlattener = new MatTreeFlattener(this.transformer, this._getLevel,
-      this._isExpandable, this._getChildren);
-    this.treeControl = new FlatTreeControl<FileFlatNode>(this._getLevel, this._isExpandable);
-    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.treeFlattener = new MatTreeFlattener(
+      this.transformer,
+      this._getLevel,
+      this._isExpandable,
+      this._getChildren
+    );
+    this.treeControl = new FlatTreeControl<FileFlatNode>(
+      this._getLevel,
+      this._isExpandable
+    );
+    this.dataSource = new MatTreeFlatDataSource(
+      this.treeControl,
+      this.treeFlattener
+    );
 
-    database.dataChange.subscribe(data => this.dataSource.data = data);
+    database.dataChange.subscribe((data) => (this.dataSource.data = data));
   }
 
   transformer = (node: FileNode, level: number) => {
     return new FileFlatNode(!!node.children, node.filename, level, node.type);
-  }
+  };
 
   private _getLevel = (node: FileFlatNode) => node.level;
 
   private _isExpandable = (node: FileFlatNode) => node.expandable;
 
-  private _getChildren = (node: FileNode): Observable<FileNode[]> => observableOf(node.children);
+  private _getChildren = (node: FileNode): Observable<FileNode[]> =>
+    observableOf(node.children);
 
   hasChild = (_: number, _nodeData: FileFlatNode) => _nodeData.expandable;
 }

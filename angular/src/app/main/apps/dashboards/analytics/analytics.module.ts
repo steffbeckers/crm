@@ -1,6 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MatButtonModule, MatFormFieldModule, MatIconModule, MatMenuModule, MatSelectModule, MatTabsModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatMenuModule,
+  MatSelectModule,
+  MatTabsModule,
+} from '@angular/material';
 import { AgmCoreModule } from '@agm/core';
 import { ChartsModule } from 'ng2-charts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -12,43 +19,36 @@ import { AnalyticsDashboardComponent } from 'app/main/apps/dashboards/analytics/
 import { AnalyticsDashboardService } from 'app/main/apps/dashboards/analytics/analytics.service';
 
 const routes: Routes = [
-    {
-        path     : '**',
-        component: AnalyticsDashboardComponent,
-        resolve  : {
-            data: AnalyticsDashboardService
-        }
-    }
+  {
+    path: '**',
+    component: AnalyticsDashboardComponent,
+    resolve: {
+      data: AnalyticsDashboardService,
+    },
+  },
 ];
 
 @NgModule({
-    declarations: [
-        AnalyticsDashboardComponent
-    ],
-    imports     : [
-        RouterModule.forChild(routes),
+  declarations: [AnalyticsDashboardComponent],
+  imports: [
+    RouterModule.forChild(routes),
 
-        MatButtonModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatMenuModule,
-        MatSelectModule,
-        MatTabsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatTabsModule,
 
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyD81ecsCj4yYpcXSLFcYU97PvRsE_X8Bx8'
-        }),
-        ChartsModule,
-        NgxChartsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyD81ecsCj4yYpcXSLFcYU97PvRsE_X8Bx8',
+    }),
+    ChartsModule,
+    NgxChartsModule,
 
-        FuseSharedModule,
-        FuseWidgetModule
-    ],
-    providers   : [
-        AnalyticsDashboardService
-    ]
+    FuseSharedModule,
+    FuseWidgetModule,
+  ],
+  providers: [AnalyticsDashboardService],
 })
-export class AnalyticsDashboardModule
-{
-}
-
+export class AnalyticsDashboardModule {}

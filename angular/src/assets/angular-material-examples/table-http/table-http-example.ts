@@ -1,8 +1,8 @@
-import {HttpClient} from '@angular/common/http';
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort} from '@angular/material';
-import {merge, Observable, of as observableOf} from 'rxjs';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort } from '@angular/material';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 /**
  * @title Table retrieving data through HTTP
@@ -30,7 +30,7 @@ export class TableHttpExample implements OnInit {
     this.exampleDatabase = new ExampleHttpDao(this.http);
 
     // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
@@ -38,9 +38,12 @@ export class TableHttpExample implements OnInit {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.exampleDatabase!.getRepoIssues(
-            this.sort.active, this.sort.direction, this.paginator.pageIndex);
+            this.sort.active,
+            this.sort.direction,
+            this.paginator.pageIndex
+          );
         }),
-        map(data => {
+        map((data) => {
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
@@ -54,7 +57,8 @@ export class TableHttpExample implements OnInit {
           this.isRateLimitReached = true;
           return observableOf([]);
         })
-      ).subscribe(data => this.data = data);
+      )
+      .subscribe((data) => (this.data = data));
   }
 }
 
@@ -74,10 +78,14 @@ export interface GithubIssue {
 export class ExampleHttpDao {
   constructor(private http: HttpClient) {}
 
-  getRepoIssues(sort: string, order: string, page: number): Observable<GithubApi> {
+  getRepoIssues(
+    sort: string,
+    order: string,
+    page: number
+  ): Observable<GithubApi> {
     const href = 'https://api.github.com/search/issues';
-    const requestUrl =
-        `${href}?q=repo:angular/material2&sort=${sort}&order=${order}&page=${page + 1}`;
+    const requestUrl = `${href}?q=repo:angular/material2&sort=${sort}&order=${order}&page=${page +
+      1}`;
 
     return this.http.get<GithubApi>(requestUrl);
   }

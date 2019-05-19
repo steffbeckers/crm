@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {PageEvent} from '@angular/material';
+import { Component } from '@angular/core';
+import { PageEvent } from '@angular/material';
 
 /**
  * @title Configurable paginator
@@ -19,6 +19,8 @@ export class PaginatorConfigurableExample {
   pageEvent: PageEvent;
 
   setPageSizeOptions(setPageSizeOptionsInput: string) {
-    this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    this.pageSizeOptions = setPageSizeOptionsInput
+      .split(',')
+      .map((str) => +str);
   }
 }

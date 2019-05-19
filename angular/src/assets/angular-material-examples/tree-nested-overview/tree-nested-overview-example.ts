@@ -1,7 +1,7 @@
-import {NestedTreeControl} from '@angular/cdk/tree';
-import {Component, Injectable} from '@angular/core';
-import {MatTreeNestedDataSource} from '@angular/material/tree';
-import {BehaviorSubject} from 'rxjs';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { Component, Injectable } from '@angular/core';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Json node data with nested structure. Each node has a filename and a value or a list of children
@@ -19,36 +19,36 @@ const TREE_DATA = JSON.stringify({
   Applications: {
     Calendar: 'app',
     Chrome: 'app',
-    Webstorm: 'app'
+    Webstorm: 'app',
   },
   Documents: {
     angular: {
       src: {
         compiler: 'ts',
-        core: 'ts'
-      }
+        core: 'ts',
+      },
     },
     material2: {
       src: {
         button: 'ts',
         checkbox: 'ts',
-        input: 'ts'
-      }
-    }
+        input: 'ts',
+      },
+    },
   },
   Downloads: {
     October: 'pdf',
     November: 'pdf',
-    Tutorial: 'html'
+    Tutorial: 'html',
   },
   Pictures: {
     'Photo Booth Library': {
       Contents: 'dir',
-      Pictures: 'dir'
+      Pictures: 'dir',
     },
     Sun: 'png',
-    Woods: 'jpg'
-  }
+    Woods: 'jpg',
+  },
 });
 
 /**
@@ -62,7 +62,9 @@ const TREE_DATA = JSON.stringify({
 export class FileDatabase {
   dataChange = new BehaviorSubject<FileNode[]>([]);
 
-  get data(): FileNode[] { return this.dataChange.value; }
+  get data(): FileNode[] {
+    return this.dataChange.value;
+  }
 
   constructor() {
     this.initialize();
@@ -84,7 +86,7 @@ export class FileDatabase {
    * Build the file structure tree. The `value` is the Json object, or a sub-tree of a Json object.
    * The return value is the list of `FileNode`.
    */
-  buildFileTree(obj: {[key: string]: any}, level: number): FileNode[] {
+  buildFileTree(obj: { [key: string]: any }, level: number): FileNode[] {
     return Object.keys(obj).reduce<FileNode[]>((accumulator, key) => {
       const value = obj[key];
       const node = new FileNode();
@@ -110,7 +112,7 @@ export class FileDatabase {
   selector: 'tree-nested-overview-example',
   templateUrl: 'tree-nested-overview-example.html',
   styleUrls: ['tree-nested-overview-example.css'],
-  providers: [FileDatabase]
+  providers: [FileDatabase],
 })
 export class TreeNestedOverviewExample {
   nestedTreeControl: NestedTreeControl<FileNode>;
@@ -120,7 +122,9 @@ export class TreeNestedOverviewExample {
     this.nestedTreeControl = new NestedTreeControl<FileNode>(this._getChildren);
     this.nestedDataSource = new MatTreeNestedDataSource();
 
-    database.dataChange.subscribe(data => this.nestedDataSource.data = data);
+    database.dataChange.subscribe(
+      (data) => (this.nestedDataSource.data = data)
+    );
   }
 
   hasNestedChild = (_: number, nodeData: FileNode) => !nodeData.type;

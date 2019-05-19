@@ -1,9 +1,9 @@
-import {FocusMonitor} from '@angular/cdk/a11y';
-import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {Component, ElementRef, Input, OnDestroy} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatFormFieldControl} from '@angular/material';
-import {Subject} from 'rxjs';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Component, ElementRef, Input, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatFormFieldControl } from '@angular/material';
+import { Subject } from 'rxjs';
 
 /** @title Form field with custom telephone number input control. */
 @Component({
@@ -15,7 +15,11 @@ export class FormFieldCustomControlExample {}
 
 /** Data structure for holding telephone number. */
 export class MyTel {
-  constructor(public area: string, public exchange: string, public subscriber: string) {}
+  constructor(
+    public area: string,
+    public exchange: string,
+    public subscriber: string
+  ) {}
 }
 
 /** Custom `MatFormFieldControl` for telephone number input. */
@@ -23,12 +27,12 @@ export class MyTel {
   selector: 'example-tel-input',
   templateUrl: 'example-tel-input-example.html',
   styleUrls: ['example-tel-input-example.css'],
-  providers: [{provide: MatFormFieldControl, useExisting: MyTelInput}],
+  providers: [{ provide: MatFormFieldControl, useExisting: MyTelInput }],
   host: {
     '[class.example-floating]': 'shouldLabelFloat',
     '[id]': 'id',
     '[attr.aria-describedby]': 'describedBy',
-  }
+  },
 })
 export class MyTelInput implements MatFormFieldControl<MyTel>, OnDestroy {
   static nextId = 0;
@@ -43,15 +47,21 @@ export class MyTelInput implements MatFormFieldControl<MyTel>, OnDestroy {
   describedBy = '';
 
   get empty() {
-    const {value: {area, exchange, subscriber}} = this.parts;
+    const {
+      value: { area, exchange, subscriber },
+    } = this.parts;
 
     return !area && !exchange && !subscriber;
   }
 
-  get shouldLabelFloat() { return this.focused || !this.empty; }
+  get shouldLabelFloat() {
+    return this.focused || !this.empty;
+  }
 
   @Input()
-  get placeholder(): string { return this._placeholder; }
+  get placeholder(): string {
+    return this._placeholder;
+  }
   set placeholder(value: string) {
     this._placeholder = value;
     this.stateChanges.next();
@@ -59,7 +69,9 @@ export class MyTelInput implements MatFormFieldControl<MyTel>, OnDestroy {
   private _placeholder: string;
 
   @Input()
-  get required(): boolean { return this._required; }
+  get required(): boolean {
+    return this._required;
+  }
   set required(value: boolean) {
     this._required = coerceBooleanProperty(value);
     this.stateChanges.next();
@@ -67,7 +79,9 @@ export class MyTelInput implements MatFormFieldControl<MyTel>, OnDestroy {
   private _required = false;
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
+  get disabled(): boolean {
+    return this._disabled;
+  }
   set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
     this.stateChanges.next();
@@ -76,26 +90,32 @@ export class MyTelInput implements MatFormFieldControl<MyTel>, OnDestroy {
 
   @Input()
   get value(): MyTel | null {
-    const {value: {area, exchange, subscriber}} = this.parts;
+    const {
+      value: { area, exchange, subscriber },
+    } = this.parts;
     if (area.length === 3 && exchange.length === 3 && subscriber.length === 4) {
       return new MyTel(area, exchange, subscriber);
     }
     return null;
   }
   set value(tel: MyTel | null) {
-    const {area, exchange, subscriber} = tel || new MyTel('', '', '');
-    this.parts.setValue({area, exchange, subscriber});
+    const { area, exchange, subscriber } = tel || new MyTel('', '', '');
+    this.parts.setValue({ area, exchange, subscriber });
     this.stateChanges.next();
   }
 
-  constructor(fb: FormBuilder, private fm: FocusMonitor, private elRef: ElementRef<HTMLElement>) {
+  constructor(
+    fb: FormBuilder,
+    private fm: FocusMonitor,
+    private elRef: ElementRef<HTMLElement>
+  ) {
     this.parts = fb.group({
       area: '',
       exchange: '',
       subscriber: '',
     });
 
-    fm.monitor(elRef, true).subscribe(origin => {
+    fm.monitor(elRef, true).subscribe((origin) => {
       this.focused = !!origin;
       this.stateChanges.next();
     });
