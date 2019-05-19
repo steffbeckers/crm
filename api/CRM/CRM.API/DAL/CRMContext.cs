@@ -89,15 +89,15 @@ namespace CRM.API.DAL
             );
 
             // Countries
-            List<Country> countries = JsonConvert.DeserializeObject<List<Country>>(File.ReadAllText(@"C:\dev\steffbeckers\CRM\api\CRM\CRM.API\Data\Countries.json"));
-            for (int i = 0; i < countries.Count; i++)
-            {
-                if (countries[i].Id == Guid.Empty)
-                {
-                    countries[i].Id = Guid.NewGuid();
-                }
-            }
-            mb.Entity<Country>().HasData(countries);
+            //List<Country> countries = JsonConvert.DeserializeObject<List<Country>>(File.ReadAllText(Directory.GetCurrentDirectory() + "/Data/Countries.json"));
+            //for (int i = 0; i < countries.Count; i++)
+            //{
+            //    if (countries[i].Id == Guid.Empty)
+            //    {
+            //        countries[i].Id = Guid.NewGuid();
+            //    }
+            //}
+            //mb.Entity<Country>().HasData(countries);
         }
 
         // Overrides for soft delete
