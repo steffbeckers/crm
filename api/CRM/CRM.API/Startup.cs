@@ -173,7 +173,7 @@ namespace CRM.API
             app.UseMvc(options =>
             {
                 // OData
-                options.MapODataServiceRoute("odata", "odata", GetEdmModel(app.ApplicationServices));
+                options.MapODataServiceRoute("odata", "api/odata", GetEdmModel(app.ApplicationServices));
                 options.Count().Filter().OrderBy().Expand().Select().MaxTop(200);
                 options.EnableDependencyInjection();
             });
@@ -186,8 +186,8 @@ namespace CRM.API
         {
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder(serviceProvider);
 
-            builder.EntitySet<Account>("accounts");
-            builder.EntitySet<Contact>("contacts");
+            builder.EntitySet<Account>("Account");
+            builder.EntitySet<Contact>("Contact");
 
             return builder.GetEdmModel();
         }

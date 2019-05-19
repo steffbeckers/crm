@@ -6,38 +6,35 @@ using AutoMapper;
 using CRM.API.DAL;
 using CRM.API.Models;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Query;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace CRM.API.Controllers
+namespace CRM.API.Controllers.OData
 {
     [Authorize]
-    [Route("odata/accounts")]
-    [ApiController]
-    public class ODataAccountsController : ODataController
+    [ODataRoutePrefix("Account")]
+    public class AccountController : ODataController
     {
-        private readonly ILogger logger;
         private readonly UnitOfWork unitOfWork;
 
-        public ODataAccountsController(
-            ILogger<ODataAccountsController> logger
-        )
+        public AccountController()
         {
-            this.logger = logger;
             unitOfWork = new UnitOfWork();
         }
 
-        [EnableQuery]
-        [Route("")]
+        [ODataRoute]
+        [EnableQuery(PageSize = 20, AllowedFunctions = AllowedFunctions.All)]
         public IQueryable Get()
         {
             return unitOfWork.context.Accounts.AsQueryable();
         }
 
-        [EnableQuery]
-        [Route("{id}")]
-        public Account ById([FromODataUri] Guid id)
+        [ODataRoute("{id}")]
+        [EnableQuery(PageSize = 20, AllowedFunctions = AllowedFunctions.All)]
+        public Account Get([FromODataUri] Guid id)
         {
             return unitOfWork.context.Accounts.SingleOrDefault(a => a.Id == id);
         }
