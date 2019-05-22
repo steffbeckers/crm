@@ -33,10 +33,10 @@ namespace CRM.API.Controllers.OData
         }
 
         [ODataRoute("{id}")]
-        [EnableQuery(PageSize = 20, AllowedFunctions = AllowedFunctions.All)]
-        public Contact Get([FromODataUri] Guid id)
+        [EnableQuery(AllowedFunctions = AllowedFunctions.All)]
+        public SingleResult<Contact> Get([FromODataUri] Guid id)
         {
-            return unitOfWork.context.Contacts.SingleOrDefault(a => a.Id == id);
+            return SingleResult.Create(unitOfWork.context.Contacts.Where(c => c.Id == id));
         }
     }
 }

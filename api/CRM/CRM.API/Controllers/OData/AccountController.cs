@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CRM.API.DAL;
 using CRM.API.Models;
+using CRM.API.ViewModels;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CRM.API.Controllers.OData
@@ -33,10 +35,10 @@ namespace CRM.API.Controllers.OData
         }
 
         [ODataRoute("{id}")]
-        [EnableQuery(PageSize = 20, AllowedFunctions = AllowedFunctions.All)]
-        public Account Get([FromODataUri] Guid id)
+        [EnableQuery(AllowedFunctions = AllowedFunctions.All)]
+        public SingleResult<Account> Get([FromODataUri] Guid id)
         {
-            return unitOfWork.context.Accounts.SingleOrDefault(a => a.Id == id);
+            return SingleResult.Create(unitOfWork.context.Accounts.Where(c => c.Id == id));
         }
     }
 }

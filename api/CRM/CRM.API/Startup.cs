@@ -185,6 +185,7 @@ namespace CRM.API
         private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
         {
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder(serviceProvider);
+            builder.EnableLowerCamelCase();
 
             builder.EntitySet<Account>("Account");
             builder.EntitySet<Contact>("Contact");
