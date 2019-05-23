@@ -16,5 +16,9 @@ namespace CRM.API.ViewModels
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public CountryVM Country { get; set; }
+
+        // Generic
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
     }
 }

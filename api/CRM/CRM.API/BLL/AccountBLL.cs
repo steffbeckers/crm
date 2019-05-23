@@ -11,26 +11,60 @@ namespace CRM.API.BLL
     public class AccountBLL
     {
         private readonly UnitOfWork unitOfWork;
+        private readonly User currentUser;
 
         public AccountBLL(UnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
 
+        public AccountBLL(UnitOfWork unitOfWork, User currentUser)
+        {
+            this.unitOfWork = unitOfWork;
+            this.currentUser = currentUser;
+        }
+
         public async Task<Account> CreateAccount(Account account)
         {
+            #region Before
             // Check if account name already exists
             if (await this.unitOfWork.AccountRepository.ExistsByName(account.Name))
             {
                 throw new CrmException("Name already exists.", 400);
             }
 
-            // Create
+            // Set timestamps
+            account.CreatedOn = DateTime.UtcNow;
+            account.ModifiedOn = DateTime.UtcNow;
+
+            // Set user
+            account.CreatedById = Guid.Parse(currentUser.Id);
+            account.ModifiedById = Guid.Parse(currentUser.Id);
+
+            // Also on new contacts
+            // TODO: Check if there is a better way to do this.
+            if (account.Contacts.Count > 0)
+            {
+                foreach (Contact contact in account.Contacts)
+                {
+                    // Set timestamps
+                    contact.CreatedOn = DateTime.UtcNow;
+                    contact.ModifiedOn = DateTime.UtcNow;
+
+                    // Set user
+                    contact.CreatedById = Guid.Parse(currentUser.Id);
+                    contact.ModifiedById = Guid.Parse(currentUser.Id);
+                }
+            }
+            #endregion
+
             Account newAccount = await this.unitOfWork.AccountRepository.InsertAsync(account);
 
+            #region After
             // Set primary contact to first in list
             newAccount.PrimaryContactId = newAccount.Contacts.First().Id;
             newAccount = this.unitOfWork.AccountRepository.Update(newAccount);
+            #endregion
 
             return newAccount;
         }
@@ -47,6 +81,13 @@ namespace CRM.API.BLL
 
         public async Task<Account> UpdateAccount(Account account)
         {
+            #region Before
+            // Set user
+            account.ModifiedById = Guid.Parse(currentUser.Id);
+            // Set timestamp
+            account.ModifiedOn = DateTime.UtcNow;
+            #endregion
+
             return await this.unitOfWork.AccountRepository.UpdateAsync(account);
         }
 

@@ -39,8 +39,8 @@ namespace CRM.API.Models
         public Account Account { get; set; }
 
         // Generic
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public DateTime ModifiedOn { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
         public DateTime? DeletedOn { get; set; }
         public Guid CreatedById { get; set; }
         public Guid ModifiedById { get; set; }

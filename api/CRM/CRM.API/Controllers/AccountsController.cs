@@ -10,6 +10,7 @@ using CRM.API.Models;
 using CRM.API.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -55,64 +56,109 @@ namespace CRM.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AccountVM>> Create(AccountVM accountVM)
+        public async Task<ActionResult<AccountVM>> Create([FromBody] AccountVM accountVM)
         {
             // Validation
-            if (accountVM == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
+            // Mapping
             Account account = this.mapper.Map<AccountVM, Account>(accountVM);
 
-            // Set user details
+            // BLL
             User currentUser = await userManager.GetUserAsync(User);
-            account.CreatedById = Guid.Parse(currentUser.Id);
-            account.ModifiedById = Guid.Parse(currentUser.Id);
-            // Also on new contacts
-            // TODO: Check if there is a better way to do this. Move to BLL? What with current User?
-            if (account.Contacts.Count > 0)
-            {
-                foreach (Contact contact in account.Contacts)
-                {
-                    contact.CreatedById = Guid.Parse(currentUser.Id);
-                    contact.ModifiedById = Guid.Parse(currentUser.Id);
-                }
-            }
+            AccountBLL bll = new AccountBLL(this.unitOfWork, currentUser);
 
-            AccountBLL bll = new AccountBLL(this.unitOfWork);
-
+            // Create
+            Account newAccount;
             try
             {
-                accountVM = this.mapper.Map<Account, AccountVM>(await bll.CreateAccount(account));
+                newAccount = await bll.CreateAccount(account);
             }
             catch (CrmException ex)
             {
                 return BadRequest(this.mapper.Map<CrmException, CrmExceptionVM>(ex));
             }
 
-            return CreatedAtAction("GetById", new { id = accountVM.Id }, accountVM);
+            // Mapping
+            return CreatedAtAction("GetById", new { id = newAccount.Id }, this.mapper.Map<Account, AccountVM>(newAccount));
         }
 
         [HttpPut]
-        public async Task<ActionResult<AccountVM>> Update(AccountVM accountVM)
+        [Route("{id}")]
+        public async Task<ActionResult<AccountVM>> Update(Guid id, [FromBody] AccountVM accountVM)
         {
             // Validation
-            if (accountVM == null)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (id != accountVM.Id)
             {
                 return BadRequest();
             }
+            if (!this.unitOfWork.context.Accounts.Any(a => a.Id == id))
+            {
+                return NotFound();
+            }
 
+            // Mapping
             Account account = this.mapper.Map<AccountVM, Account>(accountVM);
 
-            // Set user details
+            // BLL
             User currentUser = await userManager.GetUserAsync(User);
-            account.ModifiedById = Guid.Parse(currentUser.Id);
-            account.ModifiedOn = DateTime.Now;
+            AccountBLL bll = new AccountBLL(this.unitOfWork, currentUser);
 
-            AccountBLL bll = new AccountBLL(this.unitOfWork);
+            // Update
+            Account updatedAccount = await bll.UpdateAccount(account);
 
-            return Ok(this.mapper.Map<Account, AccountVM>(await bll.UpdateAccount(account)));
+            // Mapping
+            return Ok(this.mapper.Map<Account, AccountVM>(updatedAccount));
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<AccountVM>> Patch(Guid id, [FromBody] JsonPatchDocument<AccountPatchVM> patchDocument)
+        {
+            // Validation
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // BLL
+            User currentUser = await userManager.GetUserAsync(User);
+            AccountBLL bll = new AccountBLL(this.unitOfWork, currentUser);
+
+            // Retrieve account
+            Account account = await bll.GetAccountById(id);
+
+            // Validation
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            // Mapping
+            AccountPatchVM accountPatchVM = this.mapper.Map<AccountPatchVM>(account);
+
+            // Patch
+            patchDocument.ApplyTo(accountPatchVM, ModelState);
+
+            // Validation after patch
+            if (!TryValidateModel(account))
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Mapping
+            this.mapper.Map(accountPatchVM, account);
+
+            // Trigger update
+            await bll.UpdateAccount(account);
+
+            return Ok(this.mapper.Map<Account, AccountVM>(account));
         }
 
         [HttpDelete]

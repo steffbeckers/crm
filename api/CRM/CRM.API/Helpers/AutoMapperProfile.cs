@@ -21,6 +21,7 @@ namespace CRM.API.Helpers
             // Account
             CreateMap<Account, AccountVM>();
             CreateMap<AccountVM, Account>();
+            CreateMap<AccountPatchVM, Account>();
 
             // Address
             CreateMap<Address, AddressVM>();

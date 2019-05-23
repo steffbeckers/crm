@@ -19,5 +19,9 @@ namespace CRM.API.ViewModels
         public string MobilePhone { get; set; }
         public Gender? Gender { get; set; }
         public AccountVM Account { get; set; }
+
+        // Generic
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
     }
 }
