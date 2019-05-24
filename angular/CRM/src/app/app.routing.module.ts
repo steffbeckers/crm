@@ -6,7 +6,6 @@ import { RouterModule, Routes } from '@angular/router';
  * @type {[{path: string; redirectTo: string; pathMatch: string}]}
  */
 const routes: Routes = [
-  { path: 'accounts', loadChildren: '../app/views/accounts/accounts.module#AccountsModule' },
   {
     path: '',
     redirectTo: '/home',
