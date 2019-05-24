@@ -1,23 +1,20 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import {AppComponent} from './app.component';
-import {AppRoutingModule} from './app.routing.module';
-import {CoreModule} from './core/core.module';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app.routing.module';
+import { CoreModule } from './core/core.module';
 
-import {ServiceWorkerModule} from '@angular/service-worker';
-import {environment} from '../environments/environment';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
-import {MatButtonModule, MatToolbarModule} from '@angular/material';
+import { MatButtonModule, MatToolbarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -25,7 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CoreModule.forRoot(),
     MatToolbarModule,
     MatButtonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [],
   bootstrap: [AppComponent],
@@ -34,5 +32,4 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 /**
  * Main app module. Import your submodules here.
  */
-export class AppModule {
-}
+export class AppModule {}

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 /**
  * Returns the real browser window object.
@@ -6,7 +6,7 @@ import {Injectable} from '@angular/core';
  * @private
  */
 function _window(): any {
-    return window; // return native window obj
+  return window; // return native window obj
 }
 
 @Injectable()
@@ -14,11 +14,11 @@ function _window(): any {
  * Safely pulls the browser window object from injectable classes.
  */
 export class WindowService {
-    /**
-     * Returns an injectable window object.
-     * @returns {any}
-     */
-    get nativeWindow(): any {
-        return _window();
-    }
+  /**
+   * Returns an injectable window object.
+   * @returns {any}
+   */
+  get nativeWindow(): any {
+    return _window();
+  }
 }
