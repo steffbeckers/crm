@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CRM.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountsController : ControllerBase

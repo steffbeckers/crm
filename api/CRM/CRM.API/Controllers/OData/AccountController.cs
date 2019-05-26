@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CRM.API.Controllers.OData
 {
-    [Authorize]
+    //[Authorize]
     [ODataRoutePrefix("Account")]
     public class AccountController : ODataController
     {
