@@ -8,10 +8,12 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Threading;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CRM.API.DAL
 {
-    public class CRMContext : DbContext
+    public class CRMContext : IdentityDbContext<User>
     {
         public CRMContext()
         {}
@@ -36,6 +38,33 @@ namespace CRM.API.DAL
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            base.OnModelCreating(mb);
+
+            // Identity
+
+            mb.Entity<User>(e => e.ToTable("Users"));
+            mb.Entity<IdentityRole>(e => e.ToTable("Roles"));
+            mb.Entity<IdentityUserRole<string>>(e =>
+            {
+                e.ToTable("UserRoles");
+                // In case you changed the TKey type
+                // e.HasKey(key => new { key.UserId, key.RoleId });
+            });
+            mb.Entity<IdentityUserClaim<string>>(e => e.ToTable("UserClaims"));
+            mb.Entity<IdentityUserLogin<string>>(e =>
+            {
+                e.ToTable("UserLogins");
+                // In case you changed the TKey type
+                //e.HasKey(key => new { key.ProviderKey, key.LoginProvider });       
+            });
+            mb.Entity<IdentityRoleClaim<string>>(e => e.ToTable("RoleClaims"));
+            mb.Entity<IdentityUserToken<string>>(e =>
+            {
+                e.ToTable("UserTokens");
+                // In case you changed the TKey type
+                //e.HasKey(key => new { key.UserId, key.LoginProvider, key.Name });
+            });
+
             // Accounts
 
             // Soft delete query filter
@@ -65,6 +94,12 @@ namespace CRM.API.DAL
                 .WithOne(c => c.Account)
                 .HasForeignKey(c => c.AccountId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            // CreatedBy
+            mb.Entity<Account>()
+                .HasOne(a => a.CreatedBy)
+                .WithOne()
+                .HasForeignKey<Account>(a => a.CreatedById);
 
             // Countries
             //mb.Entity<Country>()

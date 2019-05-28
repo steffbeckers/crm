@@ -39,13 +39,14 @@ namespace CRM.API
             // CORS
             services.AddCors();
 
-            // Authentication
-            services.AddDbContext<IdentityContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
+            // Connection to the CRM database
+            services.AddDbContext<CRMContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
 
+            // Authentication
             services.AddIdentity<User, IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
-                .AddEntityFrameworkStores<IdentityContext>()
+                .AddEntityFrameworkStores<CRMContext>()
                 .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
@@ -98,10 +99,6 @@ namespace CRM.API
                 // Policies
                 options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
             });
-
-            // Connection to the CRM database
-            services.AddDbContext<CRMContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
 
             // OData
             services.AddOData();
@@ -173,7 +170,7 @@ namespace CRM.API
             app.UseMvc(options =>
             {
                 // OData
-                options.MapODataServiceRoute("odata", "api/odata", GetEdmModel(app.ApplicationServices));
+                //options.MapODataServiceRoute("odata", "api/odata", GetEdmModel(app.ApplicationServices));
                 options.Count().Filter().OrderBy().Expand().Select().MaxTop(200);
                 options.EnableDependencyInjection();
             });
@@ -182,16 +179,16 @@ namespace CRM.API
             CreateRolesAndAdminUser(serviceProvider);
         }
 
-        private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
-        {
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder(serviceProvider);
-            builder.EnableLowerCamelCase();
+        //private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
+        //{
+        //    ODataConventionModelBuilder builder = new ODataConventionModelBuilder(serviceProvider);
+        //    builder.EnableLowerCamelCase();
 
-            builder.EntitySet<Account>("Account");
-            builder.EntitySet<Contact>("Contact");
+        //    builder.EntitySet<Account>("Account");
+        //    builder.EntitySet<Contact>("Contact");
 
-            return builder.GetEdmModel();
-        }
+        //    return builder.GetEdmModel();
+        //}
 
         private void CreateRolesAndAdminUser(IServiceProvider serviceProvider)
         {

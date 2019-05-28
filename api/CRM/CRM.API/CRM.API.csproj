@@ -30,16 +30,8 @@
     <Compile Remove="Migrations\20190518163850_CountriesSeeding.Designer.cs" />
     <Compile Remove="Migrations\20190518170553_CountriesTableUpdate.cs" />
     <Compile Remove="Migrations\20190518170553_CountriesTableUpdate.Designer.cs" />
-    <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.cs" />
-    <Compile Remove="Migrations\Identity\20190516200121_ConfiguringRolesAndAdminUser.Designer.cs" />
-    <Compile Remove="Migrations\Identity\20190516205944_Test.cs" />
-    <Compile Remove="Migrations\Identity\20190516205944_Test.Designer.cs" />
-    <Compile Remove="Migrations\Identity\20190516210132_Test.cs" />
-    <Compile Remove="Migrations\Identity\20190516210132_Test.Designer.cs" />
-    <Compile Remove="Migrations\Identity\20190516210210_Test2.cs" />
-    <Compile Remove="Migrations\Identity\20190516210210_Test2.Designer.cs" />
-    <Compile Remove="Migrations\Identity\20190516210235_Test2.cs" />
-    <Compile Remove="Migrations\Identity\20190516210235_Test2.Designer.cs" />
+    <Compile Remove="Migrations\20190528194957_Test.cs" />
+    <Compile Remove="Migrations\20190528194957_Test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

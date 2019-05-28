@@ -8,6 +8,8 @@ using CRM.API.DAL;
 using CRM.API.Framework;
 using CRM.API.Models;
 using CRM.API.ViewModels;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
@@ -39,20 +41,18 @@ namespace CRM.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<AccountVM>>> Get()
+        [EnableQuery(PageSize = 20, AllowedFunctions = AllowedFunctions.All)]
+        public IQueryable Get()
         {
-            AccountBLL bll = new AccountBLL(this.unitOfWork);
-
-            return Ok(mapper.Map<List<Account>, List<AccountVM>>(await bll.GetAccounts()));
+            return unitOfWork.context.Accounts.AsQueryable();
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<AccountVM>> GetById(Guid id)
+        [EnableQuery(AllowedFunctions = AllowedFunctions.All)]
+        public SingleResult<Account> GetById([FromODataUri] Guid id)
         {
-            AccountBLL bll = new AccountBLL(this.unitOfWork);
-
-            return Ok(mapper.Map<Account, AccountVM>(await bll.GetAccountById(id)));
+            return SingleResult.Create(unitOfWork.context.Accounts.Where(c => c.Id == id));
         }
 
         [HttpPost]
@@ -118,7 +118,8 @@ namespace CRM.API.Controllers
             return Ok(this.mapper.Map<Account, AccountVM>(updatedAccount));
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch]
+        [Route("{id}")]
         public async Task<ActionResult<AccountVM>> Patch(Guid id, [FromBody] JsonPatchDocument<AccountPatchVM> patchDocument)
         {
             // Validation

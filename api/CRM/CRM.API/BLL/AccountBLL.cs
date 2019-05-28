@@ -38,8 +38,8 @@ namespace CRM.API.BLL
             account.ModifiedOn = DateTime.UtcNow;
 
             // Set user
-            account.CreatedById = Guid.Parse(currentUser.Id);
-            account.ModifiedById = Guid.Parse(currentUser.Id);
+            account.CreatedById = Guid.Parse(currentUser.Id).ToString();
+            account.ModifiedById = Guid.Parse(currentUser.Id).ToString();
 
             // Also on new contacts
             // TODO: Check if there is a better way to do this.
@@ -83,7 +83,7 @@ namespace CRM.API.BLL
         {
             #region Before
             // Set user
-            account.ModifiedById = Guid.Parse(currentUser.Id);
+            account.ModifiedById = Guid.Parse(currentUser.Id).ToString();
             // Set timestamp
             account.ModifiedOn = DateTime.UtcNow;
             #endregion
