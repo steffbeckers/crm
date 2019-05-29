@@ -1,17 +1,24 @@
-version: '3.7'
+version: "3.7"
 
 services:
+  app:
+    image: registry.gitlab.com/steffbeckers/crm/app
+    networks:
+      - reverse-proxy_default
+    deploy:
+      mode: replicated
+      replicas: 2
+    depends_on:
+      - mssql
+      - api
   api:
-    image: registry.steffbeckers.eu/crm/api
+    image: registry.gitlab.com/steffbeckers/crm/api
     networks:
       - reverse-proxy_default
       - default
     deploy:
       mode: replicated
       replicas: 2
-    build:
-      context: .
-      dockerfile: CRM.API/Dockerfile
     depends_on:
       - mssql
   mssql:
