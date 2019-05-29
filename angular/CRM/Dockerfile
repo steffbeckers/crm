@@ -1,13 +1,11 @@
 # build stage
-FROM node:alpine as build-stage
+FROM node as build-stage
 
 WORKDIR /app
 
 COPY package*.json ./
 
 RUN npm install
-
-RUN npm rebuild node-sass
 
 COPY . .
 
