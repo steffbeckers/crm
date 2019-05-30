@@ -155,6 +155,9 @@ namespace CRM.API
                 app.UseHsts();
             }
 
+            // Update database migrations on startup
+            UpdateDatabase(app);
+
             // CORS
             app.UseCors(options => {
                 options.WithOrigins(Configuration.GetValue<string>("AllowedHosts"))
@@ -188,6 +191,17 @@ namespace CRM.API
 
         //    return builder.GetEdmModel();
         //}
+
+        private void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<CRMContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
+        }
 
         private void CreateRolesAndAdminUser(IServiceProvider serviceProvider)
         {
