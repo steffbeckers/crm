@@ -41,6 +41,14 @@ namespace CRM.API.BLL
             account.CreatedById = Guid.Parse(currentUser.Id).ToString();
             account.ModifiedById = Guid.Parse(currentUser.Id).ToString();
 
+            // Also on new address
+            // TODO: Check if there is a better way to do this.
+            if (account.Address != null)
+            {
+                account.Address.CreatedById = Guid.Parse(currentUser.Id);
+                account.Address.ModifiedById = Guid.Parse(currentUser.Id);
+            }
+
             // Also on new contacts
             // TODO: Check if there is a better way to do this.
             if (account.Contacts.Count > 0)
