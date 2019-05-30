@@ -22,8 +22,8 @@ services:
     depends_on:
       - mssql
     volumes:
-      - /root/crm/api/app:/app
-      - /root/crm/api/logs:/logs
+      - /root/crm/api/app/appsettings.json:/app/appsettings.json
+      # - /root/crm/api/logs:/logs
   mssql:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     networks:
