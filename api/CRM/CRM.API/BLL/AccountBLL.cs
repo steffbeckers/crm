@@ -45,6 +45,11 @@ namespace CRM.API.BLL
             // TODO: Check if there is a better way to do this.
             if (account.Address != null)
             {
+                // Set timestamps
+                account.Address.CreatedOn = DateTime.UtcNow;
+                account.Address.ModifiedOn = DateTime.UtcNow;
+
+                // Set user
                 account.Address.CreatedById = Guid.Parse(currentUser.Id);
                 account.Address.ModifiedById = Guid.Parse(currentUser.Id);
             }
