@@ -98,12 +98,6 @@ namespace CRM.API.DAL
                 .HasForeignKey(c => c.AccountId)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            // CreatedBy
-            mb.Entity<Account>()
-                .HasOne(a => a.CreatedBy)
-                .WithOne()
-                .HasForeignKey<Account>(a => a.CreatedById);
-
             // Countries
             //mb.Entity<Country>()
             //    .Property<string>("CallingCodes")
