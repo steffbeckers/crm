@@ -40,8 +40,7 @@ namespace CRM.API
             services.AddCors();
 
             // Connection to the CRM database
-            services.AddDbContext<CRMContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
+            services.AddDbContext<CRMContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CRM_MSSQL_DB")));
 
             // Authentication
             services.AddIdentity<User, IdentityRole>()

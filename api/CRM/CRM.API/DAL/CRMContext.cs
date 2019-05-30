@@ -10,6 +10,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 
 namespace CRM.API.DAL
 {
@@ -18,8 +19,9 @@ namespace CRM.API.DAL
         public CRMContext()
         {}
 
-        public CRMContext (DbContextOptions<CRMContext> options) : base(options)
-        {}
+        public CRMContext(DbContextOptions<CRMContext> options) : base(options)
+        {
+        }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Contact> Contacts { get; set; }
@@ -30,7 +32,8 @@ namespace CRM.API.DAL
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json")
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
                     .Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("CRM_MSSQL_DB"));
             }

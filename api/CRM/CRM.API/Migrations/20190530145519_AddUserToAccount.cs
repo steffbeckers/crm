@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CRM.API.Migrations
 {
-    public partial class Test : Migration
+    public partial class AddUserToAccount : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

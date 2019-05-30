@@ -1,4 +1,5 @@
 ﻿using CRM.API.Models;
+using CRM.API.ViewModels.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -41,6 +42,9 @@ namespace CRM.API.ViewModels
 
         // Generic
         public DateTime CreatedOn { get; set; }
+        public UserVM CreatedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
+        public UserVM ModifiedBy { get; set; }
+
     }
 }
