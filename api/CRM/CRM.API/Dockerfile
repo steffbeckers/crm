@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["CRM.API.csproj", "CRM.API/"]
 RUN dotnet restore "CRM.API/CRM.API.csproj"
-COPY . .
+COPY . "CRM.API/"
 WORKDIR "/src/CRM.API"
 RUN dotnet build "CRM.API.csproj" -c Release -o /app
 
