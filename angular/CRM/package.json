@@ -1,7 +1,7 @@
 {
-  "name": "fuse",
-  "version": "7.1.0",
-  "license": "https://themeforest.net/licenses/terms/regular",
+  "name": "crm",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
