@@ -53,14 +53,20 @@ namespace CRM.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
+                // Retrieve user by email or username
+                User currentUser = await userManager.FindByEmailAsync(model.EmailOrUsername) ?? await userManager.FindByNameAsync(model.EmailOrUsername);
 
+                // If no user is found by email or username, just return unauthorized and give nothing away of existing user info
+                if (currentUser == null)
+                {
+                    return Unauthorized();
+                }
+
+                // Log the user in by password
+                var result = await signInManager.PasswordSignInAsync(currentUser, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    logger.LogInformation("User logged in.");
-
-                    // Retrieve user
-                    User currentUser = await userManager.FindByNameAsync(model.Username);
+                    logger.LogInformation("User " + currentUser.UserName + " logged in.");
 
                     // Retrieve roles of user
                     currentUser.Roles = (List<string>)await userManager.GetRolesAsync(currentUser);

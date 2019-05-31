@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 
+import { AuthService } from 'app/services/auth.service';
+
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
@@ -20,7 +22,7 @@ export class LoginComponent implements OnInit {
    * @param {FuseConfigService} _fuseConfigService
    * @param {FormBuilder} _formBuilder
    */
-  constructor(private _fuseConfigService: FuseConfigService, private _formBuilder: FormBuilder) {
+  constructor(private _fuseConfigService: FuseConfigService, private _formBuilder: FormBuilder, private auth: AuthService) {
     // Configure the layout
     this._fuseConfigService.config = {
       layout: {
@@ -49,8 +51,18 @@ export class LoginComponent implements OnInit {
    */
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      emailOrUsername: ['', Validators.required],
       password: ['', Validators.required],
     });
+  }
+
+  // Custom code
+  login(): void {
+    // Validate
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.auth.login(this.loginForm.value);
   }
 }

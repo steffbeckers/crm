@@ -26,7 +26,7 @@ const appRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'sample',
+    redirectTo: 'auth/login',
   },
 ];
 

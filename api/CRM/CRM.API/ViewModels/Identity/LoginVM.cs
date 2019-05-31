@@ -9,7 +9,7 @@ namespace CRM.API.ViewModels.Identity
     public class LoginVM
     {
         [Required]
-        public string Username { get; set; }
+        public string EmailOrUsername { get; set; }
 
         [Required]
         public string Password { get; set; }
