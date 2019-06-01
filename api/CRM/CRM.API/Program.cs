@@ -11,7 +11,9 @@ namespace CRM.API
         public static void Main(string[] args)
         {
             // NLog: setup the logger first to catch all errors
-            var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var isProd = environment == EnvironmentName.Production;
+            var logger = NLogBuilder.ConfigureNLog(!isProd ? "nlog.Development.config" : "nlog.config").GetCurrentClassLogger();
 
             try
             {

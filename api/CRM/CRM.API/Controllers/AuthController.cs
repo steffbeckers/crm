@@ -51,6 +51,8 @@ namespace CRM.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginVM model)
         {
+            logger.LogInformation("Someone tries to login.");
+
             if (ModelState.IsValid)
             {
                 // Retrieve user by email or username
