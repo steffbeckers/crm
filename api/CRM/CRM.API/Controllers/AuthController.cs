@@ -53,6 +53,8 @@ namespace CRM.API.Controllers
         {
             logger.LogInformation("Someone tries to login.");
 
+            logger.LogDebug("ModelState.IsValid: " + ModelState.IsValid);
+
             if (ModelState.IsValid)
             {
                 // Retrieve user by email or username
