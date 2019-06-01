@@ -36,9 +36,10 @@ namespace CRM.API
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .ConfigureLogging(logging =>
+                .ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.ClearProviders();
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     logging.SetMinimumLevel(LogLevel.Trace);
                 })
                 .UseNLog(); // NLog: setup NLog for Dependency injection
