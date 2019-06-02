@@ -7,6 +7,7 @@ export const environment = {
   hmr: false,
   api: 'http://localhost:5000/api',
   // api: 'https://crm.steffbeckers.eu/api',
+  'maps-api-key': 'AIzaSyA7gXU1vCOSBv_Z6mFmnNUQQUFKywqZLJ4',
 };
 
 /*

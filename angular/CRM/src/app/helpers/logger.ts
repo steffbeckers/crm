@@ -7,7 +7,7 @@ import { environment } from 'environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export default class Logger {
+export class Logger {
   debug = localStorage.getItem('debug') || !environment.production;
 
   log(...args) {

@@ -24,8 +24,9 @@ export class AuthService {
     this.getUser();
   }
 
-  login(credentials): void {
+  login(credentials: any, returnUrl: string = null): void {
     this.http.post(environment.api + '/auth/login', credentials).subscribe((authenticated: any) => {
+      // Set user and token after login
       if (authenticated.rememberMe) {
         this.setToken(authenticated.token);
         this.setUser(authenticated.user);
@@ -33,17 +34,19 @@ export class AuthService {
         this.token = authenticated.token;
         this.user = authenticated.user;
       }
+
+      // Routing after login
+      if (returnUrl) {
+        this.router.navigateByUrl(returnUrl);
+      } else {
+        this.router.navigateByUrl('/apps/dashboards/analytics');
+      }
     });
   }
 
   me(): void {
     // Only retrieve current user from API if authenticated
     if (!this.isAuthenticated()) {
-      // If not authenticated, and not in auth section of routing, redirect to login page
-      if (this.router.navigated && !this.router.url.includes('/auth/')) {
-        this.router.navigateByUrl('/auth/login');
-      }
-
       return;
     }
 
@@ -59,6 +62,9 @@ export class AuthService {
     }
 
     this.http.get(environment.api + '/auth/logout').subscribe((response: any) => {
+      // Return to login page
+      this.router.navigateByUrl('/auth/login');
+
       // Clear local storage
       localStorage.clear();
 

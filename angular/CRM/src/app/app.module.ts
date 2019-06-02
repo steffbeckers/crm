@@ -8,28 +8,50 @@ import { MatButtonModule, MatIconModule } from '@angular/material';
 import { TranslateModule } from '@ngx-translate/core';
 import 'hammerjs';
 
+// Fake DB
+import { FakeDbService } from 'app/fake-db/fake-db.service';
+
+// Fuse theme
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { FuseProgressBarModule, FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
-
 import { fuseConfig } from 'app/fuse-config';
 
+// Components
 import { AppComponent } from 'app/app.component';
+
+// Modules
 import { LayoutModule } from 'app/layout/layout.module';
 import { SampleModule } from 'app/main/sample/sample.module';
 import { PagesModule } from './main/pages/pages.module';
+
+// Interceptors
 import { LogInterceptor } from './interceptors/log.interceptor';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
+// Guards
+import { IsAuthenticatedGuard } from './guards/auth.guard';
+
+// Fake DB
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+
+// Helpers
+import { Logger } from './helpers/logger';
+
 const appRoutes: Routes = [
+  {
+    path: 'apps',
+    loadChildren: './main/apps/apps.module#AppsModule',
+    canActivate: [IsAuthenticatedGuard],
+  },
   {
     path: '',
     loadChildren: './main/pages/pages.module#PagesModule',
   },
   {
     path: '**',
-    redirectTo: 'auth/login',
+    redirectTo: 'apps/dashboards/analytics',
   },
 ];
 
@@ -42,6 +64,10 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
 
     TranslateModule.forRoot(),
+    InMemoryWebApiModule.forRoot(FakeDbService, {
+      delay: 0,
+      passThruUnknownUrl: true,
+    }),
 
     // Material moment date module
     MatMomentDateModule,
@@ -78,6 +104,8 @@ const appRoutes: Routes = [
       useClass: TokenInterceptor,
       multi: true,
     },
+    Logger,
+    IsAuthenticatedGuard,
   ],
   bootstrap: [AppComponent],
 })

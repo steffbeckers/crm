@@ -5,7 +5,7 @@ import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent, HttpResponse } fr
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import Logger from 'app/helpers/logger';
+import { Logger } from 'app/helpers/logger';
 
 @Injectable({ providedIn: 'root' })
 export class LogInterceptor implements HttpInterceptor {
