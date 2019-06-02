@@ -12,6 +12,14 @@ const routes: Route[] = [
     path: 'dashboards/project',
     loadChildren: './dashboards/project/project.module#ProjectDashboardModule',
   },
+  {
+    path: 'contacts',
+    loadChildren: './contacts/contacts.module#ContactsModule',
+  },
+  {
+    path: 'todo',
+    loadChildren: './todo/todo.module#TodoModule',
+  },
 ];
 
 @NgModule({

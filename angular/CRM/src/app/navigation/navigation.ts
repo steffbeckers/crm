@@ -30,4 +30,25 @@ export const navigation: FuseNavigation[] = [
       },
     ],
   },
+  {
+    id: 'contacts',
+    title: 'Contacts',
+    translate: 'NAV.CONTACTS',
+    type: 'item',
+    icon: 'account_box',
+    url: '/apps/contacts',
+  },
+  {
+    id: 'to-do',
+    title: 'To-Do',
+    translate: 'NAV.TODO',
+    type: 'item',
+    icon: 'check_box',
+    url: '/apps/todo',
+    badge: {
+      title: '3',
+      bg: '#FF6F00',
+      fg: '#FFFFFF',
+    },
+  },
 ];
