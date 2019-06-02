@@ -3,10 +3,12 @@ import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as shape from 'd3-shape';
 
+// Fuse
 import { fuseAnimations } from '@fuse/animations';
-
 import { ProjectDashboardService } from 'app/main/apps/dashboards/project/project.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+
+import { AuthService } from 'app/services/auth.service';
 
 @Component({
   selector: 'project-dashboard',
@@ -35,7 +37,7 @@ export class ProjectDashboardComponent implements OnInit {
    * @param {FuseSidebarService} _fuseSidebarService
    * @param {ProjectDashboardService} _projectDashboardService
    */
-  constructor(private _fuseSidebarService: FuseSidebarService, private _projectDashboardService: ProjectDashboardService) {
+  constructor(private _fuseSidebarService: FuseSidebarService, private _projectDashboardService: ProjectDashboardService, public auth: AuthService) {
     /**
      * Widget 5
      */

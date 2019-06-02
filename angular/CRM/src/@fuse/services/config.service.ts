@@ -27,6 +27,12 @@ export class FuseConfigService {
     // Set the default config from the user provided config (from forRoot)
     this._defaultConfig = _config;
 
+    // Retrieve saved config
+    const savedConfig = localStorage.getItem('theme-config');
+    if (savedConfig) {
+      this._defaultConfig = JSON.parse(savedConfig);
+    }
+
     // Initialize the service
     this._init();
   }
@@ -44,6 +50,9 @@ export class FuseConfigService {
 
     // Merge the new config
     config = _.merge({}, config, value);
+
+    // Save to local storage
+    localStorage.setItem('theme-config', JSON.stringify(config));
 
     // Notify the observers
     this._configSubject.next(config);

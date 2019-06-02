@@ -121,15 +121,15 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
     });
 
     // Add customize nav item that opens the bar programmatically
-    const customFunctionNavItem = {
-      id: 'custom-function',
-      title: 'Custom Function',
+    const settingsNavItem = {
+      id: 'settings',
+      title: 'Settings',
       type: 'group',
       icon: 'settings',
       children: [
         {
-          id: 'customize',
-          title: 'Customize',
+          id: 'theme-options',
+          title: 'Theme Options',
           type: 'item',
           icon: 'settings',
           function: () => {
@@ -139,7 +139,7 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
       ],
     };
 
-    this._fuseNavigationService.addNavigationItem(customFunctionNavItem, 'end');
+    this._fuseNavigationService.addNavigationItem(settingsNavItem, 'end');
   }
 
   /**
