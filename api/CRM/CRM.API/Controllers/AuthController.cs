@@ -51,10 +51,6 @@ namespace CRM.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginVM model)
         {
-            logger.LogInformation("Someone tries to login.");
-
-            logger.LogDebug("ModelState.IsValid: " + ModelState.IsValid);
-
             if (ModelState.IsValid)
             {
                 // Retrieve user by email or username
@@ -70,7 +66,7 @@ namespace CRM.API.Controllers
                 var result = await signInManager.PasswordSignInAsync(currentUser, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    logger.LogInformation("User " + currentUser.UserName + " logged in.");
+                    logger.LogInformation("User " + currentUser.Id + " logged in.");
 
                     // Retrieve roles of user
                     currentUser.Roles = (List<string>)await userManager.GetRolesAsync(currentUser);
