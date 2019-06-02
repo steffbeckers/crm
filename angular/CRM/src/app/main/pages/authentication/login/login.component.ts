@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { FuseConfigService } from '@fuse/services/config.service';
@@ -22,7 +23,12 @@ export class LoginComponent implements OnInit {
    * @param {FuseConfigService} _fuseConfigService
    * @param {FormBuilder} _formBuilder
    */
-  constructor(private _fuseConfigService: FuseConfigService, private _formBuilder: FormBuilder, public auth: AuthService) {
+  constructor(
+    private _fuseConfigService: FuseConfigService,
+    private _formBuilder: FormBuilder,
+    public auth: AuthService,
+    public route: ActivatedRoute
+  ) {
     // Configure the layout
     this._fuseConfigService.config = {
       layout: {
@@ -64,6 +70,11 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.auth.login(this.loginForm.value);
+    let returnUrl = this.route.snapshot.queryParams.returnUrl;
+    if (returnUrl) {
+      this.auth.login(this.loginForm.value, this.route.snapshot.queryParams.returnUrl);
+    } else {
+      this.auth.login(this.loginForm.value);
+    }
   }
 }

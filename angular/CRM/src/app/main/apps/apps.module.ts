@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Route } from '@angular/router';
 
 import { FuseSharedModule } from '@fuse/shared.module';
 
-const routes = [
+const routes: Route[] = [
   {
     path: 'dashboards/analytics',
     loadChildren: './dashboards/analytics/analytics.module#AnalyticsDashboardModule',

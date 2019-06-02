@@ -28,10 +28,10 @@ export class FuseConfigService {
     this._defaultConfig = _config;
 
     // Retrieve saved config
-    const savedConfig = localStorage.getItem('theme-config');
-    if (savedConfig) {
-      this._defaultConfig = JSON.parse(savedConfig);
-    }
+    // const savedConfig = localStorage.getItem('theme-config');
+    // if (savedConfig) {
+    //   this._defaultConfig = JSON.parse(savedConfig);
+    // }
 
     // Initialize the service
     this._init();

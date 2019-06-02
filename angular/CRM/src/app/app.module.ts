@@ -48,6 +48,7 @@ const appRoutes: Routes = [
   {
     path: '',
     loadChildren: './main/pages/pages.module#PagesModule',
+    canActivate: [IsAuthenticatedGuard],
   },
   {
     path: '**',
