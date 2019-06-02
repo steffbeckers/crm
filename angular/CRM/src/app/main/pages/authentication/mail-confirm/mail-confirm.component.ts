@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
 
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
@@ -10,7 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class MailConfirmComponent {
+export class MailConfirmComponent implements OnDestroy {
   /**
    * Constructor
    *
@@ -26,11 +26,38 @@ export class MailConfirmComponent {
         toolbar: {
           hidden: true,
         },
-        footer: {
-          hidden: true,
-        },
+        // footer: {
+        //   hidden: true,
+        // },
         sidepanel: {
           hidden: true,
+        },
+      },
+    };
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Lifecycle hooks
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * On destroy
+   */
+  ngOnDestroy(): void {
+    // Configure the layout
+    this._fuseConfigService.config = {
+      layout: {
+        navbar: {
+          hidden: false,
+        },
+        toolbar: {
+          hidden: false,
+        },
+        // footer: {
+        //   hidden: false,
+        // },
+        sidepanel: {
+          hidden: false,
         },
       },
     };

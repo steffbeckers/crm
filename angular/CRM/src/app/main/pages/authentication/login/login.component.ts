@@ -38,6 +38,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         toolbar: {
           hidden: true,
         },
+        // footer: {
+        //   hidden: true,
+        // },
         sidepanel: {
           hidden: true,
         },
@@ -73,6 +76,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         toolbar: {
           hidden: false,
         },
+        // footer: {
+        //   hidden: false,
+        // },
         sidepanel: {
           hidden: false,
         },

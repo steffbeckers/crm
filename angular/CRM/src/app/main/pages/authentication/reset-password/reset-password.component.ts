@@ -29,9 +29,9 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         toolbar: {
           hidden: true,
         },
-        footer: {
-          hidden: true,
-        },
+        // footer: {
+        //   hidden: true,
+        // },
         sidepanel: {
           hidden: true,
         },
@@ -74,6 +74,24 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+
+    // Configure the layout
+    this._fuseConfigService.config = {
+      layout: {
+        navbar: {
+          hidden: false,
+        },
+        toolbar: {
+          hidden: false,
+        },
+        // footer: {
+        //   hidden: false,
+        // },
+        sidepanel: {
+          hidden: false,
+        },
+      },
+    };
   }
 }
 
