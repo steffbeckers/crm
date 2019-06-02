@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -14,7 +14,7 @@ import { AuthService } from 'app/services/auth.service';
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
 
   /**
@@ -36,9 +36,6 @@ export class LoginComponent implements OnInit {
           hidden: true,
         },
         toolbar: {
-          hidden: true,
-        },
-        footer: {
           hidden: true,
         },
         sidepanel: {
@@ -63,7 +60,26 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  // Custom code
+  /**
+   * On destroy
+   */
+  ngOnDestroy(): void {
+    // Configure the layout
+    this._fuseConfigService.config = {
+      layout: {
+        navbar: {
+          hidden: false,
+        },
+        toolbar: {
+          hidden: false,
+        },
+        sidepanel: {
+          hidden: false,
+        },
+      },
+    };
+  }
+
   login(): void {
     // Validate
     if (this.loginForm.invalid) {
