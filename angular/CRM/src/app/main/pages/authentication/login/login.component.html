@@ -39,6 +39,10 @@
         <button mat-raised-button color="accent" class="submit-button" aria-label="LOG IN" [disabled]="loginForm.invalid">
           LOGIN
         </button>
+
+        <div *ngIf="auth.isAuthenticated()">
+          <span>Hello, {{ auth.user.firstName }}! </span><span (click)="auth.logout()">Logout</span>
+        </div>
       </form>
     </div>
   </div>

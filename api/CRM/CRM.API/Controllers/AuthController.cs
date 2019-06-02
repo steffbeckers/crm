@@ -107,7 +107,8 @@ namespace CRM.API.Controllers
                     return Ok(new AuthenticatedVM()
                     {
                         User = mapper.Map<User, UserVM>(currentUser),
-                        Token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor))
+                        Token = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor)),
+                        RememberMe = model.RememberMe
                     });
                 }
                 //if (result.RequiresTwoFactor)
@@ -183,12 +184,11 @@ namespace CRM.API.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            logger.LogInformation("User logged out.");
 
             return Ok();
         }

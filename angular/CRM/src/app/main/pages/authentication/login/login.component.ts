@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
    * @param {FuseConfigService} _fuseConfigService
    * @param {FormBuilder} _formBuilder
    */
-  constructor(private _fuseConfigService: FuseConfigService, private _formBuilder: FormBuilder, private auth: AuthService) {
+  constructor(private _fuseConfigService: FuseConfigService, private _formBuilder: FormBuilder, public auth: AuthService) {
     // Configure the layout
     this._fuseConfigService.config = {
       layout: {
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this._formBuilder.group({
       emailOrUsername: ['', Validators.required],
       password: ['', Validators.required],
-      rememberMe: [false],
+      rememberMe: [true],
     });
   }
 

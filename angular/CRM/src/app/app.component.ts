@@ -15,6 +15,8 @@ import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 
+import { AuthService } from './services/auth.service';
+
 @Component({
   selector: 'app',
   templateUrl: './app.component.html',
@@ -47,7 +49,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private _fuseSplashScreenService: FuseSplashScreenService,
     private _fuseTranslationLoaderService: FuseTranslationLoaderService,
     private _translateService: TranslateService,
-    private _platform: Platform
+    private _platform: Platform,
+    private auth: AuthService
   ) {
     // Get default navigation
     this.navigation = navigation;
@@ -120,6 +123,9 @@ export class AppComponent implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
+    // Retrieve logged in user on load
+    this.auth.me();
+
     // Subscribe to config changes
     this._fuseConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe((config) => {
       this.fuseConfig = config;

@@ -9,5 +9,6 @@ namespace CRM.API.ViewModels.Identity
     {
         public UserVM User { get; set; }
         public string Token { get; set; }
+        public bool RememberMe { get; set; }
     }
 }
