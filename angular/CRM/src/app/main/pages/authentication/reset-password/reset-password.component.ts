@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { Logger } from 'app/helpers/logger';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 
@@ -26,6 +27,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
+    private logger: Logger,
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
@@ -64,6 +66,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.queryParams.id;
     const email = this.route.snapshot.queryParams.email;
     const code = this.route.snapshot.queryParams.code;
+
+    this.logger.log('id: ' + id);
+    this.logger.log('email: ' + email);
+    this.logger.log('code: ' + code);
 
     // Remove query params
     this.router.navigate([], {
@@ -136,10 +142,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     body.email = this.route.snapshot.queryParams.email;
 
     this.http.post(environment.api + '/auth/reset-password', body).subscribe(
-      (result: any) => {
+      () => {
         this.router.navigateByUrl(`/auth/login?email=${body.email}&message=password-reset-success`);
       },
-      (error: any) => {
+      () => {
         this.router.navigateByUrl(`/auth/forgot-password?error=password-reset-code-invalid`);
       }
     );
