@@ -70,6 +70,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     this.logger.log('id: ' + id);
     this.logger.log('email: ' + email);
     this.logger.log('code: ' + code);
+    this.logger.log('decodeURIComponent(code): ' + decodeURIComponent(code));
 
     // Remove query params
     this.router.navigate([], {
