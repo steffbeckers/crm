@@ -24,24 +24,15 @@ export class AuthService {
     this.getUser();
   }
 
-  login(credentials: any, returnUrl: string = null): void {
-    this.http.post(environment.api + '/auth/login', credentials).subscribe((authenticated: any) => {
-      // Set user and token after login
-      if (authenticated.rememberMe) {
-        this.setToken(authenticated.token);
-        this.setUser(authenticated.user);
-      } else {
-        this.token = authenticated.token;
-        this.user = authenticated.user;
-      }
-
-      // Routing after login
-      if (returnUrl) {
-        this.router.navigateByUrl(returnUrl);
-      } else {
-        this.router.navigateByUrl('/apps/dashboards/analytics');
-      }
-    });
+  login(authenticated: any): void {
+    // Set user and token after login
+    if (authenticated.rememberMe) {
+      this.setToken(authenticated.token);
+      this.setUser(authenticated.user);
+    } else {
+      this.token = authenticated.token;
+      this.user = authenticated.user;
+    }
   }
 
   me(): void {

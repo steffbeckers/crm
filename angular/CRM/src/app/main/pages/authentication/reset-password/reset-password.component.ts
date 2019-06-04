@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'environments/environment';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -19,7 +23,13 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   // Private
   private _unsubscribeAll: Subject<any>;
 
-  constructor(private _fuseConfigService: FuseConfigService, private _formBuilder: FormBuilder) {
+  constructor(
+    private _fuseConfigService: FuseConfigService,
+    private _formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
+  ) {
     // Configure the layout
     this._fuseConfigService.config = {
       layout: {
@@ -50,9 +60,31 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
+    // Retrieve from URL query params
+    const id = this.route.snapshot.queryParams.id;
+    const email = this.route.snapshot.queryParams.email;
+    const code = this.route.snapshot.queryParams.code;
+
+    // Remove query params
+    this.router.navigate([], {
+      queryParams: {
+        id: null,
+        code: null,
+      },
+      queryParamsHandling: 'merge',
+    });
+
+    // Validation
+    if (!id || !email || !code) {
+      this.router.navigateByUrl('/auth/forgot-password?error=password-reset-url-invalid');
+      return;
+    }
+
+    // Form
     this.resetPasswordForm = this._formBuilder.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      id: [id, Validators.required],
+      email: [{ disabled: true, value: email }, [Validators.required, Validators.email]],
+      code: [code, Validators.required],
       password: ['', Validators.required],
       passwordConfirm: ['', [Validators.required, confirmPasswordValidator]],
     });
@@ -92,6 +124,25 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         },
       },
     };
+  }
+
+  resetPassword(): void {
+    // Validate
+    if (this.resetPasswordForm.invalid) {
+      return;
+    }
+
+    let body = this.resetPasswordForm.value;
+    body.email = this.route.snapshot.queryParams.email;
+
+    this.http.post(environment.api + '/auth/reset-password', body).subscribe(
+      (result: any) => {
+        this.router.navigateByUrl(`/auth/login?email=${body.email}&message=password-reset-success`);
+      },
+      (error: any) => {
+        this.router.navigateByUrl(`/auth/forgot-password?error=password-reset-code-invalid`);
+      }
+    );
   }
 }
 
