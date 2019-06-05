@@ -28,10 +28,10 @@ export class FuseConfigService {
     this._defaultConfig = _config;
 
     // Retrieve saved config
-    const savedConfig = localStorage.getItem('theme-config');
-    if (savedConfig) {
-      this._defaultConfig = JSON.parse(savedConfig);
-    }
+    // const savedConfig = localStorage.getItem('theme-config');
+    // if (savedConfig) {
+    //   this._defaultConfig = JSON.parse(savedConfig);
+    // }
 
     // Initialize the service
     this._init();
@@ -52,7 +52,7 @@ export class FuseConfigService {
     config = _.merge({}, config, value);
 
     // Save to local storage
-    localStorage.setItem('theme-config', JSON.stringify(config));
+    // localStorage.setItem('theme-config', JSON.stringify(config));
 
     // Notify the observers
     this._configSubject.next(config);
@@ -125,7 +125,7 @@ export class FuseConfigService {
     config = _.merge({}, config, value);
 
     // Save to local storage
-    localStorage.setItem('theme-config', JSON.stringify(config));
+    // localStorage.setItem('theme-config', JSON.stringify(config));
 
     // If emitEvent option is true...
     if (opts.emitEvent === true) {

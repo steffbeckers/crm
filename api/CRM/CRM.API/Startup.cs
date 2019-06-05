@@ -107,7 +107,8 @@ namespace CRM.API
             services.AddAutoMapper();
 
             // Services
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             // Use HttpContext from custom components
             services.AddHttpContextAccessor();

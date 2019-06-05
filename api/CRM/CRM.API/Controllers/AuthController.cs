@@ -59,7 +59,7 @@ namespace CRM.API.Controllers
                 // If no user is found by email or username, just return unauthorized and give nothing away of existing user info
                 if (currentUser == null)
                 {
-                    return Unauthorized();
+                    return Unauthorized("invalid");
                 }
 
                 // Log the user in by password
@@ -119,13 +119,21 @@ namespace CRM.API.Controllers
                 //}
                 if (result.IsLockedOut)
                 {
-                    logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
+                    // INFO: This is possible to split some code
+                    //return RedirectToAction(nameof(Lockout));
+
+                    logger.LogWarning("User is locked out.");
+                    return Unauthorized("locked-out");
+                }
+                if (result.IsNotAllowed)
+                {
+                    logger.LogWarning("User is not allowed to login.");
+                    return Unauthorized("not-allowed");
                 }
                 else
                 {
                     logger.LogWarning("Invalid login attempt.");
-                    return Unauthorized();
+                    return Unauthorized("invalid");
                 }
             }
 
@@ -143,13 +151,6 @@ namespace CRM.API.Controllers
             currentUser.Roles = (List<string>)await userManager.GetRolesAsync(currentUser);
 
             return Ok(mapper.Map<User, UserVM>(currentUser));
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Lockout()
-        {
-            return Unauthorized();
         }
 
         [HttpPost]
@@ -172,7 +173,7 @@ namespace CRM.API.Controllers
                     await emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     // When self registering and login at the same time
-                    // Need to add JWT logic if adding
+                    // Need to add/refactor JWT logic if adding
                     //await signInManager.SignInAsync(user, isPersistent: false);
 
                     return Ok();
@@ -182,7 +183,7 @@ namespace CRM.API.Controllers
             }
 
             // If we got this far, something failed
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         [HttpGet]
@@ -201,7 +202,7 @@ namespace CRM.API.Controllers
         {
             if (userId == null || code == null)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
             var user = await userManager.FindByIdAsync(userId);
@@ -219,7 +220,7 @@ namespace CRM.API.Controllers
             AddErrors(result);
 
             // If we got this far, something failed
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         [HttpPost]
@@ -230,18 +231,37 @@ namespace CRM.API.Controllers
             if (ModelState.IsValid)
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await userManager.IsEmailConfirmedAsync(user)))
+                if (user == null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return Ok();
+                    //// Don't reveal that the user does not exist
+                    //return Ok();
+
+                    // For CRM purposes
+                    return NotFound("email-not-found");
+                }
+
+                // Check if email is confirmed, if required in Startup settings
+                // In startup: options.SignIn.RequireConfirmedEmail = true;
+                if (!(await userManager.IsEmailConfirmedAsync(user)))
+                {
+                    //// Don't reveal that the user does not exist
+                    //return Ok();
+
+                    // OR
+
+                    return NotFound("email-not-confirmed");
                 }
 
                 // For more information on how to enable account confirmation and password reset please
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                // In startup: options.SignIn.RequireConfirmedEmail = true;
 
                 var code = await userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+
+                //var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+                var callbackUrl = configuration.GetSection("EmailSettings").GetValue<string>("PasswordResetURL");
+                callbackUrl = callbackUrl.Replace("{{userId}}", user.Id.ToString().ToLower());
+                callbackUrl = callbackUrl.Replace("{{userEmail}}", user.Email.ToString().ToLower());
+                callbackUrl = callbackUrl.Replace("{{code}}", Uri.EscapeDataString(code));
 
                 await emailSender.SendEmailAsync(model.Email, "Reset Password",
                    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
@@ -260,22 +280,39 @@ namespace CRM.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
+                var user = await userManager.FindByIdAsync(model.Id);
                 if (user == null)
                 {
-                    return BadRequest();
+                    //return BadRequest();
+
+                    // OR
+
+                    // For CRM purposes
+                    return NotFound("user-not-found");
+                }
+                if (user.Email != model.Email)
+                {
+                    //return BadRequest();
+
+                    // OR
+
+                    // For CRM purposes
+                    return BadRequest("email-does-not-match");
                 }
 
                 var result = await userManager.ResetPasswordAsync(user, model.Code, model.Password);
                 if (result.Succeeded)
                 {
+                    // TODO: Maybe log the user in automatically? Need to add/refactor JWT logic if adding
+                    //await signInManager.SignInAsync(user, isPersistent: false);
+
                     return Ok();
                 }
 
                 AddErrors(result);
             }
 
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         #region Helpers
