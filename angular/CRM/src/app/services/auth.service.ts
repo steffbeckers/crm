@@ -52,16 +52,16 @@ export class AuthService {
       return;
     }
 
-    this.http.get(environment.api + '/auth/logout').subscribe((response: any) => {
-      // Return to login page
-      this.router.navigateByUrl('/auth/login');
+    this.http.get(environment.api + '/auth/logout').subscribe(() => {
+      // Remove token and user
+      this.token = null;
+      this.user = null;
 
       // Clear local storage
       localStorage.clear();
 
-      // Remove token and user
-      this.token = null;
-      this.user = null;
+      // Return to login page
+      this.router.navigateByUrl('/auth/login');
     });
   }
 
