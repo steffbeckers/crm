@@ -94,6 +94,7 @@ namespace CRM.API.Controllers
                     }
 
                     // Authentication successful => Generate jwt token
+                    // TODO: This code could be moved to another layer
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var key = Encoding.ASCII.GetBytes(configuration.GetSection("Authentication").GetValue<string>("Secret"));
                     var tokenDescriptor = new SecurityTokenDescriptor
