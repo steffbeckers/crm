@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRM.API.CodeGenerator;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,6 +20,7 @@ namespace CRM.API.Models
 
         [Required]
         [MaxLength(100)]
+        [CodeGenLookupFieldToDisplay(true)]
         public string DisplayName { get; set; }
     }
 }
