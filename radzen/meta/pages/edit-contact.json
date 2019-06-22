@@ -1,0 +1,369 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Edit Contact"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "closeLabel",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Item no longer available.",
+                  "type": "label",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "type": "back"
+                      }
+                    ]
+                  },
+                  "icon": "",
+                  "name": "closeButton",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Close",
+                  "type": "button",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "data": "${contact}",
+                  "events": {
+                    "cancel": [
+                      {
+                        "type": "back"
+                      }
+                    ],
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "name": "canEdit",
+                            "type": "set",
+                            "value": "!(result.status == 400)"
+                          },
+                          {
+                            "detail": "Unable to update Contact",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "CRM.updateContact",
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${parameters.Id}"
+                          },
+                          {
+                            "name": "Contact",
+                            "value": "${event}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "back"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "loadData": [
+                      {
+                        "name": "CRM.getAccounts",
+                        "condition": "event.property == 'AccountId'",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getAccountsForAccountIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getAccountsForAccountIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  },
+                  "fields": [
+                    {
+                      "property": "Id",
+                      "required": true,
+                      "title": "Id",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "FirstName",
+                      "required": false,
+                      "title": "First Name",
+                      "type": "string",
+                      "maxLength": 50,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "LastName",
+                      "required": true,
+                      "title": "Last Name",
+                      "type": "string",
+                      "maxLength": 50,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "JobTitle",
+                      "required": false,
+                      "title": "Job Title",
+                      "type": "string",
+                      "maxLength": 100,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Email",
+                      "required": false,
+                      "title": "Email",
+                      "type": "string",
+                      "maxLength": 100,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Telephone",
+                      "required": false,
+                      "title": "Telephone",
+                      "type": "string",
+                      "maxLength": 50,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "MobilePhone",
+                      "required": false,
+                      "title": "Mobile Phone",
+                      "type": "string",
+                      "maxLength": 50,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Gender",
+                      "required": false,
+                      "title": "Gender",
+                      "type": "integer",
+                      "requiredText": "is required",
+                      "minText": "cannot be less than",
+                      "maxText": "cannot be more than"
+                    },
+                    {
+                      "data": "${getAccountsForAccountIdResult}",
+                      "property": "AccountId",
+                      "required": false,
+                      "textProperty": "Name",
+                      "title": "Account",
+                      "type": "lookuppopup",
+                      "valueProperty": "Id",
+                      "placeholder": "Choose Account",
+                      "count": "${getAccountsForAccountIdCount}",
+                      "pageSize": "${getAccountsForAccountIdPageSize}",
+                      "value": "${getByAccountsForAccountIdResult}",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "CreatedOn",
+                      "required": true,
+                      "title": "Created On",
+                      "type": "date",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "ModifiedOn",
+                      "required": true,
+                      "title": "Modified On",
+                      "type": "date",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "DeletedOn",
+                      "required": false,
+                      "title": "Deleted On",
+                      "type": "date",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "CreatedById",
+                      "required": true,
+                      "title": "Created By Id",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "ModifiedById",
+                      "required": true,
+                      "title": "Modified By Id",
+                      "type": "string",
+                      "requiredText": "is required"
+                    }
+                  ],
+                  "name": "form0",
+                  "type": "form",
+                  "visible": "${canEdit}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "canEdit",
+        "type": "set",
+        "value": "true"
+      },
+      {
+        "name": "CRM.getContactById",
+        "parameters": [
+          {
+            "name": "Id",
+            "value": "${parameters.Id}"
+          }
+        ],
+        "then": [
+          {
+            "name": "contact",
+            "type": "set",
+            "value": "${result}"
+          },
+          {
+            "name": "CRM.getAccountById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.contact.AccountId}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByAccountsForAccountIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "condition": "this.contact.AccountId != null",
+            "type": "invoke"
+          }
+        ],
+        "error": [
+          {
+            "name": "canEdit",
+            "type": "set",
+            "value": "!(result.status == 400)"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getAccountsForAccountIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getAccounts",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getAccountsForAccountIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getAccountsForAccountIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getAccountsForAccountIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Edit Contact",
+  "layout": "Main",
+  "access": [
+    "Authenticated"
+  ]
+}

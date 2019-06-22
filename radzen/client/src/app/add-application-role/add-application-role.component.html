@@ -1,0 +1,28 @@
+<rz-content #content1 container="main">
+  <div class="row">
+    <div class="col-md-12">
+      <rz-template-form #form0 (submit)="form0Submit($event)">
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label1 component="Name" [style]="{'width': '100%'}" text="Name">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #name [style]="{'display': 'block', 'width': '100%'}" name="Name">
+            </rz-textbox>
+            <rz-required-validator #nameRequiredValidator [component]="name" [style]="{'position': 'absolute'}" text="Name is required">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-sm-3">
+            <rz-button #button1 buttonStyle="primary" buttonType="submit" icon="save" text="Save">
+            </rz-button>
+            <rz-button #button2 buttonStyle="light" text="Cancel" (click)="button2Click($event)">
+            </rz-button>
+          </div>
+        </div>
+      </rz-template-form>
+    </div>
+  </div>
+</rz-content>

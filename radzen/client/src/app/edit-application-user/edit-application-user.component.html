@@ -1,0 +1,66 @@
+<rz-content #content1 container="main">
+  <div class="row">
+    <div class="col-md-12">
+      <rz-template-form #form0 (submit)="form0Submit($event)">
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label1 component="UserName" [style]="{'width': '100%'}" text="User Name">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #userName [disabled]="true" [style]="{'width': '100%'}" [(ngModel)]="user && user.UserName" name="UserName">
+            </rz-textbox>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label2 component="Email" [style]="{'width': '100%'}" text="Email">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #email [style]="{'width': '100%'}" [(ngModel)]="user && user.Email" name="Email">
+            </rz-textbox>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label3 component="RoleNames" [style]="{'width': '100%'}" text="Roles">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-dropdown #roleNames [data]="roles" [multiple]="true" [style]="{'width': '100%'}" textProperty="Name" [(ngModel)]="user && user.RoleNames" valueProperty="Name" name="RoleNames">
+            </rz-dropdown>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label4 component="Password" [style]="{'width': '100%'}" text="Password">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-password #password [style]="{'width': '100%'}" [(ngModel)]="user && user.Password" name="Password">
+            </rz-password>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label5 component="ConfirmPassword" [style]="{'width': '100%'}" text="Confirm password">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-password #confirmPassword [style]="{'width': '100%'}" [(ngModel)]="user && user.ConfirmPassword" name="ConfirmPassword">
+            </rz-password>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-sm-3">
+            <rz-button #button1 buttonStyle="primary" buttonType="submit" icon="save" text="Save">
+            </rz-button>
+            <rz-button #button2 buttonStyle="light" text="Cancel" (click)="button2Click($event)">
+            </rz-button>
+          </div>
+        </div>
+      </rz-template-form>
+    </div>
+  </div>
+</rz-content>

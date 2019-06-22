@@ -1,0 +1,202 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Countries"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "name": "grid0",
+                  "allowDelete": true,
+                  "confirmDelete": true,
+                  "allowAdd": true,
+                  "allowFiltering": true,
+                  "allowMultiSorting": false,
+                  "allowPaging": true,
+                  "allowSorting": true,
+                  "count": "${getCountriesCount}",
+                  "data": "${getCountriesResult}",
+                  "events": {
+                    "loadData": [
+                      {
+                        "name": "CRM.getCountries",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "event.top"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "event.skip"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "event.top != null && event.skip != null"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getCountriesResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getCountriesCount",
+                            "type": "set",
+                            "value": "event.top != null && event.skip != null ? result['@odata.count'] : ${result.value.length}"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "delete": [
+                      {
+                        "error": [
+                          {
+                            "detail": "Unable to delete Country",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "CRM.deleteCountry",
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${event.Id}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "detail": "Country deleted!",
+                            "severity": "success",
+                            "summary": "Success",
+                            "type": "notify"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "add": [
+                      {
+                        "path": "add-country",
+                        "type": "navigate"
+                      }
+                    ],
+                    "rowSelect": [
+                      {
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${event.Id}"
+                          }
+                        ],
+                        "path": "edit-country",
+                        "type": "navigate"
+                      }
+                    ]
+                  },
+                  "title": "",
+                  "columns": [
+                    {
+                      "format": "uuid",
+                      "property": "Id",
+                      "title": "Id",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Name",
+                      "title": "Name",
+                      "type": "string"
+                    },
+                    {
+                      "property": "NativeName",
+                      "title": "Native Name",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Alpha2Code",
+                      "title": "Alpha 2 Code",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Alpha3Code",
+                      "title": "Alpha 3 Code",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Capital",
+                      "title": "Capital",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Region",
+                      "title": "Region",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Subregion",
+                      "title": "Subregion",
+                      "type": "string"
+                    },
+                    {
+                      "property": "NumericCode",
+                      "title": "Numeric Code",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Flag",
+                      "title": "Flag",
+                      "type": "string"
+                    }
+                  ],
+                  "type": "grid",
+                  "pageSize": 20,
+                  "confirmDeleteText": "Are you sure you want to delete this record?",
+                  "confirmDeleteTitle": "Confirmation",
+                  "confirmDeleteOkText": "Ok",
+                  "confirmDeleteCancelText": "Cancel",
+                  "emptyText": "No records to display.",
+                  "addText": "Add"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "type": "execute",
+        "code": "this.grid0.load();"
+      }
+    ]
+  },
+  "name": "Countries",
+  "layout": "Main",
+  "access": [
+    "Authenticated"
+  ]
+}

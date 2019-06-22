@@ -1,0 +1,38 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Add Contact">
+  </rz-heading>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-form #form0 (cancel)="form0Cancel($event)" (submit)="form0Submit($event)" (loadData)="form0LoadData($event)">
+        <rz-string-form-field property="Id" [required]="true" title="Id" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="FirstName" [required]="false" title="First Name" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="LastName" [required]="true" title="Last Name" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="JobTitle" [required]="false" title="Job Title" [maxLength]="100" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Email" [required]="false" title="Email" [maxLength]="100" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Telephone" [required]="false" title="Telephone" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="MobilePhone" [required]="false" title="Mobile Phone" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-integer-form-field property="Gender" [required]="false" title="Gender" requiredText="is required" minText="cannot be less than" maxText="cannot be more than" type="integer">
+        </rz-integer-form-field>
+        <rz-lookuppopup-form-field [data]="getAccountsForAccountIdResult" property="AccountId" [required]="false" textProperty="Name" title="Account" valueProperty="Id" placeholder="Choose Account" [count]="getAccountsForAccountIdCount" [pageSize]="getAccountsForAccountIdPageSize" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-date-form-field property="CreatedOn" [required]="true" title="Created On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-date-form-field property="ModifiedOn" [required]="true" title="Modified On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-date-form-field property="DeletedOn" [required]="false" title="Deleted On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-string-form-field property="CreatedById" [required]="true" title="Created By Id" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="ModifiedById" [required]="true" title="Modified By Id" requiredText="is required" type="string">
+        </rz-string-form-field>
+      </rz-form>
+    </div>
+  </div>
+</rz-content>

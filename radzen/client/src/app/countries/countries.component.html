@@ -1,0 +1,30 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Countries">
+  </rz-heading>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-grid #grid0 [allowDelete]="true" [confirmDelete]="true" [allowAdd]="true" [allowFiltering]="true" [allowMultiSorting]="false" [allowPaging]="true" [allowSorting]="true" [count]="getCountriesCount" [data]="getCountriesResult" [pageSize]="20" confirmDeleteText="Are you sure you want to delete this record?" confirmDeleteTitle="Confirmation" confirmDeleteOkText="Ok" confirmDeleteCancelText="Cancel" emptyText="No records to display." addText="Add" (loadData)="grid0LoadData($event)" (delete)="grid0Delete($event)" (add)="grid0Add($event)" (rowSelect)="grid0RowSelect($event)">
+        <rz-grid-column format="uuid" property="Id" title="Id" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Name" title="Name" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="NativeName" title="Native Name" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Alpha2Code" title="Alpha 2 Code" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Alpha3Code" title="Alpha 3 Code" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Capital" title="Capital" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Region" title="Region" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Subregion" title="Subregion" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="NumericCode" title="Numeric Code" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Flag" title="Flag" type="string">
+        </rz-grid-column>
+      </rz-grid>
+    </div>
+  </div>
+</rz-content>

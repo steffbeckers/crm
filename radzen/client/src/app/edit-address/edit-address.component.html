@@ -1,0 +1,48 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Edit Address">
+  </rz-heading>
+  <div [ngStyle]="{}" class="row">
+    <div class="col-md-9">
+      <rz-label #closeLabel [style]="{'fontWeight': 'bold'}" text="Item no longer available." *ngIf="!canEdit">
+      </rz-label>
+    </div>
+    <div class="col-md-3">
+      <rz-button #closeButton buttonStyle="secondary" [style]="{'marginBottom': '20px'}" text="Close" *ngIf="!canEdit" (click)="closeButtonClick($event)">
+      </rz-button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-form #form0 [data]="address" *ngIf="canEdit" (cancel)="form0Cancel($event)" (submit)="form0Submit($event)" (loadData)="form0LoadData($event)">
+        <rz-string-form-field property="Id" [required]="true" title="Id" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Street" [required]="false" title="Street" [maxLength]="250" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Number" [required]="false" title="Number" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="City" [required]="false" title="City" [maxLength]="80" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="State" [required]="false" title="State" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="PostalCode" [required]="false" title="Postal Code" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-number-form-field property="Latitude" [required]="false" title="Latitude" requiredText="is required" minText="cannot be less than" maxText="cannot be more than" type="number">
+        </rz-number-form-field>
+        <rz-number-form-field property="Longitude" [required]="false" title="Longitude" requiredText="is required" minText="cannot be less than" maxText="cannot be more than" type="number">
+        </rz-number-form-field>
+        <rz-lookuppopup-form-field [data]="getCountriesForCountryIdResult" property="CountryId" [required]="false" textProperty="Name" title="Country" valueProperty="Id" placeholder="Choose Country" [count]="getCountriesForCountryIdCount" [pageSize]="getCountriesForCountryIdPageSize" [value]="getByCountriesForCountryIdResult" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-date-form-field property="CreatedOn" [required]="true" title="Created On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-date-form-field property="ModifiedOn" [required]="true" title="Modified On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-date-form-field property="DeletedOn" [required]="false" title="Deleted On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-string-form-field property="CreatedById" [required]="true" title="Created By Id" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="ModifiedById" [required]="true" title="Modified By Id" requiredText="is required" type="string">
+        </rz-string-form-field>
+      </rz-form>
+    </div>
+  </div>
+</rz-content>

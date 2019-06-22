@@ -1,0 +1,46 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Add Account">
+  </rz-heading>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-form #form0 (cancel)="form0Cancel($event)" (submit)="form0Submit($event)" (loadData)="form0LoadData($event)">
+        <rz-string-form-field property="Id" [required]="true" title="Id" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Name" [required]="true" title="Name" [maxLength]="100" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Email" [required]="false" title="Email" [maxLength]="100" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Telephone" [required]="false" title="Telephone" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Fax" [required]="false" title="Fax" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Website" [required]="false" title="Website" [maxLength]="200" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="VATNumber" [required]="false" title="VAT Number" [maxLength]="50" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Description" [required]="false" title="Description" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-lookuppopup-form-field [data]="getAddressesForAddressIdResult" property="AddressId" [required]="false" textProperty="Street" title="Address" valueProperty="Id" placeholder="Choose Address" [count]="getAddressesForAddressIdCount" [pageSize]="getAddressesForAddressIdPageSize" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [data]="getAccountsForParentAccountIdResult" property="ParentAccountId" [required]="false" textProperty="Name" title="Account" valueProperty="Id" placeholder="Choose Account" [count]="getAccountsForParentAccountIdCount" [pageSize]="getAccountsForParentAccountIdPageSize" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [data]="getAccountsForBillingAccountIdResult" property="BillingAccountId" [required]="false" textProperty="Name" title="Account" valueProperty="Id" placeholder="Choose Account" [count]="getAccountsForBillingAccountIdCount" [pageSize]="getAccountsForBillingAccountIdPageSize" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [data]="getAccountRelationTypesForRelationTypeIdResult" property="RelationTypeId" [required]="false" textProperty="Name" title="Account Relation Type" valueProperty="Id" placeholder="Choose AccountRelationType" [count]="getAccountRelationTypesForRelationTypeIdCount" [pageSize]="getAccountRelationTypesForRelationTypeIdPageSize" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [data]="getContactsForPrimaryContactIdResult" property="PrimaryContactId" [required]="false" textProperty="FirstName" title="Contact" valueProperty="Id" placeholder="Choose Contact" [count]="getContactsForPrimaryContactIdCount" [pageSize]="getContactsForPrimaryContactIdPageSize" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-date-form-field property="CreatedOn" [required]="true" title="Created On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-date-form-field property="ModifiedOn" [required]="true" title="Modified On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-date-form-field property="DeletedOn" [required]="false" title="Deleted On" requiredText="is required" type="date">
+        </rz-date-form-field>
+        <rz-lookuppopup-form-field [data]="getUsersForCreatedByIdResult" property="CreatedById" [required]="false" textProperty="UserName" title="User" valueProperty="Id" placeholder="Choose User" [count]="getUsersForCreatedByIdCount" [pageSize]="getUsersForCreatedByIdPageSize" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [data]="getUsersForModifiedByIdResult" property="ModifiedById" [required]="false" textProperty="UserName" title="User" valueProperty="Id" placeholder="Choose User" [count]="getUsersForModifiedByIdCount" [pageSize]="getUsersForModifiedByIdPageSize" requiredText="is required" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+      </rz-form>
+    </div>
+  </div>
+</rz-content>

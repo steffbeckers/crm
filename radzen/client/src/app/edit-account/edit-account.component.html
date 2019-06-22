@@ -1,0 +1,44 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Edit Account">
+  </rz-heading>
+  <div [ngStyle]="{}" class="row">
+    <div class="col-md-9">
+      <rz-label #closeLabel [style]="{'fontWeight': 'bold'}" text="Item no longer available." *ngIf="!canEdit">
+      </rz-label>
+    </div>
+    <div class="col-md-3">
+      <rz-button #closeButton buttonStyle="secondary" [style]="{'marginBottom': '20px'}" text="Close" *ngIf="!canEdit" (click)="closeButtonClick($event)">
+      </rz-button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-form #form0 [data]="account" *ngIf="canEdit" (cancel)="form0Cancel($event)" (loadData)="form0LoadData($event)" (submit)="form0Submit($event)">
+        <rz-string-form-field [maxLength]="100" property="Name" [required]="true" requiredText="is required" title="Name" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field [maxLength]="100" property="Email" [required]="false" requiredText="is required" title="Email" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field [maxLength]="50" property="Telephone" [required]="false" requiredText="is required" title="Telephone" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field [maxLength]="50" property="Fax" [required]="false" requiredText="is required" title="Fax" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field [maxLength]="200" property="Website" [required]="false" requiredText="is required" title="Website" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field [maxLength]="50" property="VATNumber" [required]="false" requiredText="is required" title="VAT Number" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Description" [required]="false" requiredText="is required" title="Description" type="string">
+        </rz-string-form-field>
+        <rz-lookuppopup-form-field [count]="getAddressesForAddressIdCount" [data]="getAddressesForAddressIdResult" [pageSize]="getAddressesForAddressIdPageSize" placeholder="Choose Address" property="AddressId" [required]="false" requiredText="is required" textProperty="Street" title="Address" [value]="getByAddressesForAddressIdResult" valueProperty="Id" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [count]="getAccountsForParentAccountIdCount" [data]="getAccountsForParentAccountIdResult" [pageSize]="getAccountsForParentAccountIdPageSize" placeholder="Choose Account" property="ParentAccountId" [required]="false" requiredText="is required" textProperty="Name" title="Parent Account" [value]="getByAccountsForParentAccountIdResult" valueProperty="Id" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [count]="getAccountsForBillingAccountIdCount" [data]="getAccountsForBillingAccountIdResult" [pageSize]="getAccountsForBillingAccountIdPageSize" placeholder="Choose Account" property="BillingAccountId" [required]="false" requiredText="is required" textProperty="Name" title="Billing Account" [value]="getByAccountsForBillingAccountIdResult" valueProperty="Id" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [count]="getAccountRelationTypesForRelationTypeIdCount" [data]="getAccountRelationTypesForRelationTypeIdResult" [pageSize]="getAccountRelationTypesForRelationTypeIdPageSize" placeholder="Choose AccountRelationType" property="RelationTypeId" [required]="false" requiredText="is required" textProperty="Name" title="Relation Type" [value]="getByAccountRelationTypesForRelationTypeIdResult" valueProperty="Id" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+        <rz-lookuppopup-form-field [count]="getContactsForPrimaryContactIdCount" [data]="getContactsForPrimaryContactIdResult" [pageSize]="getContactsForPrimaryContactIdPageSize" placeholder="Choose Contact" property="PrimaryContactId" [required]="false" requiredText="is required" textProperty="FirstName" title="Primary Contact" [value]="getByContactsForPrimaryContactIdResult" valueProperty="Id" type="lookuppopup">
+        </rz-lookuppopup-form-field>
+      </rz-form>
+    </div>
+  </div>
+</rz-content>

@@ -1,0 +1,67 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Accounts">
+  </rz-heading>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-grid #grid0 [allowDelete]="true" [confirmDelete]="true" [allowAdd]="true" [allowFiltering]="true" [allowMultiSorting]="false" [allowPaging]="true" [allowSorting]="true" [count]="getAccountsCount" [data]="getAccountsResult" [pageSize]="20" confirmDeleteText="Are you sure you want to delete this record?" confirmDeleteTitle="Confirmation" confirmDeleteOkText="Ok" confirmDeleteCancelText="Cancel" emptyText="No records to display." addText="Add" (loadData)="grid0LoadData($event)" (delete)="grid0Delete($event)" (add)="grid0Add($event)" (rowSelect)="grid0RowSelect($event)">
+        <rz-grid-column format="uuid" property="Id" title="Id" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Name" title="Name" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Email" title="Email" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Telephone" title="Telephone" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Fax" title="Fax" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Website" title="Website" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="VATNumber" title="VAT Number" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="Description" title="Description" type="string">
+        </rz-grid-column>
+        <rz-grid-column format="uuid" property="AddressId" sortProperty="Address.Street" filterProperty="Address.Street" title="Address" type="string">
+          <ng-template let-data gridColumnTemplate>
+          {{data?.Address?.Street}}
+          </ng-template>
+        </rz-grid-column>
+        <rz-grid-column format="uuid" property="ParentAccountId" sortProperty="Account2.Name" filterProperty="Account2.Name" title="Account" type="string">
+          <ng-template let-data gridColumnTemplate>
+          {{data?.Account2?.Name}}
+          </ng-template>
+        </rz-grid-column>
+        <rz-grid-column format="uuid" property="BillingAccountId" sortProperty="Account1.Name" filterProperty="Account1.Name" title="Account" type="string">
+          <ng-template let-data gridColumnTemplate>
+          {{data?.Account1?.Name}}
+          </ng-template>
+        </rz-grid-column>
+        <rz-grid-column format="uuid" property="RelationTypeId" sortProperty="AccountRelationType.Name" filterProperty="AccountRelationType.Name" title="Account Relation Type" type="string">
+          <ng-template let-data gridColumnTemplate>
+          {{data?.AccountRelationType?.Name}}
+          </ng-template>
+        </rz-grid-column>
+        <rz-grid-column format="uuid" property="PrimaryContactId" sortProperty="Contact.FirstName" filterProperty="Contact.FirstName" title="Contact" type="string">
+          <ng-template let-data gridColumnTemplate>
+          {{data?.Contact?.FirstName}}
+          </ng-template>
+        </rz-grid-column>
+        <rz-grid-column format="date-time" property="CreatedOn" formatString="medium" title="Created On" type="string">
+        </rz-grid-column>
+        <rz-grid-column format="date-time" property="ModifiedOn" formatString="medium" title="Modified On" type="string">
+        </rz-grid-column>
+        <rz-grid-column format="date-time" property="DeletedOn" formatString="medium" title="Deleted On" type="string">
+        </rz-grid-column>
+        <rz-grid-column property="CreatedById" sortProperty="User.UserName" filterProperty="User.UserName" title="User" type="string">
+          <ng-template let-data gridColumnTemplate>
+          {{data?.User?.UserName}}
+          </ng-template>
+        </rz-grid-column>
+        <rz-grid-column property="ModifiedById" sortProperty="User1.UserName" filterProperty="User1.UserName" title="User" type="string">
+          <ng-template let-data gridColumnTemplate>
+          {{data?.User1?.UserName}}
+          </ng-template>
+        </rz-grid-column>
+      </rz-grid>
+    </div>
+  </div>
+</rz-content>

@@ -1,0 +1,2093 @@
+{
+  "info": {
+    "title": "CRM",
+    "x-type": "odata",
+    "x-connector": "mssql",
+    "x-connector-version": 13
+  },
+  "definitions": {
+    "Account": {
+      "x-table": "dbo.Accounts",
+      "resource": "Accounts",
+      "required": [
+        "Id",
+        "Name",
+        "CreatedOn",
+        "ModifiedOn"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "string",
+          "format": "uuid",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Account1",
+              "name": "Accounts1",
+              "type": "Account"
+            },
+            {
+              "inversePropertyName": "Account2",
+              "name": "Accounts2",
+              "type": "Account"
+            },
+            {
+              "inversePropertyName": "Account",
+              "name": "Contacts",
+              "type": "Contact"
+            }
+          ]
+        },
+        "Name": {
+          "type": "string",
+          "length": 100
+        },
+        "Email": {
+          "type": "string",
+          "length": 100
+        },
+        "Telephone": {
+          "type": "string",
+          "length": 50
+        },
+        "Fax": {
+          "type": "string",
+          "length": 50
+        },
+        "Website": {
+          "type": "string",
+          "length": 200
+        },
+        "VATNumber": {
+          "type": "string",
+          "length": 50
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Address": {
+          "type": "object",
+          "$ref": "#/definitions/Address"
+        },
+        "AddressId": {
+          "type": "string",
+          "format": "uuid",
+          "x-foreignKey": {
+            "parentTable": "Addresses",
+            "parentEntityType": "Address",
+            "type": "Address",
+            "principalKey": "Id",
+            "name": "Address",
+            "textProperty": "Street",
+            "navigationProperty": "Accounts"
+          }
+        },
+        "Account2": {
+          "type": "object",
+          "$ref": "#/definitions/Account"
+        },
+        "ParentAccountId": {
+          "type": "string",
+          "format": "uuid",
+          "x-foreignKey": {
+            "parentTable": "Accounts",
+            "parentEntityType": "Account",
+            "type": "Account",
+            "principalKey": "Id",
+            "name": "Account2",
+            "textProperty": "Name",
+            "navigationProperty": "Accounts2"
+          }
+        },
+        "Account1": {
+          "type": "object",
+          "$ref": "#/definitions/Account"
+        },
+        "BillingAccountId": {
+          "type": "string",
+          "format": "uuid",
+          "x-foreignKey": {
+            "parentTable": "Accounts",
+            "parentEntityType": "Account",
+            "type": "Account",
+            "principalKey": "Id",
+            "name": "Account1",
+            "textProperty": "Name",
+            "navigationProperty": "Accounts1"
+          }
+        },
+        "AccountRelationType": {
+          "type": "object",
+          "$ref": "#/definitions/AccountRelationType"
+        },
+        "RelationTypeId": {
+          "type": "string",
+          "format": "uuid",
+          "x-foreignKey": {
+            "parentTable": "AccountRelationTypes",
+            "parentEntityType": "AccountRelationType",
+            "type": "AccountRelationType",
+            "principalKey": "Id",
+            "name": "AccountRelationType",
+            "textProperty": "Name",
+            "navigationProperty": "Accounts"
+          }
+        },
+        "Contact": {
+          "type": "object",
+          "$ref": "#/definitions/Contact"
+        },
+        "PrimaryContactId": {
+          "type": "string",
+          "format": "uuid",
+          "x-foreignKey": {
+            "parentTable": "Contacts",
+            "parentEntityType": "Contact",
+            "type": "Contact",
+            "principalKey": "Id",
+            "name": "Contact",
+            "textProperty": "FirstName",
+            "navigationProperty": "Accounts"
+          }
+        },
+        "CreatedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "DeletedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "User": {
+          "type": "object",
+          "$ref": "#/definitions/User"
+        },
+        "CreatedById": {
+          "type": "string",
+          "length": 450,
+          "x-foreignKey": {
+            "parentTable": "Users",
+            "parentEntityType": "User",
+            "type": "User",
+            "principalKey": "Id",
+            "name": "User",
+            "textProperty": "UserName",
+            "navigationProperty": "Accounts"
+          }
+        },
+        "User1": {
+          "type": "object",
+          "$ref": "#/definitions/User"
+        },
+        "ModifiedById": {
+          "type": "string",
+          "length": 450,
+          "x-foreignKey": {
+            "parentTable": "Users",
+            "parentEntityType": "User",
+            "type": "User",
+            "principalKey": "Id",
+            "name": "User1",
+            "textProperty": "UserName",
+            "navigationProperty": "Accounts1"
+          }
+        },
+        "Accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Account"
+          }
+        },
+        "Contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        }
+      }
+    },
+    "AccountRelationType": {
+      "x-table": "dbo.AccountRelationTypes",
+      "resource": "AccountRelationTypes",
+      "required": [
+        "Id",
+        "Name",
+        "DisplayName"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "string",
+          "format": "uuid",
+          "x-navigation": [
+            {
+              "inversePropertyName": "AccountRelationType",
+              "name": "Accounts",
+              "type": "Account"
+            }
+          ]
+        },
+        "Name": {
+          "type": "string",
+          "length": 100
+        },
+        "DisplayName": {
+          "type": "string",
+          "length": 100
+        },
+        "Accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Account"
+          }
+        }
+      }
+    },
+    "Address": {
+      "x-table": "dbo.Addresses",
+      "resource": "Addresses",
+      "required": [
+        "Id",
+        "CreatedOn",
+        "ModifiedOn",
+        "CreatedById",
+        "ModifiedById"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "string",
+          "format": "uuid",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Address",
+              "name": "Accounts",
+              "type": "Account"
+            }
+          ]
+        },
+        "Street": {
+          "type": "string",
+          "length": 250
+        },
+        "Number": {
+          "type": "string",
+          "length": 50
+        },
+        "City": {
+          "type": "string",
+          "length": 80
+        },
+        "State": {
+          "type": "string",
+          "length": 50
+        },
+        "PostalCode": {
+          "type": "string",
+          "length": 50
+        },
+        "Latitude": {
+          "type": "number",
+          "format": "decimal"
+        },
+        "Longitude": {
+          "type": "number",
+          "format": "decimal"
+        },
+        "Country": {
+          "type": "object",
+          "$ref": "#/definitions/Country"
+        },
+        "CountryId": {
+          "type": "string",
+          "format": "uuid",
+          "x-foreignKey": {
+            "parentTable": "Countries",
+            "parentEntityType": "Country",
+            "type": "Country",
+            "principalKey": "Id",
+            "name": "Country",
+            "textProperty": "Name",
+            "navigationProperty": "Addresses"
+          }
+        },
+        "CreatedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "DeletedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "CreatedById": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "ModifiedById": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "Accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Account"
+          }
+        }
+      }
+    },
+    "Contact": {
+      "x-table": "dbo.Contacts",
+      "resource": "Contacts",
+      "required": [
+        "Id",
+        "LastName",
+        "CreatedOn",
+        "ModifiedOn",
+        "CreatedById",
+        "ModifiedById"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "string",
+          "format": "uuid",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Contact",
+              "name": "Accounts",
+              "type": "Account"
+            }
+          ]
+        },
+        "FirstName": {
+          "type": "string",
+          "length": 50
+        },
+        "LastName": {
+          "type": "string",
+          "length": 50
+        },
+        "JobTitle": {
+          "type": "string",
+          "length": 100
+        },
+        "Email": {
+          "type": "string",
+          "length": 100
+        },
+        "Telephone": {
+          "type": "string",
+          "length": 50
+        },
+        "MobilePhone": {
+          "type": "string",
+          "length": 50
+        },
+        "Gender": {
+          "type": "integer"
+        },
+        "Account": {
+          "type": "object",
+          "$ref": "#/definitions/Account"
+        },
+        "AccountId": {
+          "type": "string",
+          "format": "uuid",
+          "x-foreignKey": {
+            "parentTable": "Accounts",
+            "parentEntityType": "Account",
+            "type": "Account",
+            "principalKey": "Id",
+            "name": "Account",
+            "textProperty": "Name",
+            "navigationProperty": "Contacts"
+          }
+        },
+        "CreatedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "DeletedOn": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "CreatedById": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "ModifiedById": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "Accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Account"
+          }
+        }
+      }
+    },
+    "Country": {
+      "x-table": "dbo.Countries",
+      "resource": "Countries",
+      "required": [
+        "Id",
+        "Name"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "string",
+          "format": "uuid",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Country",
+              "name": "Addresses",
+              "type": "Address"
+            }
+          ]
+        },
+        "Name": {
+          "type": "string",
+          "length": 100
+        },
+        "NativeName": {
+          "type": "string",
+          "length": 100
+        },
+        "Alpha2Code": {
+          "type": "string",
+          "length": 2
+        },
+        "Alpha3Code": {
+          "type": "string",
+          "length": 3
+        },
+        "Capital": {
+          "type": "string"
+        },
+        "Region": {
+          "type": "string"
+        },
+        "Subregion": {
+          "type": "string"
+        },
+        "NumericCode": {
+          "type": "string"
+        },
+        "Flag": {
+          "type": "string"
+        },
+        "Addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Address"
+          }
+        }
+      }
+    },
+    "Role": {
+      "x-table": "dbo.Roles",
+      "resource": "Roles",
+      "required": [
+        "Id"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "string",
+          "length": 450,
+          "x-navigation": [
+            {
+              "inversePropertyName": "Role",
+              "name": "UserRoles",
+              "type": "UserRole"
+            }
+          ]
+        },
+        "Name": {
+          "type": "string",
+          "length": 256
+        },
+        "NormalizedName": {
+          "type": "string",
+          "length": 256
+        },
+        "ConcurrencyStamp": {
+          "type": "string"
+        },
+        "UserRoles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserRole"
+          }
+        }
+      }
+    },
+    "User": {
+      "x-table": "dbo.Users",
+      "resource": "Users",
+      "required": [
+        "Id",
+        "EmailConfirmed",
+        "PhoneNumberConfirmed",
+        "TwoFactorEnabled",
+        "LockoutEnabled",
+        "AccessFailedCount"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "type": "string",
+          "length": 450,
+          "x-navigation": [
+            {
+              "inversePropertyName": "User",
+              "name": "Accounts",
+              "type": "Account"
+            },
+            {
+              "inversePropertyName": "User1",
+              "name": "Accounts1",
+              "type": "Account"
+            },
+            {
+              "inversePropertyName": "User",
+              "name": "UserRoles",
+              "type": "UserRole"
+            }
+          ]
+        },
+        "UserName": {
+          "type": "string",
+          "length": 256
+        },
+        "NormalizedUserName": {
+          "type": "string",
+          "length": 256
+        },
+        "Email": {
+          "type": "string",
+          "length": 256
+        },
+        "NormalizedEmail": {
+          "type": "string",
+          "length": 256
+        },
+        "EmailConfirmed": {
+          "type": "boolean"
+        },
+        "PasswordHash": {
+          "type": "string"
+        },
+        "SecurityStamp": {
+          "type": "string"
+        },
+        "ConcurrencyStamp": {
+          "type": "string"
+        },
+        "PhoneNumber": {
+          "type": "string"
+        },
+        "PhoneNumberConfirmed": {
+          "type": "boolean"
+        },
+        "TwoFactorEnabled": {
+          "type": "boolean"
+        },
+        "LockoutEnd": {
+          "type": "string",
+          "format": "date-time-offset"
+        },
+        "LockoutEnabled": {
+          "type": "boolean"
+        },
+        "AccessFailedCount": {
+          "type": "integer"
+        },
+        "FirstName": {
+          "type": "string"
+        },
+        "LastName": {
+          "type": "string"
+        },
+        "Accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Account"
+          }
+        },
+        "UserRoles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserRole"
+          }
+        }
+      }
+    },
+    "UserRole": {
+      "x-table": "dbo.UserRoles",
+      "resource": "UserRoles",
+      "required": [
+        "UserId",
+        "RoleId"
+      ],
+      "properties": {
+        "User": {
+          "type": "object",
+          "$ref": "#/definitions/User"
+        },
+        "UserId": {
+          "type": "string",
+          "length": 450,
+          "x-key": true,
+          "x-foreignKey": {
+            "parentTable": "Users",
+            "parentEntityType": "User",
+            "type": "User",
+            "principalKey": "Id",
+            "name": "User",
+            "textProperty": "UserName",
+            "navigationProperty": "UserRoles"
+          }
+        },
+        "Role": {
+          "type": "object",
+          "$ref": "#/definitions/Role"
+        },
+        "RoleId": {
+          "type": "string",
+          "length": 450,
+          "x-key": true,
+          "x-foreignKey": {
+            "parentTable": "Roles",
+            "parentEntityType": "Role",
+            "type": "Role",
+            "principalKey": "Id",
+            "name": "Role",
+            "textProperty": "Name",
+            "navigationProperty": "UserRoles"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/Accounts": {
+      "get": {
+        "operationId": "getAccounts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Account"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAccount",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Account",
+            "schema": {
+              "$ref": "#/definitions/Account"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Account"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/AccountRelationTypes": {
+      "get": {
+        "operationId": "getAccountRelationTypes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/AccountRelationType"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAccountRelationType",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "AccountRelationType",
+            "schema": {
+              "$ref": "#/definitions/AccountRelationType"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/AccountRelationType"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Addresses": {
+      "get": {
+        "operationId": "getAddresses",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Address"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAddress",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Address",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Contacts": {
+      "get": {
+        "operationId": "getContacts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Contact"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createContact",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Contact",
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Countries": {
+      "get": {
+        "operationId": "getCountries",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Country"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCountry",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Country",
+            "schema": {
+              "$ref": "#/definitions/Country"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Country"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Roles": {
+      "get": {
+        "operationId": "getRoles",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Role"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createRole",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Role",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Users": {
+      "get": {
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "User",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/UserRoles": {
+      "get": {
+        "operationId": "getUserRoles",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$select",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/UserRole"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createUserRole",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "UserRole",
+            "schema": {
+              "$ref": "#/definitions/UserRole"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/UserRole"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Accounts({Id})": {
+      "delete": {
+        "operationId": "deleteAccount",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getAccountById",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Account"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAccount",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Account",
+            "schema": {
+              "$ref": "#/definitions/Account"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/AccountRelationTypes({Id})": {
+      "delete": {
+        "operationId": "deleteAccountRelationType",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getAccountRelationTypeById",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AccountRelationType"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAccountRelationType",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "AccountRelationType",
+            "schema": {
+              "$ref": "#/definitions/AccountRelationType"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Addresses({Id})": {
+      "delete": {
+        "operationId": "deleteAddress",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getAddressById",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAddress",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Address",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Contacts({Id})": {
+      "delete": {
+        "operationId": "deleteContact",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getContactById",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateContact",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Contact",
+            "schema": {
+              "$ref": "#/definitions/Contact"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Countries({Id})": {
+      "delete": {
+        "operationId": "deleteCountry",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getCountryById",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Country"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateCountry",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Country",
+            "schema": {
+              "$ref": "#/definitions/Country"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Roles('{Id}')": {
+      "delete": {
+        "operationId": "deleteRole",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getRoleById",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateRole",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Role",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Users('{Id}')": {
+      "delete": {
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "User",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/UserRoles(UserId='{UserId}',RoleId='{RoleId}')": {
+      "delete": {
+        "operationId": "deleteUserRole",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "UserId",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "RoleId",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getUserRoleByUserIdAndRoleId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "UserId",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "RoleId",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/UserRole"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateUserRole",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "UserId",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "RoleId",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "UserRole",
+            "schema": {
+              "$ref": "#/definitions/UserRole"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "basePath": "/odata/CRM",
+  "host": "localhost:5000",
+  "schemes": [
+    "http"
+  ]
+}

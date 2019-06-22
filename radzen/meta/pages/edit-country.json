@@ -1,0 +1,237 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Edit Country"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "closeLabel",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Item no longer available.",
+                  "type": "label",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "type": "back"
+                      }
+                    ]
+                  },
+                  "icon": "",
+                  "name": "closeButton",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Close",
+                  "type": "button",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "data": "${country}",
+                  "events": {
+                    "cancel": [
+                      {
+                        "type": "back"
+                      }
+                    ],
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "name": "canEdit",
+                            "type": "set",
+                            "value": "!(result.status == 400)"
+                          },
+                          {
+                            "detail": "Unable to update Country",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "CRM.updateCountry",
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${parameters.Id}"
+                          },
+                          {
+                            "name": "Country",
+                            "value": "${event}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "back"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "loadData": []
+                  },
+                  "fields": [
+                    {
+                      "property": "Id",
+                      "required": true,
+                      "title": "Id",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Name",
+                      "required": true,
+                      "title": "Name",
+                      "type": "string",
+                      "maxLength": 100,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "NativeName",
+                      "required": false,
+                      "title": "Native Name",
+                      "type": "string",
+                      "maxLength": 100,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Alpha2Code",
+                      "required": false,
+                      "title": "Alpha 2 Code",
+                      "type": "string",
+                      "maxLength": 2,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Alpha3Code",
+                      "required": false,
+                      "title": "Alpha 3 Code",
+                      "type": "string",
+                      "maxLength": 3,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Capital",
+                      "required": false,
+                      "title": "Capital",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Region",
+                      "required": false,
+                      "title": "Region",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Subregion",
+                      "required": false,
+                      "title": "Subregion",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "NumericCode",
+                      "required": false,
+                      "title": "Numeric Code",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Flag",
+                      "required": false,
+                      "title": "Flag",
+                      "type": "string",
+                      "requiredText": "is required"
+                    }
+                  ],
+                  "name": "form0",
+                  "type": "form",
+                  "visible": "${canEdit}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "canEdit",
+        "type": "set",
+        "value": "true"
+      },
+      {
+        "name": "CRM.getCountryById",
+        "parameters": [
+          {
+            "name": "Id",
+            "value": "${parameters.Id}"
+          }
+        ],
+        "then": [
+          {
+            "name": "country",
+            "type": "set",
+            "value": "${result}"
+          }
+        ],
+        "error": [
+          {
+            "name": "canEdit",
+            "type": "set",
+            "value": "!(result.status == 400)"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Edit Country",
+  "layout": "Main",
+  "access": [
+    "Authenticated"
+  ]
+}
