@@ -119,7 +119,8 @@ namespace CRM.API
             services.AddHttpContextAccessor();
 
             // MVC
-            services.AddMvc(options => {
+            services.AddMvc(options =>
+            {
                 // OData
                 // TODO: Remove when OData does not causes exceptions anymore
                 options.EnableEndpointRouting = false;
@@ -127,7 +128,8 @@ namespace CRM.API
                 // .NET Core version
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 // JSON settings
-                .AddJsonOptions(options => {
+                .AddJsonOptions(options =>
+                {
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     //options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
@@ -165,7 +167,8 @@ namespace CRM.API
             UpdateDatabase(app);
 
             // CORS
-            app.UseCors(options => {
+            app.UseCors(options =>
+            {
                 options.WithOrigins(Configuration.GetValue<string>("AllowedHosts"))
                     .AllowAnyHeader()
                     .AllowAnyMethod();
@@ -199,6 +202,13 @@ namespace CRM.API
             builder.EnableLowerCamelCase();
 
             builder.EntitySet<Account>("Accounts");
+
+            var users = builder.EntitySet<User>("Users");
+            users.EntityType.Ignore(u => u.ConcurrencyStamp);
+            users.EntityType.Ignore(u => u.NormalizedEmail);
+            users.EntityType.Ignore(u => u.NormalizedUserName);
+            users.EntityType.Ignore(u => u.PasswordHash);
+            users.EntityType.Ignore(u => u.SecurityStamp);
 
             return builder.GetEdmModel();
         }
@@ -419,7 +429,8 @@ namespace CRM.API
             adminUser.Wait();
             if (adminUser.Result == null)
             {
-                User newAdminUser = new User() {
+                User newAdminUser = new User()
+                {
                     Email = Configuration.GetSection("Admin").GetValue<string>("Email"),
                     UserName = Configuration.GetSection("Admin").GetValue<string>("Username"),
                     FirstName = Configuration.GetSection("Admin").GetValue<string>("FirstName"),
