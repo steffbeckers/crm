@@ -5,6 +5,9 @@ import { environment } from 'environments/environment';
 
 import { User } from 'app/models/User';
 
+import { JwtHelperService } from '@auth0/angular-jwt';
+const jwt = new JwtHelperService();
+
 @Injectable({
   providedIn: 'root',
 })
@@ -52,22 +55,33 @@ export class AuthService {
       return;
     }
 
+    // Return to login page
+    this.router.navigateByUrl('/auth/login');
+
     // Clear local storage
     localStorage.clear();
 
-    // Remove token and user
-    this.token = null;
-    this.user = null;
-
     this.http.get(environment.api + '/auth/logout').subscribe(() => {
-      // Return to login page
-      this.router.navigateByUrl('/auth/login');
+      // Remove token and user
+      this.token = null;
+      this.user = null;
     });
   }
 
   isAuthenticated(): boolean {
-    // TODO: Check token expiration
-    return this.token ? true : false;
+    if (this.token && !jwt.isTokenExpired(this.token)) {
+      return true;
+    }
+
+    // TODO: Check if not yet on login or root? Code underneat doesn't work properly
+    // // Return to login page
+    // let loginUrl = '/auth/login';
+    // if (this.user.username) {
+    //   loginUrl += '?username=' + this.user.username;
+    // }
+    // this.router.navigateByUrl(loginUrl);
+
+    return false;
   }
 
   setToken(token): void {
