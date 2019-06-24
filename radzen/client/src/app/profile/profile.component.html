@@ -1,0 +1,54 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Change password">
+  </rz-heading>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-template-form #form0 (submit)="form0Submit($event)">
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label1 component="OldPassword" [style]="{'width': '100%'}" text="Old Password">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-password #oldPassword [style]="{'display': 'block', 'width': '100%'}" name="OldPassword">
+            </rz-password>
+            <rz-required-validator #oldPasswordRequiredValidator [component]="oldPassword" [style]="{'position': 'absolute'}" text="Old password is required">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label2 component="NewPassword" [style]="{'width': '100%'}" text="New Password">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-password #newPassword [style]="{'display': 'block', 'width': '100%'}" name="NewPassword">
+            </rz-password>
+            <rz-required-validator #newPasswordRequiredValidator [component]="newPassword" [style]="{'position': 'absolute'}" text="NewPassword is required">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label3 component="ConfirmPassword" [style]="{'width': '100%'}" text="Confirm password">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-password #confirmPassword [style]="{'display': 'block', 'width': '100%'}" name="ConfirmPassword">
+            </rz-password>
+            <rz-required-validator #confirmPasswordRequiredValidator [component]="confirmPassword" [style]="{'position': 'absolute'}" text="ConfirmPassword is required">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-sm-3">
+            <rz-button #button1 buttonStyle="primary" buttonType="submit" icon="save" text="Change password">
+            </rz-button>
+            <rz-button #button2 buttonStyle="light" text="Cancel" (click)="button2Click($event)">
+            </rz-button>
+          </div>
+        </div>
+      </rz-template-form>
+    </div>
+  </div>
+</rz-content>

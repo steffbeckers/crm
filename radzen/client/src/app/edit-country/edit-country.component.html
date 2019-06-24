@@ -1,0 +1,40 @@
+<rz-content #content1 container="main">
+  <rz-heading #pageTitle size="H1" text="Edit Country">
+  </rz-heading>
+  <div [ngStyle]="{}" class="row">
+    <div class="col-md-9">
+      <rz-label #closeLabel [style]="{'fontWeight': 'bold'}" text="Item no longer available." *ngIf="!canEdit">
+      </rz-label>
+    </div>
+    <div class="col-md-3">
+      <rz-button #closeButton buttonStyle="secondary" [style]="{'marginBottom': '20px'}" text="Close" *ngIf="!canEdit" (click)="closeButtonClick($event)">
+      </rz-button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <rz-form #form0 [data]="country" *ngIf="canEdit" (cancel)="form0Cancel($event)" (submit)="form0Submit($event)">
+        <rz-string-form-field property="Id" [required]="true" title="Id" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Name" [required]="true" title="Name" [maxLength]="100" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="NativeName" [required]="false" title="Native Name" [maxLength]="100" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Alpha2Code" [required]="false" title="Alpha 2 Code" [maxLength]="2" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Alpha3Code" [required]="false" title="Alpha 3 Code" [maxLength]="3" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Capital" [required]="false" title="Capital" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Region" [required]="false" title="Region" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Subregion" [required]="false" title="Subregion" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="NumericCode" [required]="false" title="Numeric Code" requiredText="is required" type="string">
+        </rz-string-form-field>
+        <rz-string-form-field property="Flag" [required]="false" title="Flag" requiredText="is required" type="string">
+        </rz-string-form-field>
+      </rz-form>
+    </div>
+  </div>
+</rz-content>

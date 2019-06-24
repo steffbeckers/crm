@@ -1,0 +1,52 @@
+<rz-content #content1 container="main">
+  <div class="row">
+    <div class="col-md-12">
+      <rz-template-form #form0 (submit)="form0Submit($event)">
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label1 component="Email" [style]="{'width': '100%'}" text="Email">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-textbox #email [style]="{'display': 'block', 'width': '100%'}" name="Email">
+            </rz-textbox>
+            <rz-required-validator #emailRequiredValidator [component]="email" [style]="{'position': 'absolute'}" text="Email is required">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label2 component="Password" [style]="{'width': '100%'}" text="Password">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-password #password [style]="{'display': 'block', 'width': '100%'}" name="Password">
+            </rz-password>
+            <rz-required-validator #passwordRequiredValidator [component]="password" [style]="{'position': 'absolute'}" text="Password is required">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div [ngStyle]="{'marginBottom': '1rem'}" class="row">
+          <div class="col-md-3">
+            <rz-label #label3 component="ConfirmPassword" [style]="{'width': '100%'}" text="Confirm password">
+            </rz-label>
+          </div>
+          <div class="col-md-9">
+            <rz-password #confirmPassword [style]="{'display': 'block', 'width': '100%'}" name="ConfirmPassword">
+            </rz-password>
+            <rz-required-validator #confirmPasswordRequiredValidator [component]="confirmPassword" [style]="{'position': 'absolute'}" text="ConfirmPassword is required">
+            </rz-required-validator>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col offset-sm-3">
+            <rz-button #button1 buttonStyle="primary" buttonType="submit" icon="save" text="Register">
+            </rz-button>
+            <rz-button #button2 buttonStyle="light" text="Cancel" (click)="button2Click($event)">
+            </rz-button>
+          </div>
+        </div>
+      </rz-template-form>
+    </div>
+  </div>
+</rz-content>

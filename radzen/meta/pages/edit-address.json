@@ -1,0 +1,370 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Edit Address"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "closeLabel",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Item no longer available.",
+                  "type": "label",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "type": "back"
+                      }
+                    ]
+                  },
+                  "icon": "",
+                  "name": "closeButton",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Close",
+                  "type": "button",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "data": "${address}",
+                  "events": {
+                    "cancel": [
+                      {
+                        "type": "back"
+                      }
+                    ],
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "name": "canEdit",
+                            "type": "set",
+                            "value": "!(result.status == 400)"
+                          },
+                          {
+                            "detail": "Unable to update Address",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "CRM.updateAddress",
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${parameters.Id}"
+                          },
+                          {
+                            "name": "Address",
+                            "value": "${event}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "back"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "loadData": [
+                      {
+                        "name": "CRM.getCountries",
+                        "condition": "event.property == 'CountryId'",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getCountriesForCountryIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getCountriesForCountryIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  },
+                  "fields": [
+                    {
+                      "property": "Id",
+                      "required": true,
+                      "title": "Id",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Street",
+                      "required": false,
+                      "title": "Street",
+                      "type": "string",
+                      "maxLength": 250,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Number",
+                      "required": false,
+                      "title": "Number",
+                      "type": "string",
+                      "maxLength": 50,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "City",
+                      "required": false,
+                      "title": "City",
+                      "type": "string",
+                      "maxLength": 80,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "State",
+                      "required": false,
+                      "title": "State",
+                      "type": "string",
+                      "maxLength": 50,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "PostalCode",
+                      "required": false,
+                      "title": "Postal Code",
+                      "type": "string",
+                      "maxLength": 50,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Latitude",
+                      "required": false,
+                      "title": "Latitude",
+                      "type": "number",
+                      "requiredText": "is required",
+                      "minText": "cannot be less than",
+                      "maxText": "cannot be more than"
+                    },
+                    {
+                      "property": "Longitude",
+                      "required": false,
+                      "title": "Longitude",
+                      "type": "number",
+                      "requiredText": "is required",
+                      "minText": "cannot be less than",
+                      "maxText": "cannot be more than"
+                    },
+                    {
+                      "data": "${getCountriesForCountryIdResult}",
+                      "property": "CountryId",
+                      "required": false,
+                      "textProperty": "Name",
+                      "title": "Country",
+                      "type": "lookuppopup",
+                      "valueProperty": "Id",
+                      "placeholder": "Choose Country",
+                      "count": "${getCountriesForCountryIdCount}",
+                      "pageSize": "${getCountriesForCountryIdPageSize}",
+                      "value": "${getByCountriesForCountryIdResult}",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "CreatedOn",
+                      "required": true,
+                      "title": "Created On",
+                      "type": "date",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "ModifiedOn",
+                      "required": true,
+                      "title": "Modified On",
+                      "type": "date",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "DeletedOn",
+                      "required": false,
+                      "title": "Deleted On",
+                      "type": "date",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "CreatedById",
+                      "required": true,
+                      "title": "Created By Id",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "ModifiedById",
+                      "required": true,
+                      "title": "Modified By Id",
+                      "type": "string",
+                      "requiredText": "is required"
+                    }
+                  ],
+                  "name": "form0",
+                  "type": "form",
+                  "visible": "${canEdit}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "canEdit",
+        "type": "set",
+        "value": "true"
+      },
+      {
+        "name": "CRM.getAddressById",
+        "parameters": [
+          {
+            "name": "Id",
+            "value": "${parameters.Id}"
+          }
+        ],
+        "then": [
+          {
+            "name": "address",
+            "type": "set",
+            "value": "${result}"
+          },
+          {
+            "name": "CRM.getCountryById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.address.CountryId}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByCountriesForCountryIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "condition": "this.address.CountryId != null",
+            "type": "invoke"
+          }
+        ],
+        "error": [
+          {
+            "name": "canEdit",
+            "type": "set",
+            "value": "!(result.status == 400)"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getCountriesForCountryIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getCountries",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getCountriesForCountryIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getCountriesForCountryIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getCountriesForCountryIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Edit Address",
+  "layout": "Main",
+  "access": [
+    "Authenticated"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "configVersion": 1,
+  "timestamp": 1561064478531,
+  "index": "/radzen/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/radzen/favicon.ico",
+        "/radzen/index.html"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/radzen/assets/css/default.css",
+        "/radzen/assets/fonts/MaterialIcons-Regular.woff",
+        "/radzen/assets/fonts/SourceSansPro-Black.woff",
+        "/radzen/assets/fonts/SourceSansPro-BlackIt.woff",
+        "/radzen/assets/fonts/SourceSansPro-Bold.woff",
+        "/radzen/assets/fonts/SourceSansPro-BoldIt.woff",
+        "/radzen/assets/fonts/SourceSansPro-ExtraLight.woff",
+        "/radzen/assets/fonts/SourceSansPro-ExtraLightIt.woff",
+        "/radzen/assets/fonts/SourceSansPro-It.woff",
+        "/radzen/assets/fonts/SourceSansPro-Light.woff",
+        "/radzen/assets/fonts/SourceSansPro-LightIt.woff",
+        "/radzen/assets/fonts/SourceSansPro-Regular.woff",
+        "/radzen/assets/fonts/SourceSansPro-Semibold.woff",
+        "/radzen/assets/fonts/SourceSansPro-SemiboldIt.woff",
+        "/radzen/assets/fonts/roboto-v15-latin-300.woff",
+        "/radzen/assets/fonts/roboto-v15-latin-700.woff",
+        "/radzen/assets/fonts/roboto-v15-latin-regular.woff",
+        "/radzen/assets/icon-128x128.png",
+        "/radzen/assets/icon-152x152.png",
+        "/radzen/assets/icon-256x256.png",
+        "/radzen/assets/icon-512x512.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/radzen/assets/css/default.css": "d12185e3ac457aee4d7725d30e838c6584b26134",
+    "/radzen/assets/fonts/MaterialIcons-Regular.woff": "fc61fc1cc827ca98c4d59fe09b155884fd635969",
+    "/radzen/assets/fonts/SourceSansPro-Black.woff": "aa02dc9ed0ab8c2f14080db6967bfda798a1d36e",
+    "/radzen/assets/fonts/SourceSansPro-BlackIt.woff": "090123649291f34a7f457d87e69cf3d07eade6aa",
+    "/radzen/assets/fonts/SourceSansPro-Bold.woff": "59b47397b88aaec2c6a769004468a1b7c53fb950",
+    "/radzen/assets/fonts/SourceSansPro-BoldIt.woff": "3a3063698de21aa6d092cee0c205f4f708defd33",
+    "/radzen/assets/fonts/SourceSansPro-ExtraLight.woff": "680de19d242741d7d4818af7cdcf76b12a49f313",
+    "/radzen/assets/fonts/SourceSansPro-ExtraLightIt.woff": "686711c8a11e25a7f364f629c2ab590f29963595",
+    "/radzen/assets/fonts/SourceSansPro-It.woff": "8198b854bd9f52e6e2d932435ec99aa8d8a09224",
+    "/radzen/assets/fonts/SourceSansPro-Light.woff": "3a7a464b171b14c53b21128da9b2704e5995a158",
+    "/radzen/assets/fonts/SourceSansPro-LightIt.woff": "0a9431870a34614a60ae3c4ee76c8b1be2210651",
+    "/radzen/assets/fonts/SourceSansPro-Regular.woff": "62ce99357ccaec3bb0ac703eee4458a9aaddf99a",
+    "/radzen/assets/fonts/SourceSansPro-Semibold.woff": "56169c245f04180410e67adc391c0c149ece4dc4",
+    "/radzen/assets/fonts/SourceSansPro-SemiboldIt.woff": "6295ff0e23df04f6c43e3811f9a2b9a3e3a66cd6",
+    "/radzen/assets/fonts/roboto-v15-latin-300.woff": "27c056b9c70dcfd55c43e954a898eb5bf706f730",
+    "/radzen/assets/fonts/roboto-v15-latin-700.woff": "24f9df68c500f7bbd1cb1c632de59936aa85b2e0",
+    "/radzen/assets/fonts/roboto-v15-latin-regular.woff": "940b859e4f02bd3e7cf7b6ce245c197b5470302a",
+    "/radzen/assets/icon-128x128.png": "45868a9b16de3f1364f87eba8b4971481600e508",
+    "/radzen/assets/icon-152x152.png": "4925c0ae63746e49e8bdf0b1f33dd57e9ae3cd90",
+    "/radzen/assets/icon-256x256.png": "cacac2897a8933a7b35bfbde76ac7a8805755760",
+    "/radzen/assets/icon-512x512.png": "32d4842913cbe1f47145a9e35beb1bd90b4c709c",
+    "/radzen/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
+    "/radzen/index.html": "682f78dd880123536246f4632adf14470ec07496"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}

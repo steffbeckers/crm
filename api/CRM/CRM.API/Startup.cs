@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using CRM.API.CodeGenerator;
 using CRM.API.DAL;
-using CRM.API.DAL.Repositories;
 using CRM.API.Models;
 using CRM.API.Services;
 using Microsoft.AspNet.OData.Builder;
@@ -16,9 +16,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
+using Microsoft.OData.Edm.Csdl;
+using Microsoft.OData.Edm.Vocabularies;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -114,7 +119,8 @@ namespace CRM.API
             services.AddHttpContextAccessor();
 
             // MVC
-            services.AddMvc(options => {
+            services.AddMvc(options =>
+            {
                 // OData
                 // TODO: Remove when OData does not causes exceptions anymore
                 options.EnableEndpointRouting = false;
@@ -122,7 +128,8 @@ namespace CRM.API
                 // .NET Core version
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 // JSON settings
-                .AddJsonOptions(options => {
+                .AddJsonOptions(options =>
+                {
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     //options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Ignore;
@@ -160,7 +167,8 @@ namespace CRM.API
             UpdateDatabase(app);
 
             // CORS
-            app.UseCors(options => {
+            app.UseCors(options =>
+            {
                 options.WithOrigins(Configuration.GetValue<string>("AllowedHosts"))
                     .AllowAnyHeader()
                     .AllowAnyMethod();
@@ -173,7 +181,13 @@ namespace CRM.API
             app.UseMvc(options =>
             {
                 // OData
-                //options.MapODataServiceRoute("odata", "api/odata", GetEdmModel(app.ApplicationServices));
+                IEdmModel odataModel = GetEdmModel(app.ApplicationServices);
+
+                // Code generator
+                ConfigureODataMetadataForCodeGenerator(odataModel);
+
+                // OData
+                options.MapODataServiceRoute("odata", "api/odata", odataModel);
                 options.Count().Filter().OrderBy().Expand().Select().MaxTop(200);
                 options.EnableDependencyInjection();
             });
@@ -182,16 +196,171 @@ namespace CRM.API
             CreateRolesAndAdminUser(serviceProvider);
         }
 
-        //private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
-        //{
-        //    ODataConventionModelBuilder builder = new ODataConventionModelBuilder(serviceProvider);
-        //    builder.EnableLowerCamelCase();
+        private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
+        {
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder(serviceProvider);
+            builder.EnableLowerCamelCase();
 
-        //    builder.EntitySet<Account>("Account");
-        //    builder.EntitySet<Contact>("Contact");
+            builder.EntitySet<Account>("Accounts");
 
-        //    return builder.GetEdmModel();
-        //}
+            var users = builder.EntitySet<User>("Users");
+            users.EntityType.Ignore(u => u.ConcurrencyStamp);
+            users.EntityType.Ignore(u => u.NormalizedEmail);
+            users.EntityType.Ignore(u => u.NormalizedUserName);
+            users.EntityType.Ignore(u => u.PasswordHash);
+            users.EntityType.Ignore(u => u.SecurityStamp);
+
+            return builder.GetEdmModel();
+        }
+
+        private void ConfigureODataMetadataForCodeGenerator(IEdmModel model)
+        {
+            // Namespace
+            string codeGenNamespace = "http://code.gen/schema";
+            model.SetNamespacePrefixMappings(new Dictionary<string, string> { { "codegen", codeGenNamespace } });
+
+            foreach (IEdmEntityType entityType in model.SchemaElementsAcrossModels().OfType<IEdmEntityType>())
+            {
+                // Use reflection to retrieve models with attributes
+                Type type = Type.GetType(entityType.FullName() + ", CRM.API"); // TODO: Make assembly name dynamic
+                if (type == null) { continue; }
+
+                PropertyInfo[] props = type.GetProperties();
+                foreach (PropertyInfo prop in props)
+                {
+                    object[] attrs = prop.GetCustomAttributes(true);
+                    foreach (object attr in attrs)
+                    {
+                        CodeGenInputTypeAttribute inputTypeAttr = attr as CodeGenInputTypeAttribute;
+                        if (inputTypeAttr != null)
+                        {
+                            foreach (IEdmProperty entityTypeProperty in entityType.Properties())
+                            {
+                                if (entityTypeProperty.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    model.SetAnnotationValue(
+                                        entityTypeProperty,
+                                        codeGenNamespace,
+                                        "InputType",
+                                        new EdmStringConstant(EdmCoreModel.Instance.GetString(true), inputTypeAttr.Value)
+                                    );
+                                }
+                            }
+                        }
+
+                        CodeGenFieldHiddenAttribute fieldHiddenAttr = attr as CodeGenFieldHiddenAttribute;
+                        if (fieldHiddenAttr != null)
+                        {
+                            foreach (IEdmProperty entityTypeProperty in entityType.Properties())
+                            {
+                                if (entityTypeProperty.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    model.SetAnnotationValue(
+                                        entityTypeProperty,
+                                        codeGenNamespace,
+                                        "Hidden",
+                                        new EdmStringConstant(EdmCoreModel.Instance.GetString(true), fieldHiddenAttr.Value ? "true" : "false")
+                                    );
+                                }
+                            }
+                        }
+
+                        CodeGenFieldDisplayNameAttribute fieldDisplayNameAttr = attr as CodeGenFieldDisplayNameAttribute;
+                        if (fieldDisplayNameAttr != null)
+                        {
+                            foreach (IEdmProperty entityTypeProperty in entityType.Properties())
+                            {
+                                if (entityTypeProperty.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    model.SetAnnotationValue(
+                                        entityTypeProperty,
+                                        codeGenNamespace,
+                                        "DisplayName",
+                                        new EdmStringConstant(EdmCoreModel.Instance.GetString(true), fieldDisplayNameAttr.Value)
+                                    );
+                                }
+                            }
+                        }
+
+                        CodeGenFieldSortAttribute fieldSortAttr = attr as CodeGenFieldSortAttribute;
+                        if (fieldSortAttr != null)
+                        {
+                            foreach (IEdmProperty entityTypeProperty in entityType.Properties())
+                            {
+                                if (entityTypeProperty.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    model.SetAnnotationValue(
+                                        entityTypeProperty,
+                                        codeGenNamespace,
+                                        "Sort",
+                                        new EdmStringConstant(EdmCoreModel.Instance.GetString(true), fieldSortAttr.Value.ToString())
+                                    );
+                                }
+                            }
+                        }
+
+                        CodeGenLookupIdAttribute lookupIdAttr = attr as CodeGenLookupIdAttribute;
+                        if (lookupIdAttr != null)
+                        {
+                            foreach (IEdmProperty entityTypeProperty in entityType.Properties())
+                            {
+                                if (entityTypeProperty.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    model.SetAnnotationValue(
+                                        entityTypeProperty,
+                                        codeGenNamespace,
+                                        "LookupId",
+                                        new EdmStringConstant(EdmCoreModel.Instance.GetString(true), lookupIdAttr.Value)
+                                    );
+                                }
+                            }
+                        }
+
+                        CodeGenLookupFieldToDisplayAttribute lookupFieldToDisplayAttr = attr as CodeGenLookupFieldToDisplayAttribute;
+                        if (lookupFieldToDisplayAttr != null)
+                        {
+                            foreach (IEdmProperty entityTypeProperty in entityType.Properties())
+                            {
+                                if (entityTypeProperty.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    model.SetAnnotationValue(
+                                        entityTypeProperty,
+                                        codeGenNamespace,
+                                        "LookupFieldToDisplay",
+                                        new EdmStringConstant(EdmCoreModel.Instance.GetString(true), lookupFieldToDisplayAttr.Value ? "true" : "false")
+                                    );
+                                }
+                            }
+                        }
+
+                        CodeGenRelationSortAttribute relationSortAttr = attr as CodeGenRelationSortAttribute;
+                        if (relationSortAttr != null)
+                        {
+                            foreach (IEdmProperty entityTypeProperty in entityType.Properties())
+                            {
+                                if (entityTypeProperty.Name.Equals(prop.Name, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    model.SetAnnotationValue(
+                                        entityTypeProperty,
+                                        codeGenNamespace,
+                                        "Sort",
+                                        new EdmStringConstant(EdmCoreModel.Instance.GetString(true), relationSortAttr.Value.ToString())
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // TEST Logging in console
+                //Console.WriteLine(entityType.FullName());
+                //foreach (IEdmProperty property in entityType.Properties())
+                //{
+                //    Console.WriteLine(" " + property.Name);
+                //}
+                //Console.WriteLine();
+            }
+        }
 
         private void UpdateDatabase(IApplicationBuilder app)
         {
@@ -260,7 +429,8 @@ namespace CRM.API
             adminUser.Wait();
             if (adminUser.Result == null)
             {
-                User newAdminUser = new User() {
+                User newAdminUser = new User()
+                {
                     Email = Configuration.GetSection("Admin").GetValue<string>("Email"),
                     UserName = Configuration.GetSection("Admin").GetValue<string>("Username"),
                     FirstName = Configuration.GetSection("Admin").GetValue<string>("FirstName"),

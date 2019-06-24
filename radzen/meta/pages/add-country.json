@@ -1,0 +1,150 @@
+{
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Add Country"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "data": "",
+                  "events": {
+                    "cancel": [
+                      {
+                        "type": "back"
+                      }
+                    ],
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "detail": "Unable to create new Country!",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "CRM.createCountry",
+                        "parameters": [
+                          {
+                            "name": "Country",
+                            "value": "${event}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "path": "countries",
+                            "type": "navigate"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "loadData": []
+                  },
+                  "fields": [
+                    {
+                      "property": "Id",
+                      "required": true,
+                      "title": "Id",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Name",
+                      "required": true,
+                      "title": "Name",
+                      "type": "string",
+                      "maxLength": 100,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "NativeName",
+                      "required": false,
+                      "title": "Native Name",
+                      "type": "string",
+                      "maxLength": 100,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Alpha2Code",
+                      "required": false,
+                      "title": "Alpha 2 Code",
+                      "type": "string",
+                      "maxLength": 2,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Alpha3Code",
+                      "required": false,
+                      "title": "Alpha 3 Code",
+                      "type": "string",
+                      "maxLength": 3,
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Capital",
+                      "required": false,
+                      "title": "Capital",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Region",
+                      "required": false,
+                      "title": "Region",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Subregion",
+                      "required": false,
+                      "title": "Subregion",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "NumericCode",
+                      "required": false,
+                      "title": "Numeric Code",
+                      "type": "string",
+                      "requiredText": "is required"
+                    },
+                    {
+                      "property": "Flag",
+                      "required": false,
+                      "title": "Flag",
+                      "type": "string",
+                      "requiredText": "is required"
+                    }
+                  ],
+                  "name": "form0",
+                  "type": "form"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": []
+  },
+  "name": "Add Country",
+  "layout": "Main",
+  "access": [
+    "Authenticated"
+  ]
+}

@@ -1,0 +1,935 @@
+{
+  "access": [
+    "Authenticated"
+  ],
+  "components": [
+    {
+      "components": [
+        {
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Edit Account",
+          "type": "heading"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-9",
+              "components": [
+                {
+                  "name": "closeLabel",
+                  "style": {
+                    "fontWeight": "bold"
+                  },
+                  "text": "Item no longer available.",
+                  "type": "label",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col0",
+              "type": "col"
+            },
+            {
+              "class": "col-md-3",
+              "components": [
+                {
+                  "buttonStyle": "secondary",
+                  "events": {
+                    "click": [
+                      {
+                        "type": "back"
+                      }
+                    ]
+                  },
+                  "icon": "",
+                  "name": "closeButton",
+                  "style": {
+                    "marginBottom": "20px"
+                  },
+                  "text": "Close",
+                  "type": "button",
+                  "visible": "${!canEdit}"
+                }
+              ],
+              "name": "col1",
+              "type": "col"
+            }
+          ],
+          "name": "row0",
+          "style": {},
+          "type": "row"
+        },
+        {
+          "components": [
+            {
+              "class": "col-md-12",
+              "components": [
+                {
+                  "data": "${account}",
+                  "events": {
+                    "cancel": [
+                      {
+                        "type": "back"
+                      }
+                    ],
+                    "loadData": [
+                      {
+                        "condition": "event.property == 'AddressId'",
+                        "name": "CRM.getAddresses",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getAddressesForAddressIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getAddressesForAddressIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      },
+                      {
+                        "condition": "event.property == 'ParentAccountId'",
+                        "name": "CRM.getAccounts",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getAccountsForParentAccountIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getAccountsForParentAccountIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      },
+                      {
+                        "condition": "event.property == 'BillingAccountId'",
+                        "name": "CRM.getAccounts",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getAccountsForBillingAccountIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getAccountsForBillingAccountIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      },
+                      {
+                        "condition": "event.property == 'RelationTypeId'",
+                        "name": "CRM.getAccountRelationTypes",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getAccountRelationTypesForRelationTypeIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getAccountRelationTypesForRelationTypeIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      },
+                      {
+                        "condition": "event.property == 'PrimaryContactId'",
+                        "name": "CRM.getContacts",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getContactsForPrimaryContactIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getContactsForPrimaryContactIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      },
+                      {
+                        "condition": "event.property == 'CreatedById'",
+                        "name": "CRM.getUsers",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getUsersForCreatedByIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getUsersForCreatedByIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      },
+                      {
+                        "condition": "event.property == 'ModifiedById'",
+                        "name": "CRM.getUsers",
+                        "parameters": [
+                          {
+                            "name": "$top",
+                            "value": "${event.top}"
+                          },
+                          {
+                            "name": "$skip",
+                            "value": "${event.skip}"
+                          },
+                          {
+                            "name": "$orderby",
+                            "value": "${event.orderby}"
+                          },
+                          {
+                            "name": "$filter",
+                            "value": "${event.filter}"
+                          },
+                          {
+                            "name": "$count",
+                            "value": "true"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "name": "getUsersForModifiedByIdResult",
+                            "type": "set",
+                            "value": "${result.value}"
+                          },
+                          {
+                            "name": "getUsersForModifiedByIdCount",
+                            "type": "set",
+                            "value": "result['@odata.count']"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ],
+                    "submit": [
+                      {
+                        "error": [
+                          {
+                            "name": "canEdit",
+                            "type": "set",
+                            "value": "!(result.status == 400)"
+                          },
+                          {
+                            "detail": "Unable to update Account",
+                            "severity": "error",
+                            "summary": "Error",
+                            "type": "notify"
+                          }
+                        ],
+                        "name": "CRM.updateAccount",
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${parameters.Id}"
+                          },
+                          {
+                            "name": "Account",
+                            "value": "${event}"
+                          }
+                        ],
+                        "then": [
+                          {
+                            "type": "back"
+                          }
+                        ],
+                        "type": "invoke"
+                      }
+                    ]
+                  },
+                  "fields": [
+                    {
+                      "maxLength": 100,
+                      "property": "Name",
+                      "required": true,
+                      "requiredText": "is required",
+                      "title": "Name",
+                      "type": "string"
+                    },
+                    {
+                      "maxLength": 100,
+                      "property": "Email",
+                      "required": false,
+                      "requiredText": "is required",
+                      "title": "Email",
+                      "type": "string"
+                    },
+                    {
+                      "maxLength": 50,
+                      "property": "Telephone",
+                      "required": false,
+                      "requiredText": "is required",
+                      "title": "Telephone",
+                      "type": "string"
+                    },
+                    {
+                      "maxLength": 50,
+                      "property": "Fax",
+                      "required": false,
+                      "requiredText": "is required",
+                      "title": "Fax",
+                      "type": "string"
+                    },
+                    {
+                      "maxLength": 200,
+                      "property": "Website",
+                      "required": false,
+                      "requiredText": "is required",
+                      "title": "Website",
+                      "type": "string"
+                    },
+                    {
+                      "maxLength": 50,
+                      "property": "VATNumber",
+                      "required": false,
+                      "requiredText": "is required",
+                      "title": "VAT Number",
+                      "type": "string"
+                    },
+                    {
+                      "property": "Description",
+                      "required": false,
+                      "requiredText": "is required",
+                      "title": "Description",
+                      "type": "string"
+                    },
+                    {
+                      "count": "${getAddressesForAddressIdCount}",
+                      "data": "${getAddressesForAddressIdResult}",
+                      "pageSize": "${getAddressesForAddressIdPageSize}",
+                      "placeholder": "Choose Address",
+                      "property": "AddressId",
+                      "required": false,
+                      "requiredText": "is required",
+                      "textProperty": "Street",
+                      "title": "Address",
+                      "type": "lookuppopup",
+                      "value": "${getByAddressesForAddressIdResult}",
+                      "valueProperty": "Id"
+                    },
+                    {
+                      "count": "${getAccountsForParentAccountIdCount}",
+                      "data": "${getAccountsForParentAccountIdResult}",
+                      "pageSize": "${getAccountsForParentAccountIdPageSize}",
+                      "placeholder": "Choose Account",
+                      "property": "ParentAccountId",
+                      "required": false,
+                      "requiredText": "is required",
+                      "textProperty": "Name",
+                      "title": "Parent Account",
+                      "type": "lookuppopup",
+                      "value": "${getByAccountsForParentAccountIdResult}",
+                      "valueProperty": "Id"
+                    },
+                    {
+                      "count": "${getAccountsForBillingAccountIdCount}",
+                      "data": "${getAccountsForBillingAccountIdResult}",
+                      "pageSize": "${getAccountsForBillingAccountIdPageSize}",
+                      "placeholder": "Choose Account",
+                      "property": "BillingAccountId",
+                      "required": false,
+                      "requiredText": "is required",
+                      "textProperty": "Name",
+                      "title": "Billing Account",
+                      "type": "lookuppopup",
+                      "value": "${getByAccountsForBillingAccountIdResult}",
+                      "valueProperty": "Id"
+                    },
+                    {
+                      "count": "${getAccountRelationTypesForRelationTypeIdCount}",
+                      "data": "${getAccountRelationTypesForRelationTypeIdResult}",
+                      "pageSize": "${getAccountRelationTypesForRelationTypeIdPageSize}",
+                      "placeholder": "Choose AccountRelationType",
+                      "property": "RelationTypeId",
+                      "required": false,
+                      "requiredText": "is required",
+                      "textProperty": "Name",
+                      "title": "Relation Type",
+                      "type": "lookuppopup",
+                      "value": "${getByAccountRelationTypesForRelationTypeIdResult}",
+                      "valueProperty": "Id"
+                    },
+                    {
+                      "columns": [],
+                      "count": "${getContactsForPrimaryContactIdCount}",
+                      "data": "${getContactsForPrimaryContactIdResult}",
+                      "pageSize": "${getContactsForPrimaryContactIdPageSize}",
+                      "placeholder": "Choose Contact",
+                      "property": "PrimaryContactId",
+                      "required": false,
+                      "requiredText": "is required",
+                      "textProperty": "FirstName",
+                      "title": "Primary Contact",
+                      "type": "lookuppopup",
+                      "value": "${getByContactsForPrimaryContactIdResult}",
+                      "valueProperty": "Id",
+                      "visible": true
+                    }
+                  ],
+                  "name": "form0",
+                  "type": "form",
+                  "visible": "${canEdit}"
+                }
+              ],
+              "type": "col"
+            }
+          ],
+          "type": "row"
+        }
+      ],
+      "container": "main",
+      "type": "content"
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "canEdit",
+        "type": "set",
+        "value": "true"
+      },
+      {
+        "error": [
+          {
+            "name": "canEdit",
+            "type": "set",
+            "value": "!(result.status == 400)"
+          }
+        ],
+        "name": "CRM.getAccountById",
+        "parameters": [
+          {
+            "name": "Id",
+            "value": "${parameters.Id}"
+          }
+        ],
+        "then": [
+          {
+            "name": "account",
+            "type": "set",
+            "value": "${result}"
+          },
+          {
+            "condition": "this.account.AddressId != null",
+            "name": "CRM.getAddressById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.account.AddressId}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByAddressesForAddressIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "type": "invoke"
+          },
+          {
+            "condition": "this.account.ParentAccountId != null",
+            "name": "CRM.getAccountById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.account.ParentAccountId}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByAccountsForParentAccountIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "type": "invoke"
+          },
+          {
+            "condition": "this.account.BillingAccountId != null",
+            "name": "CRM.getAccountById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.account.BillingAccountId}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByAccountsForBillingAccountIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "type": "invoke"
+          },
+          {
+            "condition": "this.account.RelationTypeId != null",
+            "name": "CRM.getAccountRelationTypeById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.account.RelationTypeId}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByAccountRelationTypesForRelationTypeIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "type": "invoke"
+          },
+          {
+            "condition": "this.account.PrimaryContactId != null",
+            "name": "CRM.getContactById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.account.PrimaryContactId}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByContactsForPrimaryContactIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "type": "invoke"
+          },
+          {
+            "condition": "this.account.CreatedById != null",
+            "name": "CRM.getUserById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.account.CreatedById}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByUsersForCreatedByIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "type": "invoke"
+          },
+          {
+            "condition": "this.account.ModifiedById != null",
+            "name": "CRM.getUserById",
+            "parameters": [
+              {
+                "name": "Id",
+                "value": "${this.account.ModifiedById}"
+              }
+            ],
+            "then": [
+              {
+                "name": "getByUsersForModifiedByIdResult",
+                "type": "set",
+                "value": "${result}"
+              }
+            ],
+            "type": "invoke"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getAddressesForAddressIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getAddresses",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getAddressesForAddressIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getAddressesForAddressIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getAddressesForAddressIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getAccountsForParentAccountIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getAccounts",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getAccountsForParentAccountIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getAccountsForParentAccountIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getAccountsForParentAccountIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getAccountsForBillingAccountIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getAccounts",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getAccountsForBillingAccountIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getAccountsForBillingAccountIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getAccountsForBillingAccountIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getAccountRelationTypesForRelationTypeIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getAccountRelationTypes",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getAccountRelationTypesForRelationTypeIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getAccountRelationTypesForRelationTypeIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getAccountRelationTypesForRelationTypeIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getContactsForPrimaryContactIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getContacts",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getContactsForPrimaryContactIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getContactsForPrimaryContactIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getContactsForPrimaryContactIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getUsersForCreatedByIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getUsers",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getUsersForCreatedByIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getUsersForCreatedByIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getUsersForCreatedByIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      },
+      {
+        "name": "getUsersForModifiedByIdPageSize",
+        "type": "set",
+        "value": "10"
+      },
+      {
+        "name": "CRM.getUsers",
+        "parameters": [
+          {
+            "name": "$top",
+            "value": "${getUsersForModifiedByIdPageSize}"
+          },
+          {
+            "name": "$skip",
+            "value": "0"
+          },
+          {
+            "name": "$count",
+            "value": "true"
+          }
+        ],
+        "then": [
+          {
+            "name": "getUsersForModifiedByIdResult",
+            "type": "set",
+            "value": "${result.value}"
+          },
+          {
+            "name": "getUsersForModifiedByIdCount",
+            "type": "set",
+            "value": "result['@odata.count']"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "layout": "Main",
+  "name": "Edit Account"
+}
