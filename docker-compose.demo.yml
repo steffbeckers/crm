@@ -30,7 +30,7 @@ services:
       - MSSQL_PID=Express
       - SA_PASSWORD=epujl3bcn4t9dp12fdtaz6bwnl3emohyxyue936p5ls1zoeangtpw4bb9v9hmpu3
     volumes:
-      - /root/crm/mssql:/var/opt/mssql
+      - /root/crm_demo/mssql:/var/opt/mssql
 
 networks:
   reverse-proxy_default:
