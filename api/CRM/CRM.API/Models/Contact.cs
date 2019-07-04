@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRM.API.CodeGenerator;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 namespace CRM.API.Models
 {
     [Table("Contacts")]
+    [CodeGenEntityPluralized("Contacts")]
     public class Contact
     {
         [Key]

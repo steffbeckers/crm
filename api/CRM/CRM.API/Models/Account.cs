@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CRM.API.Models
 {
     [Table("Accounts")]
+    [CodeGenEntityPluralized("Accounts")]
     public class Account
     {
         [Key]
@@ -54,26 +55,31 @@ namespace CRM.API.Models
 
         [CodeGenFieldHidden(true)]
         public Guid? AddressId { get; set; }
+        [CodeGenInputType(CodeGenInputTypeValues.Lookup)]
         [CodeGenLookupId("addressId")]
         public Address Address { get; set; }
 
         [CodeGenFieldHidden(true)]
         public Guid? ParentAccountId { get; set; }
+        [CodeGenInputType(CodeGenInputTypeValues.Lookup)]
         [CodeGenLookupId("parentAccountId")]
         public Account ParentAccount { get; set; }
 
         [CodeGenFieldHidden(true)]
         public Guid? BillingAccountId { get; set; }
+        [CodeGenInputType(CodeGenInputTypeValues.Lookup)]
         [CodeGenLookupId("billingAccountId")]
         public Account BillingAccount { get; set; }
 
         [CodeGenFieldHidden(true)]
         public Guid? RelationTypeId { get; set; }
+        [CodeGenInputType(CodeGenInputTypeValues.Lookup)]
         [CodeGenLookupId("relationTypeId")]
         public AccountRelationType RelationType { get; set; }
 
         [CodeGenFieldHidden(true)]
         public Guid? PrimaryContactId { get; set; }
+        [CodeGenInputType(CodeGenInputTypeValues.Lookup)]
         [CodeGenLookupId("primaryContactId")]
         public Contact PrimaryContact { get; set; }
 

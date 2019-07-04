@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CRM.API.CodeGenerator;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace CRM.API.Models
 {
     [Table("Addresses")]
+    [CodeGenEntityPluralized("Addresses")]
     public class Address
     {
         [Key]

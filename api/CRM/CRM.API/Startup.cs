@@ -225,11 +225,27 @@ namespace CRM.API
                 Type type = Type.GetType(entityType.FullName() + ", CRM.API"); // TODO: Make assembly name dynamic
                 if (type == null) { continue; }
 
+                // For custom attributes on the model itself
+                object[] entityAttrs = type.GetCustomAttributes(true);
+                foreach (object attr in entityAttrs)
+                {
+                    CodeGenEntityPluralizedAttribute entityPluralizedAttr = attr as CodeGenEntityPluralizedAttribute;
+                    if (entityPluralizedAttr != null)
+                    {
+                        model.SetAnnotationValue(
+                            entityType,
+                            codeGenNamespace,
+                            "Pluralized",
+                            new EdmStringConstant(EdmCoreModel.Instance.GetString(true), entityPluralizedAttr.Value)
+                        );
+                    }
+                }
+
                 PropertyInfo[] props = type.GetProperties();
                 foreach (PropertyInfo prop in props)
                 {
-                    object[] attrs = prop.GetCustomAttributes(true);
-                    foreach (object attr in attrs)
+                    object[] propAttrs = prop.GetCustomAttributes(true);
+                    foreach (object attr in propAttrs)
                     {
                         CodeGenInputTypeAttribute inputTypeAttr = attr as CodeGenInputTypeAttribute;
                         if (inputTypeAttr != null)

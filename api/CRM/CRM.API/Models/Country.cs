@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CRM.API.CodeGenerator;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace CRM.API.Models
 {
     [Table("Countries")]
+    [CodeGenEntityPluralized("Countries")]
     public class Country
     {
         [Key]

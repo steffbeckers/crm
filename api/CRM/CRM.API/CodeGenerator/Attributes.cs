@@ -5,6 +5,16 @@ using System.Threading.Tasks;
 
 namespace CRM.API.CodeGenerator
 {
+    public class CodeGenEntityPluralizedAttribute : Attribute
+    {
+        public string Value { get; set; }
+
+        public CodeGenEntityPluralizedAttribute(string value)
+        {
+            this.Value = value;
+        }
+    }
+
     public class CodeGenInputTypeValues
     {
         public const string Text = "Text";
@@ -30,6 +40,16 @@ namespace CRM.API.CodeGenerator
         public bool Value { get; set; }
 
         public CodeGenFieldHiddenAttribute(bool value)
+        {
+            this.Value = value;
+        }
+    }
+
+    public class CodeGenFieldDisabledAttribute : Attribute
+    {
+        public bool Value { get; set; }
+
+        public CodeGenFieldDisabledAttribute(bool value)
         {
             this.Value = value;
         }

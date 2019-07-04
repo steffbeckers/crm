@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace CRM.API.Models
 {
     [Table("AccountRelationTypes")]
+    [CodeGenEntityPluralized("AccountRelationTypes")]
     public class AccountRelationType
     {
         [Key]
