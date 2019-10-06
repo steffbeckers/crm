@@ -1,37 +1,47 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: crm
-    release: crm
   name: crm-api
   namespace: crm
+  labels:
+    app: crm-api
+    release: crm-api
 spec:
-  replicas: 1
-  strategy: {}
+  selector:
+    matchLabels:
+      app: crm-api
+      release: crm-api
+      tier: backend
+  strategy:
+    type: Recreate
   template:
+    metadata:
+      labels:
+        app: crm-api
+        release: crm-api
+        tier: backend
     spec:
+      imagePullSecrets:
+      - name: dockerconfig
       containers:
       - image: registry.gitlab.com/steffbeckers/crm/api
         name: crm-api
         ports:
         - containerPort: 80
-        resources: {}
-      restartPolicy: Always
-status: {}
+          name: crm-api
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: crm
-    release: crm
   name: crm-api
   namespace: crm
+  labels:
+    app: crm-api
+    release: crm-api
 spec:
-  selector:
-    app: crm
   ports:
-  - name: "80"
-    port: 80
-    targetPort: 80
+    - port: 80
+  selector:
+    app: crm-api
+    release: crm-api
+    tier: backend
