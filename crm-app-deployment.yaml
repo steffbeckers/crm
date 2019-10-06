@@ -29,6 +29,8 @@ metadata:
   name: crm-app
   namespace: crm
 spec:
+  selector:
+    app: crm
   ports:
   - name: "80"
     port: 80
