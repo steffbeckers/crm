@@ -3,6 +3,7 @@ using CRM.API.CodeGenerator;
 using CRM.API.DAL;
 using CRM.API.Models;
 using CRM.API.Services;
+using Elastic.Apm.NetCoreAll;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -162,6 +163,9 @@ namespace CRM.API
 
                 app.UseHsts();
             }
+
+            // Elastic APM
+            app.UseAllElasticApm(Configuration);
 
             // Update database migrations on startup
             UpdateDatabase(app);
@@ -463,7 +467,6 @@ namespace CRM.API
                     newUserRole.Wait();
                 }
             }
-
         }
     }
 }
