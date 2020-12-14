@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   hmr: false,
   api: 'http://localhost:5000/api',
-  'maps-api-key': 'AIzaSyA7gXU1vCOSBv_Z6mFmnNUQQUFKywqZLJ4',
+  'maps-api-key': 'SECRET',
 };
 
 /*
